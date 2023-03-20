@@ -40,7 +40,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        // 通过自定义的 SpringContext 的 getBean 方法获取 HandlerExceptionResolver 来处理异常,不能用@autowired与@Qualifier("handlerExceptionResolver")注解来handlerExceptionResolver 是会抛空指针的
+        // 通过自定义的 SpringContext 的 getBean 方法获取 HandlerExceptionResolver 来处理异常,
+        // 不能用@autowired与@Qualifier("handlerExceptionResolver")注解来handlerExceptionResolver 是会抛空指针的
         HandlerExceptionResolver handlerExceptionResolver = (HandlerExceptionResolver) SpringContext.getBean("handlerExceptionResolver");
         //通过 class 获得 bean
         AdminService adminService = SpringContext.getBean(AdminService.class);
@@ -61,25 +62,37 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         try {
             JWTUtil.verify(token, username);
         } catch (SignatureVerificationException e) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"签名错误" ) );
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"签名错误" ) );
             return false;
         } catch (TokenExpiredException e) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN过期" ) );
-            return false;
+            // 获取请求 TOKEN 的过期时间
+            Long expirationTime = JWTUtil.getExpiration(token);
+            // 获取当前的时间
+            Long newTime = System.currentTimeMillis();
+            // 如果相差小于5MIN,生成新的TOKEN,否则返回TOKEN过期
+            if((newTime - expirationTime)/60000 < 5){
+                //生成新的token
+                String newToken = JWTUtil.createJWT(username);
+                //将新token添加到响应头中
+                ((HttpServletResponse) response).setHeader("token", newToken);
+            }else{
+                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"TOKEN过期" ) );
+                return false;
+            }
         } catch (AlgorithmMismatchException e) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN算法不一致" ) );
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"TOKEN算法不一致" ) );
             return false;
         } catch (Exception e){
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN未知错误") );
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"TOKEN未知错误") );
             return false;
         }
         // 查询用户信息,并抛出异常
         Admin admin = adminService.getUsername(username);
         if (admin == null) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  ResponseCodeEnum.NOT_EXIST ) );
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.NOT_EXIST ) );
             return false;
         }else if (!admin.getStatus().equals(1)) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  ResponseCodeEnum.ACCOUNT_DISABLED ) );
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.ACCOUNT_DISABLED ) );
             return false;
         }
         //进入 executeLogin 方法执行登入
