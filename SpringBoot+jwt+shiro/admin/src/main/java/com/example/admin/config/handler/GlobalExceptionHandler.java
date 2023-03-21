@@ -4,6 +4,7 @@ package com.example.admin.config.handler;
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.response.GlobalResponse;
+import io.lettuce.core.RedisCommandExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -85,6 +86,18 @@ public class GlobalExceptionHandler {
     public GlobalResponse<String> UnauthorizedExceptionHandler(UnauthorizedException e){
         log.error(ResponseCodeEnum.UNAUTHORIZED_EXCEPTION+":"+e.getMessage(), e);
         return GlobalResponse.fail(ResponseCodeEnum.UNAUTHORIZED_EXCEPTION);
+    }
+
+    /**
+     * Redis 链接异常
+     * @param e RedisCommandExecutionException
+     * @return GlobalResponse<T>
+     */
+    @ExceptionHandler(value = RedisCommandExecutionException.class)
+    @ResponseBody
+    public GlobalResponse<String> RedisCommandExecutionExceptionHandler(RedisCommandExecutionException e){
+        log.error(ResponseCodeEnum.UNAUTHORIZED_EXCEPTION+":"+e.getMessage(), e);
+        return GlobalResponse.fail(ResponseCodeEnum.REDIS_COMMAND_EXECUTION_EXCEPTION);
     }
 
     /**

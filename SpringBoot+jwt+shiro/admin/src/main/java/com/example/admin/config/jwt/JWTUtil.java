@@ -1,4 +1,4 @@
-package com.example.admin.config.util;
+package com.example.admin.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

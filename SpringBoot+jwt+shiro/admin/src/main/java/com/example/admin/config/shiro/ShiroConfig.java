@@ -1,6 +1,6 @@
 package com.example.admin.config.shiro;
 
-import com.example.admin.config.util.JWTFilter;
+import com.example.admin.config.jwt.JWTFilter;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -56,12 +56,10 @@ public class ShiroConfig {
         filterMap.put("jwt", new JWTFilter());
         bean.setFilters(filterMap);
         bean.setSecurityManager(securityManager);
-        // 设置默认登录接口
-        bean.setLoginUrl("/admin/login");
         // 设置拦截器与url映射关系map
         Map<String, String> map = new LinkedHashMap<>();
         // 设置不需要认证可以访问的资源
-        map.put("/admin/login", "anon");
+        map.put("/admin/logout", "logout");
         map.put("/admin/toLogin", "anon");
         // 设置需要进行登录认证的拦截范围(所有的路径都走自定义的过滤器)
         map.put("/admin/**", "jwt");

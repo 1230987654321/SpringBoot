@@ -2,24 +2,33 @@ package com.example.admin.controller;
 
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
+import com.example.admin.config.jwt.JWTUtil;
+import com.example.admin.config.redis.RedisTokenService;
 import com.example.admin.config.response.GlobalResponse;
-import com.example.admin.config.util.JWTUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/admin")
 public class LoginController {
     private final AdminService adminService;
+    private final RedisTokenService redisTokenService;
 
-    public LoginController(AdminService adminService) {
+    public LoginController(AdminService adminService,RedisTokenService redisTokenService) {
         this.adminService = adminService;
+        this.redisTokenService = redisTokenService;
     }
 
     @GetMapping("/toLogin")
@@ -47,6 +56,18 @@ public class LoginController {
     @GetMapping("/hello")
     public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        // 登出 Shiro
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        // 获取 TOKEN
+        String token =  request.getHeader("token");
+        // 将 TOKEN 存入 Redis 中进行废弃
+        redisTokenService.addToken(token);
+        return "退出成功";
     }
 
     @RequiresRoles("admin")

@@ -1,4 +1,4 @@
-package com.example.admin.config.util;
+package com.example.admin.config.jwt;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

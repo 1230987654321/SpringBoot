@@ -1,4 +1,4 @@
-package com.example.admin.config.util;
+package com.example.admin.config.jwt;
 
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.admin.SpringContext;
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
+import com.example.admin.config.redis.RedisTokenService;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -45,11 +46,15 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         HandlerExceptionResolver handlerExceptionResolver = (HandlerExceptionResolver) SpringContext.getBean("handlerExceptionResolver");
         //通过 class 获得 bean
         AdminService adminService = SpringContext.getBean(AdminService.class);
+        RedisTokenService redisTokenService = SpringContext.getBean(RedisTokenService.class);
         // 获取 TOKEN
         String token = ((HttpServletRequest) request).getHeader("token");
         // 判断 TOKEN 是否存在
         if (token == null) {
             handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN不存在") );
+            return false;
+        } else if( redisTokenService.isTokenExists(token) ){
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN已被废弃") );
             return false;
         }
         // 通过 TOKEN 获取用户名
@@ -75,6 +80,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 String newToken = JWTUtil.createJWT(username);
                 //将新token添加到响应头中
                 ((HttpServletResponse) response).setHeader("token", newToken);
+                // 生成新的 TOKEN 后,作废之前的TOKEN,防止重复生成 TOKEN
+                redisTokenService.addToken(token);
             }else{
                 handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"TOKEN过期" ) );
                 return false;

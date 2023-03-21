@@ -20,6 +20,7 @@ public enum ResponseCodeEnum {
     ARRAY_INDEX_OUT_OF_BOUNDS_ERROR(-13,"数组越界异常"),
     SQL_ERROR(-14,"SQL异常"),
     UNAUTHORIZED_EXCEPTION(-20,"权限不足"),
+    REDIS_COMMAND_EXECUTION_EXCEPTION(-21,"Redis连接异常:"),
     //自定义状态码
     NOT_EXIST(-2, "用户不存在"),
     LOGIN_FAILED(-3,"登陆失败,用户名或密码错误"),

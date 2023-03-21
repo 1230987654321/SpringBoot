@@ -1,7 +1,7 @@
 package com.example.admin.config.shiro;
 
-import com.example.admin.config.util.JWTToken;
-import com.example.admin.config.util.JWTUtil;
+import com.example.admin.config.jwt.JWTToken;
+import com.example.admin.config.jwt.JWTUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;
 import com.example.admin.service.AdminService;

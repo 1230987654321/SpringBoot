@@ -18,6 +18,15 @@ spring:
     resources:
       # 不要为我们工程中的资源文件建立映射
       add-mappings: false
+  redis:
+    # Redis 数据库编号
+    database: 0
+    # Redis 服务器的 IP 地址
+    host: 192.168.1.117
+    # Redis 服务器的端口号
+    port: 6379
+    # Redis 服务器的密码
+    password: hyy835435
 # MyBatisPlus
 mybatis-plus:
   configuration:
@@ -29,5 +38,3 @@ mybatis-plus:
     db-config:
       # 设置主键自增方式
       id-type: ASSIGN_ID
-shiro:
-  loginUrl: /admin/login
