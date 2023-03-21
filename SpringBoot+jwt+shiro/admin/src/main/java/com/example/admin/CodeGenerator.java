@@ -15,6 +15,12 @@ import com.baomidou.mybatisplus.generator.fill.Column;
 
 import java.util.Collections;
 
+/**
+ * @program workspace
+ * @description MyBatisPlus 的代码生成器
+ * @author 贲玉柱
+ * @create 2023/3/21 16:17
+ **/
 public class CodeGenerator {
     public static void main(String[] args) {
         FastAutoGenerator.create(

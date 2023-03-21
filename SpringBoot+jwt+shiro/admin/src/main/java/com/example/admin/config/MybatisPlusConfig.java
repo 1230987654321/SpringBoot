@@ -11,8 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * MyBatisPlus分页插件配置和防全表更新与删除插件
- */
+ * @program workspace
+ * @description MyBatisPlus分页插件配置和防全表更新与删除插件
+ * @author 贲玉柱
+ * @create 2023/3/21 16:16
+ **/
 @Configuration
 @MapperScan("com.example.admin.mapper")
 public class MybatisPlusConfig {

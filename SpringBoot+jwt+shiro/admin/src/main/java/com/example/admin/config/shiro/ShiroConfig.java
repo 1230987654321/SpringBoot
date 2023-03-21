@@ -13,6 +13,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @program workspace
+ * @description Shiro 安全框架的配置类
+ * @author 贲玉柱
+ * @create 2023/3/21 16:14
+ **/
 @Configuration
 public class ShiroConfig {
 

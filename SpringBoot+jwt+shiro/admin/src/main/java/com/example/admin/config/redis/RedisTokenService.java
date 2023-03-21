@@ -8,8 +8,11 @@ import java.time.Instant;
 import java.util.Optional;
 
 /**
- * RedisTokenService 类，封装了 Redis 缓存中 token 的增删查操作
- */
+ * @program workspace
+ * @description 封装了 Redis 缓存中 token 的增删查操作
+ * @author 贲玉柱
+ * @create 2023/3/21 16:14
+ **/
 @Service
 public class RedisTokenService {
 

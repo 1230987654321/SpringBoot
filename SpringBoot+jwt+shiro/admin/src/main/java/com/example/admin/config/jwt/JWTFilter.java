@@ -20,6 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+/**
+ * @program workspace
+ * @description 过滤器
+ * @author 贲玉柱
+ * @create 2023/3/21 16:12
+ **/
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     /**

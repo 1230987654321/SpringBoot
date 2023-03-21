@@ -7,12 +7,8 @@ import com.example.admin.config.redis.RedisTokenService;
 import com.example.admin.config.response.GlobalResponse;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.subject.Subject;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @program workspace
+ * @description 登录控制器
+ * @author 贲玉柱
+ * @create 2023/3/21 16:10
+ **/
 @RestController
 @RequestMapping("/admin")
 public class LoginController {
@@ -60,9 +62,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
-        // 登出 Shiro
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         // 获取 TOKEN
         String token =  request.getHeader("token");
         // 将 TOKEN 存入 Redis 中进行废弃

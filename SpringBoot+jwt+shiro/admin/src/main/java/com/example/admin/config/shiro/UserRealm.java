@@ -21,6 +21,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * @program workspace
+ * @description Shiro Realm 实现类，用于处理应用程序中的身份认证和授权请求
+ * @author 贲玉柱
+ * @create 2023/3/21 16:15
+ **/
 @Component
 public class UserRealm extends AuthorizingRealm {
 
@@ -49,7 +55,7 @@ public class UserRealm extends AuthorizingRealm {
      * 获取当前登录用户角色、权限信息
      * 返回给 Shiro 用来进行授权验证
      * @param principals the primary identifying principals of the AuthorizationInfo that should be retrieved.
-     * @return
+     * @return SimpleAuthorizationInfo
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {

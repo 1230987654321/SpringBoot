@@ -3,8 +3,11 @@ package com.example.admin.config.exception;
 import com.example.admin.config.enums.ResponseCodeEnum;
 
 /**
- * 自定义业务异常
- */
+ * @program workspace
+ * @description 自定义业务异常
+ * @author 贲玉柱
+ * @create 2023/3/21 16:11
+ **/
 public class ServiceException extends RuntimeException{
 
     /**

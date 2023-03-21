@@ -4,9 +4,11 @@ import com.example.admin.config.enums.ResponseCodeEnum;
 import lombok.Data;
 
 /**
- * 统一返回对象
- * @param <T>
- */
+ * @program workspace
+ * @description 统一返回对象
+ * @author 贲玉柱
+ * @create 2023/3/21 16:14
+ **/
 @Data
 public class GlobalResponse<T> {
     /**

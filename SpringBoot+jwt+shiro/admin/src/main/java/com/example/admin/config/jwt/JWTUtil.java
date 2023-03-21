@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * @program workspace
+ * @description 生成和解析 JSON Web Token（JWT）的工具类
+ * @author 贲玉柱
+ * @create 2023/3/21 16:13
+ **/
 @Component
 public class JWTUtil {
 
