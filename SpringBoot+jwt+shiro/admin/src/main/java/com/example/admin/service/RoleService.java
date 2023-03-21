@@ -1,8 +1,7 @@
 package com.example.admin.service;
 
-import com.example.admin.entity.Admin;
-import com.example.admin.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.admin.entity.Role;
 
 /**
  * <p>

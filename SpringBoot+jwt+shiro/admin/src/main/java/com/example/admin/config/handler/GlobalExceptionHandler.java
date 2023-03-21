@@ -18,10 +18,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
- * @program: workspace
- * @description: 统一异常处理
- * @author: 贲玉柱
- * @create: 2023-02-13 16:11
+ * @program workspace
+ * @description 统一异常处理
+ * @author 贲玉柱
+ * @create 2023-02-13 16:11
  **/
 @Slf4j
 @RestControllerAdvice
@@ -29,6 +29,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 业务异常 统一处理
+     * @param e ServiceException
+     * @return GlobalResponse<T>
      */
     @ExceptionHandler(value = ServiceException.class)
     @ResponseBody
@@ -39,6 +41,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 请求类型错误, 统一处理
+     * @param e HttpRequestMethodNotSupportedException
+     * @return GlobalResponse<T>
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
@@ -49,6 +53,8 @@ public class GlobalExceptionHandler {
 
     /**
      * mybatis-plus问题(数据库相关问题,例如数据库配置错误)
+     * @param e MyBatisSystemException
+     * @return GlobalResponse<T>
      */
     @ExceptionHandler(value = MyBatisSystemException.class)
     @ResponseBody
@@ -59,6 +65,8 @@ public class GlobalExceptionHandler {
 
     /**
      * SQL异常
+     * @param e SQLIntegrityConstraintViolationException
+     * @return GlobalResponse<T>
      */
     @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
     @ResponseBody
@@ -69,6 +77,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 权限异常
+     * @param e UnauthorizedException
+     * @return GlobalResponse<T>
      */
     @ExceptionHandler(value = UnauthorizedException.class)
     @ResponseBody
@@ -79,8 +89,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 其他异常
-     * @param e
-     * @return
+     * @param e Exception
+     * @return GlobalResponse<T>
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)

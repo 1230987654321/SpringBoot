@@ -10,12 +10,12 @@ public class ServiceException extends RuntimeException{
     /**
      * 错误码
      */
-    private Integer code;
+    private final Integer code;
 
     /**
      * 错误信息
      */
-    private String Message;
+    private final String Message;
 
     public ServiceException(ResponseCodeEnum codeEnum) {
         this.code = codeEnum.getCode();
@@ -31,15 +31,8 @@ public class ServiceException extends RuntimeException{
         return Message;
     }
 
-    public void setMessage(String errorMsg) {
-        this.Message = errorMsg;
-    }
-
     public Integer getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 }

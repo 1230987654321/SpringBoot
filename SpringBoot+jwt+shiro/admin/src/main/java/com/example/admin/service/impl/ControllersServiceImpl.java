@@ -20,13 +20,6 @@ import java.util.List;
  */
 @Service
 public class ControllersServiceImpl extends ServiceImpl<ControllersMapper, Controllers> implements ControllersService {
-
-    private final ControllersMapper controllersMapper;
-
-    public ControllersServiceImpl(ControllersMapper controllersMapper) {
-        this.controllersMapper = controllersMapper;
-    }
-
     @Override
     public List<String> getColumnName(List<Integer> ids) {
         LambdaQueryWrapper<Controllers> wrapper = Wrappers.lambdaQuery(Controllers.class).select(Controllers::getName).in(Controllers::getId,ids);

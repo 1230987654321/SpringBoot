@@ -33,7 +33,7 @@ public class MybatisPlusConfig {
 
     /**
      * 可以调整ObjectMapper序列化和反序列化特性
-     * @return
+     * @return builder
      */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer(){

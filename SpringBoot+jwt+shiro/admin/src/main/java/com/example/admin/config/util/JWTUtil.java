@@ -4,20 +4,18 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.Claim;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
 
 @Component
 public class JWTUtil {
 
     // 过期时间15分钟
-    private static final long EXPIRE_TIME = 1*60*1000;
+    private static final long EXPIRE_TIME = 15*60*1000;
 
     // 设置秘钥
-    private static Algorithm key = Algorithm.HMAC256("1234567890".getBytes() );
+    private static final Algorithm key = Algorithm.HMAC256("1234567890".getBytes() );
 
     /**
      * 生成签名,15min后过期

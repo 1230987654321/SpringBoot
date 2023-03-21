@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface AdminService extends IService<Admin> {
 
     /* 查询 单条信息 */
-    public Admin getUsername(String username);
+    Admin getUsername(String username);
 }

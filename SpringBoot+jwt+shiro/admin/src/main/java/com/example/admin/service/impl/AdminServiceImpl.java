@@ -28,7 +28,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Admin getUsername(String username) {
         LambdaQueryWrapper<Admin> wrapper = Wrappers.lambdaQuery(Admin.class).eq(Admin::getUsername,username);
-        Admin admin = adminMapper.selectOne(wrapper);
-        return admin;
+        return adminMapper.selectOne(wrapper);
     }
 }
