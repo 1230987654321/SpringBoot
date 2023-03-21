@@ -6,10 +6,12 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.admin.SpringContext;
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.redis.RedisTokenService;
+import com.example.admin.config.redis.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -28,6 +30,11 @@ import java.util.Objects;
  **/
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
+    private final Environment environment;
+
+    public JWTFilter(Environment environment) {
+        this.environment = environment;
+    }
     /**
      *
      */
@@ -50,16 +57,17 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         // 通过自定义的 SpringContext 的 getBean 方法获取 HandlerExceptionResolver 来处理异常,
         // 不能用@autowired与@Qualifier("handlerExceptionResolver")注解来handlerExceptionResolver 是会抛空指针的
         HandlerExceptionResolver handlerExceptionResolver = (HandlerExceptionResolver) SpringContext.getBean("handlerExceptionResolver");
-        //通过 class 获得 bean
+        //通过 class 获得 AdminService
         AdminService adminService = SpringContext.getBean(AdminService.class);
-        RedisTokenService redisTokenService = SpringContext.getBean(RedisTokenService.class);
+        //通过 class 获得自定义的 redisUtil
+        RedisUtil redisUtil = SpringContext.getBean(RedisUtil.class);
         // 获取 TOKEN
         String token = ((HttpServletRequest) request).getHeader("token");
         // 判断 TOKEN 是否存在
-        if (token == null) {
+        if (token == null || token.equals("")) {
             handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN不存在") );
             return false;
-        } else if( redisTokenService.isTokenExists(token) ){
+        } else if( redisUtil.isTokenExists(token) ){
             handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(  401,"TOKEN已被废弃") );
             return false;
         }
@@ -87,7 +95,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 //将新token添加到响应头中
                 ((HttpServletResponse) response).setHeader("token", newToken);
                 // 生成新的 TOKEN 后,作废之前的TOKEN,防止重复生成 TOKEN
-                redisTokenService.addToken(token);
+                redisUtil.addToken(token);
             }else{
                 handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( 401,"TOKEN过期" ) );
                 return false;
@@ -100,11 +108,18 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             return false;
         }
         // 查询用户信息,并抛出异常
-        Admin admin = adminService.getUsername(username);
+        Admin admin = redisUtil.getData(environment.getProperty("spring.redis.admin-prefix") +username,Admin.class);
         if (admin == null) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.NOT_EXIST ) );
-            return false;
-        }else if (!admin.getStatus().equals(1)) {
+            // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
+            admin = adminService.getUsername(username);
+            if (admin == null) {
+                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.NOT_EXIST ) );
+                return false;
+            }
+            // 将查询用户信息储存 Redis 中
+            redisUtil.addData(environment.getProperty("spring.redis.admin-prefix")+username,admin);
+        }
+        if (!admin.getStatus().equals(1)) {
             handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.ACCOUNT_DISABLED ) );
             return false;
         }

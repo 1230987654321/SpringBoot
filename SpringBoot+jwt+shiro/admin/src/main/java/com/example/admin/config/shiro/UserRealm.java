@@ -1,7 +1,11 @@
 package com.example.admin.config.shiro;
 
+import com.alibaba.fastjson.JSON;
+import com.example.admin.config.enums.ResponseCodeEnum;
+import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.jwt.JWTToken;
 import com.example.admin.config.jwt.JWTUtil;
+import com.example.admin.config.redis.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;
 import com.example.admin.service.AdminService;
@@ -15,9 +19,11 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,11 +42,26 @@ public class UserRealm extends AuthorizingRealm {
 
     private final ControllersService controllersService;
 
-    public UserRealm(AdminService adminService,RoleService roleService,ControllersService controllersService) {
+    private final RedisUtil redisUtil;
+
+    public UserRealm(AdminService adminService,RoleService roleService,ControllersService controllersService,RedisUtil redisUtil) {
         this.adminService = adminService;
         this.roleService = roleService;
         this.controllersService = controllersService;
+        this.redisUtil = redisUtil;
     }
+
+    // Redis 中保存 用户信息 的键名前缀
+    @Value("${spring.redis.admin-prefix}")
+    private String REDIS_KEY_ADMIN_PREFIX;
+
+    // Redis 中保存 用户角色 的键名前缀
+    @Value("${spring.redis.role-prefix}")
+    private String REDIS_KEY_ROLE_PREFIX;
+
+    // Redis 中保存 权限 的键名前缀
+    @Value("${spring.redis.permissions-prefix}")
+    private String REDIS_KEY_PERMISSIONS_PREFIX;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -62,18 +83,51 @@ public class UserRealm extends AuthorizingRealm {
         System.out.println("走了=>doGetAuthorizationInfo");
         // 获取当前登录用户信息
         String username = JWTUtil.getUsername(principals.toString());
-        Admin admin = adminService.getUsername(username);
-        // 查询角色
-        Role role = roleService.getById( admin.getRoleId() );
-        // 将权限 id 从 String 转为 List<Integer>
-        String[] str = role.getControlId().split(",") ;
-        List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
-        // 查询权限信息
-        List<String> controllersList = controllersService.getColumnName( idsList );
+        // 查询 Redis 当前登录用户
+        Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX+username,Admin.class);
+        if (admin == null) {
+            // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
+            admin = adminService.getUsername(username);
+            if (admin == null) {
+                throw new ServiceException(ResponseCodeEnum.NOT_EXIST);
+            }
+            // 将查询用户信息储存 Redis 中
+            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX+username,admin);
+        }
         // 创建对象,封装当前登录用户的角色、权限信息
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        // 查询 Redis 当前登录角色
+        Role role = redisUtil.getData(REDIS_KEY_ROLE_PREFIX+admin.getRoleId(),Role.class);
+        if (role == null) {
+            // 查询角色
+            role = roleService.getById(admin.getRoleId());
+            if (role == null) {
+                throw new ServiceException(401,"当前登录者并无角色");
+            }
+            // 将查询用户信息储存 Redis 中
+            redisUtil.addData(REDIS_KEY_ROLE_PREFIX+admin.getRoleId(),role);
+        }
         // 存储角色
         info.addRole(role.getTitle());
+        // 将权限 id 从 String 转为 List<Integer>
+        String[] str = role.getControlId().split(",") ;
+        // 将 String[] 转换成 List<Integer>
+        List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
+        // 查询 Redis 权限信息
+        String controllersString =  redisUtil.getData( REDIS_KEY_PERMISSIONS_PREFIX+JSON.toJSONString(idsList),String.class) ;
+        List<String> controllersList;
+        if (controllersString == null) {
+            // 查询权限
+            controllersList = controllersService.getColumnName( idsList );
+            if (controllersList == null) {
+                throw new ServiceException(401,"当前登录者并无权限");
+            }
+            // 将查询权限储存 Redis 中
+            redisUtil.addData(REDIS_KEY_PERMISSIONS_PREFIX+JSON.toJSONString(idsList),controllersList);
+        }else {
+            // 将从 Redis 中获取的权限 进行去除符号,再将其转换成数组
+            controllersList = List.of(controllersString.replace("[", "").replace("]", "").replace("\"", ""));
+        }
         // 储存权限
         info.setStringPermissions(new HashSet<>(controllersList) );
         // 返回信息

@@ -7,6 +7,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -55,11 +56,11 @@ public class ShiroConfig {
      * 设置过滤器
      */
     @Bean(name="shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager){
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager, Environment environment){
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt", new JWTFilter());
+        filterMap.put("jwt", new JWTFilter(environment) );
         bean.setFilters(filterMap);
         bean.setSecurityManager(securityManager);
         // 设置拦截器与url映射关系map

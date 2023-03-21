@@ -3,7 +3,7 @@ package com.example.admin.controller;
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.jwt.JWTUtil;
-import com.example.admin.config.redis.RedisTokenService;
+import com.example.admin.config.redis.RedisUtil;
 import com.example.admin.config.response.GlobalResponse;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 public class LoginController {
     private final AdminService adminService;
-    private final RedisTokenService redisTokenService;
+    private final RedisUtil redisUtil;
 
-    public LoginController(AdminService adminService,RedisTokenService redisTokenService) {
+    public LoginController(AdminService adminService, RedisUtil redisUtil) {
         this.adminService = adminService;
-        this.redisTokenService = redisTokenService;
+        this.redisUtil = redisUtil;
     }
 
     @GetMapping("/toLogin")
@@ -65,7 +65,7 @@ public class LoginController {
         // 获取 TOKEN
         String token =  request.getHeader("token");
         // 将 TOKEN 存入 Redis 中进行废弃
-        redisTokenService.addToken(token);
+        redisUtil.addToken(token);
         return "退出成功";
     }
 
