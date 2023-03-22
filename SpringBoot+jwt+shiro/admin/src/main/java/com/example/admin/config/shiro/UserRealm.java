@@ -122,11 +122,11 @@ public class UserRealm extends AuthorizingRealm {
             if (controllersList == null) {
                 throw new ServiceException(401,"当前登录者并无权限");
             }
-            // 将查询权限储存 Redis 中
-            redisUtil.addData(REDIS_KEY_PERMISSIONS_PREFIX+JSON.toJSONString(idsList),controllersList);
+            // 将查询权限储存 Redis 中,储存时将List<String>转换成String
+            redisUtil.addData(REDIS_KEY_PERMISSIONS_PREFIX+JSON.toJSONString(idsList), String.join(",", controllersList) );
         }else {
-            // 将从 Redis 中获取的权限 进行去除符号,再将其转换成数组
-            controllersList = List.of(controllersString.replace("[", "").replace("]", "").replace("\"", ""));
+            // 将从 Redis 中获取的权限 ,将其转换成数组
+            controllersList = List.of(controllersString.split(","));
         }
         // 储存权限
         info.setStringPermissions(new HashSet<>(controllersList) );

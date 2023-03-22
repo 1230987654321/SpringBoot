@@ -61,6 +61,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         AdminService adminService = SpringContext.getBean(AdminService.class);
         //通过 class 获得自定义的 redisUtil
         RedisUtil redisUtil = SpringContext.getBean(RedisUtil.class);
+        // 通过 environment 获取redis配置;
+        String REDIS_KEY_ADMIN_PREFIX = environment.getProperty("spring.redis.admin-prefix");
         // 获取 TOKEN
         String token = ((HttpServletRequest) request).getHeader("token");
         // 判断 TOKEN 是否存在
@@ -108,7 +110,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             return false;
         }
         // 查询用户信息,并抛出异常
-        Admin admin = redisUtil.getData(environment.getProperty("spring.redis.admin-prefix") +username,Admin.class);
+        Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX+username,Admin.class);
         if (admin == null) {
             // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
             admin = adminService.getUsername(username);
@@ -117,7 +119,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 return false;
             }
             // 将查询用户信息储存 Redis 中
-            redisUtil.addData(environment.getProperty("spring.redis.admin-prefix")+username,admin);
+            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX+username,admin);
         }
         if (!admin.getStatus().equals(1)) {
             handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException( ResponseCodeEnum.ACCOUNT_DISABLED ) );
