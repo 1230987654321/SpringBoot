@@ -33,7 +33,9 @@ spring:
     token-prefix: "jwt_token_"
     # Redis 储存的 用户信息前缀
     admin-prefix: "admin_data_"
+    # Redis 储存的 角色信息前缀
     role-prefix: "role_data_"
+    # Redis 储存的 权限信息前缀
     permissions-prefix: "permissions_data_"
 # MyBatisPlus
 mybatis-plus:
