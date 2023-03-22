@@ -11,6 +11,12 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @program workspace
+ * @description 登录控制器
+ * @author 贲玉柱
+ * @create 2023/3/22 13:13
+ **/
 @RestController
 @RequestMapping("/common")
 public class LoginController {

@@ -1,10 +1,10 @@
 package com.example.admin.config.enums;
 
 /**
- * @program: workspace
- * @description: 系统错误类型,自定义枚举
- * @author: 贲玉柱
- * @create: 2023-02-13 16:11
+ * @program workspace
+ * @description 系统错误类型,自定义枚举
+ * @author 贲玉柱
+ * @create 2023-02-13 16:11
  **/
 public enum ResponseCodeEnum {
     //系统基本码

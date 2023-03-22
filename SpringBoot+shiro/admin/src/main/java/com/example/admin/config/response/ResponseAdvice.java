@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
- * @program: workspace
- * @description: 对RestController的body体进行统一返回
- * @author: 贲玉柱
- * @create: 2023-02-13 16:11
+ * @program workspace
+ * @description 对RestController的body体进行统一返回
+ * @author 贲玉柱
+ * @create 2023/3/22 13:16
  **/
 @RestControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {

@@ -25,10 +25,10 @@ import javax.servlet.ServletException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
- * @program: workspace
- * @description: 全局异常处理控制器
- * @author: 贲玉柱
- * @create: 2023-02-13 16:11
+ * @program workspace
+ * @description 全局异常处理控制器
+ * @author 贲玉柱
+ * @create 2023-02-13 16:11
  **/
 @Slf4j
 @RestControllerAdvice

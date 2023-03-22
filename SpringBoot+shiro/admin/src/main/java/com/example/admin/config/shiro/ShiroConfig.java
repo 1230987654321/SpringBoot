@@ -7,6 +7,12 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @program workspace
+ * @description Shiro 配置类
+ * @author 贲玉柱
+ * @create 2023/3/22 13:15
+ **/
 @Configuration
 public class ShiroConfig {
 

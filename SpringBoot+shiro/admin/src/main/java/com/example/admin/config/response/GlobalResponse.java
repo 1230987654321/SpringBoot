@@ -3,6 +3,12 @@ package com.example.admin.config.response;
 import com.example.admin.config.enums.ResponseCodeEnum;
 import lombok.Data;
 
+/**
+ * @program workspace
+ * @description 统一返回对象
+ * @author 贲玉柱
+ * @create 2023/3/22 13:15
+ **/
 @Data
 public class GlobalResponse<T> {
     /**

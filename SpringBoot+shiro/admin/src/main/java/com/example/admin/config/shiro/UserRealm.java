@@ -17,6 +17,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * @program workspace
+ * @description 自定义 Realm
+ * @author 贲玉柱
+ * @create 2023/3/22 13:14
+ **/
 @Component
 public class UserRealm extends AuthorizingRealm {
 
