@@ -39,10 +39,6 @@ public class RedisUtil {
     @Value("${spring.redis.token-prefix}")
     private String REDIS_KEY_TOKEN_PREFIX;
 
-    // Redis 中保存 权限 的键名前缀
-    @Value("${spring.redis.permissions-prefix}")
-    private String REDIS_KEY_PERMISSIONS_PREFIX;
-
     // token 的默认有效期（秒）
     @Value("${spring.redis.expire}")
     private long TOKEN_TTL_SECONDS;
