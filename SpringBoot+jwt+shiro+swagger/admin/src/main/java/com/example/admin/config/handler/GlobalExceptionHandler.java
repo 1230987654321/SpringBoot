@@ -101,6 +101,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 空指针异常
+     * @param e NullPointerException
+     * @return GlobalResponse<T>
+     */
+    @ExceptionHandler(value = NullPointerException.class)
+    @ResponseBody
+    public GlobalResponse<String> NullPointerExceptionHandler(NullPointerException e){
+        log.error(ResponseCodeEnum.NULL_POINTER_EXECUTION+":"+e.getMessage(), e);
+        return GlobalResponse.fail(ResponseCodeEnum.NULL_POINTER_EXECUTION);
+    }
+
+    /**
      * 其他异常
      * @param e Exception
      * @return GlobalResponse<T>

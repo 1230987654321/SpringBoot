@@ -21,6 +21,7 @@ public enum ResponseCodeEnum {
     SQL_ERROR(-14,"SQL异常"),
     UNAUTHORIZED_EXCEPTION(-20,"权限不足"),
     REDIS_COMMAND_EXECUTION_EXCEPTION(-21,"Redis连接异常:"),
+    NULL_POINTER_EXECUTION(-22,"空指针异常:"),
     //自定义状态码
     NOT_EXIST(-2, "用户不存在"),
     LOGIN_FAILED(-3,"登陆失败,用户名或密码错误"),

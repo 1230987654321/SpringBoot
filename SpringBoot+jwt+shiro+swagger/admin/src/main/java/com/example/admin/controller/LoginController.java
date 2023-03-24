@@ -11,9 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +35,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "登录",notes = "使用用户名和密码进行登录")
-    @GetMapping("/toLogin")
+    @PostMapping("/toLogin")
     public String toLogin(String username, String password) {
         Admin admin = adminService.getUsername(username);
         // 密码 md5 加密
@@ -56,6 +54,13 @@ public class LoginController {
     @ApiOperation(value = "测试登录是否成功",notes = "测试登录是否成功")
     @GetMapping("/hello")
     public String hello() {
+        return "hello";
+    }
+
+
+    @ApiOperation(value = "测试登录是否成功",notes = "测试登录是否成功")
+    @PostMapping("/hello")
+    public String hello123123() {
         return "hello";
     }
 

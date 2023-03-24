@@ -66,7 +66,6 @@ public class ShiroConfig {
         // 设置拦截器与url映射关系map
         Map<String, String> map = new LinkedHashMap<>();
         // 设置不需要认证可以访问的资源
-        map.put("/admin/logout", "logout");
         map.put("/admin/toLogin", "anon");
         // 配置 Swagger 接口路径不需要过滤
         map.put("/v2/**", "anon");
