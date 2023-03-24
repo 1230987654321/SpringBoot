@@ -4,7 +4,6 @@ import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.jwt.JWTUtil;
 import com.example.admin.config.redis.RedisUtil;
-import com.example.admin.config.response.GlobalResponse;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 import io.swagger.annotations.Api;
