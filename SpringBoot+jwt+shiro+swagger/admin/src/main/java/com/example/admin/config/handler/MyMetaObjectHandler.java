@@ -1,7 +1,6 @@
 package com.example.admin.config.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
  * @author 贲玉柱
  * @create 2023/3/21 16:11
  **/
-@Slf4j
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
 

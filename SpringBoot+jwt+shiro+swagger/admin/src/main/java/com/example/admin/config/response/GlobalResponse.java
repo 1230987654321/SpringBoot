@@ -32,36 +32,46 @@ public class GlobalResponse<T> {
         this.timestamp = System.currentTimeMillis();
     }
 
+    public GlobalResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+        this.data = null;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public GlobalResponse(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+
     /**
      * 成功操作,携带自定义状态码,消息和数据
      */
     public static <T> GlobalResponse<T> success(T data){
-        GlobalResponse<T> globalResponse = new GlobalResponse<>();
-        globalResponse.setCode(ResponseCodeEnum.SUCCESS.getCode());
-        globalResponse.setMessage(ResponseCodeEnum.SUCCESS.getMessage());
-        globalResponse.setData(data);
-        return globalResponse;
+        return new GlobalResponse<>(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(), data);
     }
+
+    public static <T> GlobalResponse<T> success(int code, String message,T data){
+        return new GlobalResponse<>(code, message, data);
+    }
+
+    public static <T> GlobalResponse<T> success(ResponseCodeEnum responseCodeEnum,T data){
+        return new GlobalResponse<>(responseCodeEnum.getCode(), responseCodeEnum.getMessage(), data);
+    }
+
     /**
      * 失败操作,携带自定义状态码和消息
      */
     public static <T> GlobalResponse<T> fail(int code, String message) {
-        GlobalResponse<T> globalResponse = new GlobalResponse<>();
-        globalResponse.setCode(code);
-        globalResponse.setMessage(message);
-        return globalResponse;
+        return new GlobalResponse<>(code, message);
     }
     public static <T> GlobalResponse<T> fail(ResponseCodeEnum responseCodeEnum) {
-        GlobalResponse<T> globalResponse = new GlobalResponse<>();
-        globalResponse.setCode(responseCodeEnum.getCode());
-        globalResponse.setMessage(responseCodeEnum.getMessage());
-        return globalResponse;
+        return new GlobalResponse<>(responseCodeEnum.getCode(), responseCodeEnum.getMessage());
     }
-
     public static <T> GlobalResponse<T> fail(ResponseCodeEnum responseCodeEnum,String message) {
-        GlobalResponse<T> globalResponse = new GlobalResponse<>();
-        globalResponse.setCode(responseCodeEnum.getCode());
-        globalResponse.setMessage(responseCodeEnum.getMessage()+":"+message);
-        return globalResponse;
+        return new GlobalResponse<>(responseCodeEnum.getCode(), responseCodeEnum.getMessage()+":"+message );
     }
 }

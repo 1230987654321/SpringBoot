@@ -1,6 +1,5 @@
 package com.example.admin.config.handler;
 
-
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.response.GlobalResponse;
@@ -107,9 +106,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = NullPointerException.class)
     @ResponseBody
-    public GlobalResponse<String> NullPointerExceptionHandler(NullPointerException e){
+
+    public GlobalResponse<String> handleMyException( NullPointerException e) {
         log.error(ResponseCodeEnum.NULL_POINTER_EXECUTION+":"+e.getMessage(), e);
-        return GlobalResponse.fail(ResponseCodeEnum.NULL_POINTER_EXECUTION);
+        return GlobalResponse.fail(ResponseCodeEnum.NULL_POINTER_EXECUTION,e.getMessage());
     }
 
     /**

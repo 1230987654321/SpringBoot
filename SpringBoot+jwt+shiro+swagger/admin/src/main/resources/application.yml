@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+    password: hyy835435
   mvc:
     # 出现错误时,直接抛出异常
     throw-exception-if-no-handler-found: true
@@ -22,7 +22,7 @@ spring:
     # Redis 数据库编号
     database: 0
     # Redis 服务器的 IP 地址
-    host: 192.168.1.5
+    host: 192.168.1.107
     # Redis 服务器的端口号
     port: 6379
     # Redis 服务器的密码
@@ -48,3 +48,6 @@ mybatis-plus:
     db-config:
       # 设置主键自增方式
       id-type: ASSIGN_ID
+# 配置日志框架
+logging:
+  config: classpath:log4j2.xml

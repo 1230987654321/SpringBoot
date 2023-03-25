@@ -48,3 +48,6 @@ mybatis-plus:
     db-config:
       # 设置主键自增方式
       id-type: ASSIGN_ID
+# 配置日志框架
+logging:
+  config: classpath:log4j2.xml

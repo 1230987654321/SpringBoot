@@ -1,6 +1,5 @@
 package com.example.admin.config.handler;
 
-
 import com.example.admin.config.enums.ResponseCodeEnum;
 import com.example.admin.config.exception.ServiceException;
 import com.example.admin.config.response.GlobalResponse;
@@ -98,6 +97,18 @@ public class GlobalExceptionHandler {
     public GlobalResponse<String> RedisCommandExecutionExceptionHandler(RedisCommandExecutionException e){
         log.error(ResponseCodeEnum.UNAUTHORIZED_EXCEPTION+":"+e.getMessage(), e);
         return GlobalResponse.fail(ResponseCodeEnum.REDIS_COMMAND_EXECUTION_EXCEPTION);
+    }
+
+    /**
+     * 空指针异常
+     * @param e NullPointerException
+     * @return GlobalResponse<T>
+     */
+    @ExceptionHandler(value = NullPointerException.class)
+    @ResponseBody
+    public GlobalResponse<String> handleMyException( NullPointerException e) {
+        log.error(ResponseCodeEnum.NULL_POINTER_EXECUTION+":"+e.getMessage(), e);
+        return GlobalResponse.fail(ResponseCodeEnum.NULL_POINTER_EXECUTION,e.getMessage());
     }
 
     /**

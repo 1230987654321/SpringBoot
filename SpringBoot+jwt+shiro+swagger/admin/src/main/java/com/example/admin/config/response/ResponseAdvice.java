@@ -1,8 +1,9 @@
 package com.example.admin.config.response;
 
 import com.example.admin.config.enums.ResponseCodeEnum;
+import com.example.admin.config.exception.ServiceException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -46,12 +47,16 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     /**
      * 对于返回的对象如果不是最终对象ResponseResult，则选包装一下
      */
-    @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         //如果是字符类型,输出json字符串
         if(o instanceof String){
-            return objectMapper.writeValueAsString(GlobalResponse.success(o));
+            try {
+                return objectMapper.writeValueAsString(GlobalResponse.success(o));
+            } catch (JsonProcessingException e) {
+                // JSON 序列化过程中出现异常则抛出
+                throw new ServiceException(500,e.getMessage());
+            }
         }
         //如果已经被异常捕获,返回的就是BaseResponse对象,不用再次封装了
         if(o instanceof GlobalResponse){

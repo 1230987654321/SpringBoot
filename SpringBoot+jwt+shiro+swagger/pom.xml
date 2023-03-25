@@ -36,13 +36,6 @@
                 <artifactId>shiro-spring-boot-web-starter</artifactId>
                 <version>1.11.0</version>
             </dependency>
-            <!-- 引入 log4j 日志包 -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.14</version>
-            </dependency>
-            <!-- MyBatisPlus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
