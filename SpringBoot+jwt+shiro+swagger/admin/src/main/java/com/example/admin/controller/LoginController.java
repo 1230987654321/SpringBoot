@@ -38,14 +38,15 @@ public class LoginController {
     @PostMapping("/toLogin")
     public String toLogin(String username, String password) {
         Admin admin = adminService.getUsername(username);
-        // 密码 md5 加密
-        password = DigestUtils.md5DigestAsHex( password.getBytes() );
         if (admin == null) { // 用户不存在
             throw new ServiceException(ResponseCodeEnum.NOT_EXIST);
-        } else if (!admin.getPassword().equals(password)) { // 登陆失败,用户名或密码错误
-            throw new ServiceException(ResponseCodeEnum.LOGIN_FAILED);
         } else if (!admin.getStatus().equals(1)) { // 用户被禁用
             throw new ServiceException(ResponseCodeEnum.ACCOUNT_DISABLED);
+        }
+        // 密码 md5 加密
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!admin.getPassword().equals(password)) { // 登陆失败,用户名或密码错误
+            throw new ServiceException(ResponseCodeEnum.LOGIN_FAILED);
         } else {
             return JWTUtil.createJWT(username);
         }
@@ -54,12 +55,6 @@ public class LoginController {
     @ApiOperation(value = "测试登录是否成功",notes = "测试登录是否成功")
     @GetMapping("/hello")
     public String hello() {
-        return "hello";
-    }
-
-    @ApiOperation(value = "测试登录是否成功",notes = "测试登录是否成功")
-    @PostMapping("/hello")
-    public String hello123123() {
         return "hello";
     }
 
