@@ -1,6 +1,5 @@
-package com.example.admin.config.response;
+package com.example.admin.common;
 
-import com.example.admin.config.enums.ResponseCodeEnum;
 import lombok.Data;
 
 /**

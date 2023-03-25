@@ -1,11 +1,11 @@
-package com.example.admin.config.shiro;
+package com.example.admin.realm;
 
 import com.alibaba.fastjson.JSON;
-import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.jwt.JWTToken;
-import com.example.admin.config.jwt.JWTUtil;
-import com.example.admin.config.redis.RedisUtil;
+import com.example.admin.common.ResponseCodeEnum;
+import com.example.admin.common.ServiceException;
+import com.example.admin.common.JWTToken;
+import com.example.admin.util.JWTUtil;
+import com.example.admin.util.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;
 import com.example.admin.service.AdminService;

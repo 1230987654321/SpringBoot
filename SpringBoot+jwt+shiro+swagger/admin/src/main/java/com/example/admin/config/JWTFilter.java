@@ -1,12 +1,14 @@
-package com.example.admin.config.jwt;
+package com.example.admin.config;
 
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.admin.SpringContext;
-import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.redis.RedisUtil;
+import com.example.admin.common.JWTToken;
+import com.example.admin.common.ResponseCodeEnum;
+import com.example.admin.common.ServiceException;
+import com.example.admin.util.JWTUtil;
+import com.example.admin.util.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;

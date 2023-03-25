@@ -1,6 +1,4 @@
-package com.example.admin.config.exception;
-
-import com.example.admin.config.enums.ResponseCodeEnum;
+package com.example.admin.common;
 
 /**
  * @author 贲玉柱

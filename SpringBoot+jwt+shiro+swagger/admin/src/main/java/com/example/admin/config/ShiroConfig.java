@@ -1,6 +1,6 @@
-package com.example.admin.config.shiro;
+package com.example.admin.config;
 
-import com.example.admin.config.jwt.JWTFilter;
+import com.example.admin.realm.UserRealm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;

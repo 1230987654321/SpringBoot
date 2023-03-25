@@ -1,4 +1,4 @@
-package com.example.admin.config.enums;
+package com.example.admin.common;
 
 /**
  * @author 贲玉柱

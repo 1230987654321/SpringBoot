@@ -1,8 +1,8 @@
-package com.example.admin.config.handler;
+package com.example.admin.config;
 
-import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.response.GlobalResponse;
+import com.example.admin.common.ResponseCodeEnum;
+import com.example.admin.common.ServiceException;
+import com.example.admin.common.GlobalResponse;
 import io.lettuce.core.RedisCommandExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;

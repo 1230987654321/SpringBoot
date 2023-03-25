@@ -1,4 +1,4 @@
-package com.example.admin.config.redis;
+package com.example.admin.util;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Value;
