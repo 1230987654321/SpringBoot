@@ -1,11 +1,9 @@
-package com.example.admin.config.exception;
-
-import com.example.admin.config.enums.ResponseCodeEnum;
+package com.example.admin.common;
 
 /**
  * 自定义业务异常
  */
-public class ServiceException extends RuntimeException{
+public class ServiceException extends RuntimeException {
 
     /**
      * 错误码
@@ -25,7 +23,7 @@ public class ServiceException extends RuntimeException{
         System.out.println(this.Message);
     }
 
-    public ServiceException(Integer code,String errorMsg) {
+    public ServiceException(Integer code, String errorMsg) {
         this.code = code;
         this.Message = errorMsg;
     }

@@ -1,4 +1,4 @@
-package com.example.admin.config.handler;
+package com.example.admin.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 /**
+ * @author 贲玉柱
  * @program workspace
  * @description MyBatisPlus自动填充功能配置
- * @author 贲玉柱
  * @create 2023/3/22 13:16
  **/
 @Slf4j

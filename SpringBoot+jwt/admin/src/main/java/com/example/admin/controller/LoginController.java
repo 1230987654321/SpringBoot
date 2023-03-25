@@ -1,9 +1,9 @@
 package com.example.admin.controller;
 
-import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.response.GlobalResponse;
-import com.example.admin.config.util.JWTUtil;
+import com.example.admin.common.ResponseCodeEnum;
+import com.example.admin.common.ServiceException;
+import com.example.admin.common.GlobalResponse;
+import com.example.admin.common.JWTUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 //import org.apache.shiro.SecurityUtils;
@@ -13,9 +13,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
@@ -30,7 +27,7 @@ public class LoginController {
     public String toLogin(String username, String password) {
         Admin admin = adminService.getUsername(username);
         // 密码 md5 加密
-        password = DigestUtils.md5DigestAsHex( password.getBytes() );
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (admin == null) { // 用户不存在
             throw new ServiceException(ResponseCodeEnum.NOT_EXIST);
         } else if (!admin.getPassword().equals(password)) { // 登陆失败,用户名或密码错误

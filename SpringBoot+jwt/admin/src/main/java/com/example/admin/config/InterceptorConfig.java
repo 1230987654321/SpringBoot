@@ -1,5 +1,6 @@
-package com.example.admin.config.util;
+package com.example.admin.config;
 
+import com.example.admin.common.JWTInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

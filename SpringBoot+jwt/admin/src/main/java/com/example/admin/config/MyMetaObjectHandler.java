@@ -1,4 +1,4 @@
-package com.example.admin.config.handler;
+package com.example.admin.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;

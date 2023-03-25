@@ -1,5 +1,6 @@
-package com.example.admin.config.shiro;
+package com.example.admin.config;
 
+import com.example.admin.reaml.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
@@ -8,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * @author 贲玉柱
  * @program workspace
  * @description Shiro 配置类
- * @author 贲玉柱
  * @create 2023/3/22 13:15
  **/
 @Configuration
@@ -24,10 +25,11 @@ public class ShiroConfig {
 
     /**
      * 安全管理器
+     *
      * @return
      */
     @Bean
-    public DefaultWebSecurityManager securityManager(){
+    public DefaultWebSecurityManager securityManager() {
         // 创建 defaultWebSecurityManager 对象
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
@@ -42,10 +44,11 @@ public class ShiroConfig {
 
     /**
      * 请求过滤器
+     *
      * @return
      */
     @Bean
-    public ShiroFilterChainDefinition definition(){
+    public ShiroFilterChainDefinition definition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         // 设置不需要认证可以访问的资源
         chainDefinition.addPathDefinition("/common/toLogin", "anon");

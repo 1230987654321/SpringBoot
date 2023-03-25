@@ -1,4 +1,4 @@
-package com.example.admin.config.shiro;
+package com.example.admin.reaml;
 
 import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;

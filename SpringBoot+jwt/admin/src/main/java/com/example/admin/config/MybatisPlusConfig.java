@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 public class MybatisPlusConfig {
     //最新版
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor(){
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         //设置请求页面大于最大页后操作，true调回首页，false继续请求 默认false
         //paginationInnerInterceptor.setOverflow(false);
@@ -33,10 +33,11 @@ public class MybatisPlusConfig {
 
     /**
      * 可以调整ObjectMapper序列化和反序列化特性
+     *
      * @return
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer customizer(){
+    public Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     }
 }

@@ -1,12 +1,13 @@
-package com.example.admin.config.response;
+package com.example.admin.common;
 
-import com.example.admin.config.enums.ResponseCodeEnum;
 import lombok.Data;
 
 /**
- * 统一返回对象
- * @param <T>
- */
+ * @author 贲玉柱
+ * @program workspace
+ * @description 统一返回对象
+ * @create 2023/3/22 13:15
+ **/
 @Data
 public class GlobalResponse<T> {
     /**
@@ -26,20 +27,21 @@ public class GlobalResponse<T> {
      */
     private Long timestamp;
 
-    public GlobalResponse(){
+    public GlobalResponse() {
         this.timestamp = System.currentTimeMillis();
     }
 
     /**
      * 成功操作,携带自定义状态码,消息和数据
      */
-    public static <T> GlobalResponse<T> success(T data){
+    public static <T> GlobalResponse<T> success(T data) {
         GlobalResponse<T> globalResponse = new GlobalResponse<>();
         globalResponse.setCode(ResponseCodeEnum.SUCCESS.getCode());
         globalResponse.setMessage(ResponseCodeEnum.SUCCESS.getMessage());
         globalResponse.setData(data);
         return globalResponse;
     }
+
     /**
      * 失败操作,携带自定义状态码和消息
      */
@@ -49,6 +51,7 @@ public class GlobalResponse<T> {
         globalResponse.setMessage(message);
         return globalResponse;
     }
+
     public static <T> GlobalResponse<T> fail(ResponseCodeEnum responseCodeEnum) {
         GlobalResponse<T> globalResponse = new GlobalResponse<>();
         globalResponse.setCode(responseCodeEnum.getCode());
@@ -56,10 +59,10 @@ public class GlobalResponse<T> {
         return globalResponse;
     }
 
-    public static <T> GlobalResponse<T> fail(ResponseCodeEnum responseCodeEnum,String message) {
+    public static <T> GlobalResponse<T> fail(ResponseCodeEnum responseCodeEnum, String message) {
         GlobalResponse<T> globalResponse = new GlobalResponse<>();
         globalResponse.setCode(responseCodeEnum.getCode());
-        globalResponse.setMessage(responseCodeEnum.getMessage()+":"+message);
+        globalResponse.setMessage(responseCodeEnum.getMessage() + ":" + message);
         return globalResponse;
     }
 }

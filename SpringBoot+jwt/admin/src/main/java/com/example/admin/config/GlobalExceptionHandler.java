@@ -1,9 +1,9 @@
-package com.example.admin.config.handler;
+package com.example.admin.config;
 
 
-import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
-import com.example.admin.config.response.GlobalResponse;
+import com.example.admin.common.ResponseCodeEnum;
+import com.example.admin.common.ServiceException;
+import com.example.admin.common.GlobalResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ServiceException.class)
     @ResponseBody
-    public GlobalResponse<String> ServiceExceptionHandler(ServiceException e){
-        return GlobalResponse.fail(e.getCode(),e.getMessage());
+    public GlobalResponse<String> ServiceExceptionHandler(ServiceException e) {
+        return GlobalResponse.fail(e.getCode(), e.getMessage());
     }
 
     /**
@@ -40,8 +40,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public GlobalResponse<String> NotSupportedExceptionHandler(HttpRequestMethodNotSupportedException e){
-        return GlobalResponse.fail(ResponseCodeEnum.REQUEST_TYPE_ERROR,e.getMessage());
+    public GlobalResponse<String> NotSupportedExceptionHandler(HttpRequestMethodNotSupportedException e) {
+        return GlobalResponse.fail(ResponseCodeEnum.REQUEST_TYPE_ERROR, e.getMessage());
     }
 
     /**
@@ -49,8 +49,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = MyBatisSystemException.class)
     @ResponseBody
-    public GlobalResponse<String> MyBatisSystemExceptionHandler(MyBatisSystemException e){
-        return GlobalResponse.fail(ResponseCodeEnum.MY_BATIS_SYSTEM_ERROR,e.getMessage());
+    public GlobalResponse<String> MyBatisSystemExceptionHandler(MyBatisSystemException e) {
+        return GlobalResponse.fail(ResponseCodeEnum.MY_BATIS_SYSTEM_ERROR, e.getMessage());
     }
 
     /**
@@ -58,24 +58,24 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
     @ResponseBody
-    public GlobalResponse<String> SQLIntegrityConstraintViolationExceptionHandler(SQLIntegrityConstraintViolationException e){
-        return GlobalResponse.fail(ResponseCodeEnum.SQL_ERROR,e.getMessage());
+    public GlobalResponse<String> SQLIntegrityConstraintViolationExceptionHandler(SQLIntegrityConstraintViolationException e) {
+        return GlobalResponse.fail(ResponseCodeEnum.SQL_ERROR, e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public GlobalResponse<String> exception(Exception e){
+    public GlobalResponse<String> exception(Exception e) {
         log.error(e.getMessage(), e);
         if (e instanceof NoHandlerFoundException) { // 接口不存在
             return GlobalResponse.fail(ResponseCodeEnum.NOT_FOUND);
         } else if (e instanceof MethodArgumentTypeMismatchException) { // 请求参数问题(应该Integer,实为String)
-            return GlobalResponse.fail(ResponseCodeEnum.PARAM_INVALID,e.getMessage());
+            return GlobalResponse.fail(ResponseCodeEnum.PARAM_INVALID, e.getMessage());
         } else if (e instanceof MultipartException) { // 上传问题 (文件超过默认大小)
-            return GlobalResponse.fail(ResponseCodeEnum.UPLOAD_ERROR,e.getMessage());
+            return GlobalResponse.fail(ResponseCodeEnum.UPLOAD_ERROR, e.getMessage());
         } else if (e instanceof StringIndexOutOfBoundsException) { // 字符串越界异常(例如上传文件没有后缀名)
-            return GlobalResponse.fail(ResponseCodeEnum.STRING_INDEX_OUT_OF_BOUNDS_ERROR,e.getMessage());
+            return GlobalResponse.fail(ResponseCodeEnum.STRING_INDEX_OUT_OF_BOUNDS_ERROR, e.getMessage());
         } else if (e instanceof ArrayIndexOutOfBoundsException) { // 数组下标越界异常(例如数组长度3,调用数组[4])
-            return GlobalResponse.fail(ResponseCodeEnum.ARRAY_INDEX_OUT_OF_BOUNDS_ERROR,e.getMessage());
+            return GlobalResponse.fail(ResponseCodeEnum.ARRAY_INDEX_OUT_OF_BOUNDS_ERROR, e.getMessage());
         } else {
             return GlobalResponse.fail(ResponseCodeEnum.SERVER_ERROR);
         }
