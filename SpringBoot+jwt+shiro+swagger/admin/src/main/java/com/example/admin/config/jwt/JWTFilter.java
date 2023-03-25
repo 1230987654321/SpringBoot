@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
+ * @author 贲玉柱
  * @program workspace
  * @description 过滤器
- * @author 贲玉柱
  * @create 2023/3/21 16:12
  **/
 public class JWTFilter extends BasicHttpAuthenticationFilter {
@@ -36,21 +36,29 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
+     * 此方法用于对用户进行身份验证。
      *
+     * @param request ServletRequest
+     * @param response ServletResponse
+     * @return boolean
+     * @throws Exception
      */
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("token");
         JWTToken token = new JWTToken(authorization);
-        // 提交给realm进行登入
         getSubject(request, response).login(token);
         return true;
     }
 
     /**
-     * Shiro 集成 JWT后,不知道为什么,无法抓取异常,只能通过handlerExceptionResolver来处理异常
-     * 返回FALSE是因为,不在返回异常后停止的话,还会继续往下走
+     * 此函数检查是否允许用户访问请求的资源。
+     *
+     * @param request     ServletRequest
+     * @param response    ServletResponse
+     * @param mappedValue Object
+     * @return boolean
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
@@ -67,23 +75,23 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         String token = ((HttpServletRequest) request).getHeader("token");
         // 判断 TOKEN 是否存在
         if (token == null || token.equals("")) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN不存在"));
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN不存在"));
             return false;
-        } else if( redisUtil.isTokenExists(token) ){
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN已被废弃"));
+        } else if (redisUtil.isTokenExists(token)) {
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN已被废弃"));
             return false;
         }
         // 通过 TOKEN 获取用户名
         String username = JWTUtil.getUsername(token);
-        if(Objects.equals(username, "false")){
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN不合法"));
+        if (Objects.equals(username, "false")) {
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN不合法"));
             return false;
         }
         // 验证 TOKEN 是否正确
         try {
             JWTUtil.verify(token, username);
         } catch (SignatureVerificationException e) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"签名错误"));
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "签名错误"));
             return false;
         } catch (TokenExpiredException e) {
             // 获取请求 TOKEN 的过期时间
@@ -91,38 +99,38 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             // 获取当前的时间
             Long newTime = System.currentTimeMillis();
             // 如果相差小于5MIN,生成新的TOKEN,否则返回TOKEN过期
-            if((newTime - expirationTime)/60000 < 5){
+            if ((newTime - expirationTime) / 60000 < 5) {
                 //生成新的token
                 String newToken = JWTUtil.createJWT(username);
                 //将新token添加到响应头中
                 ((HttpServletResponse) response).setHeader("token", newToken);
                 // 生成新的 TOKEN 后,作废之前的TOKEN,防止重复生成 TOKEN
                 redisUtil.addToken(token);
-            }else{
-                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN过期"));
+            } else {
+                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN过期"));
                 return false;
             }
         } catch (AlgorithmMismatchException e) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN算法不一致"));
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN算法不一致"));
             return false;
-        } catch (Exception e){
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,"TOKEN未知错误"));
+        } catch (Exception e) {
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, "TOKEN未知错误"));
             return false;
         }
         // 查询用户信息,并抛出异常
-        Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX+username,Admin.class);
+        Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX + username, Admin.class);
         if (admin == null) {
             // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
             admin = adminService.getUsername(username);
             if (admin == null) {
-                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,ResponseCodeEnum.NOT_EXIST.getMessage()));
+                handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, ResponseCodeEnum.NOT_EXIST.getMessage()));
                 return false;
             }
             // 将查询用户信息储存 Redis 中
-            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX+username,admin);
+            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + username, admin);
         }
         if (!admin.getStatus().equals(1)) {
-            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response,null,new ServiceException(401,ResponseCodeEnum.ACCOUNT_DISABLED.getMessage()));
+            handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, ResponseCodeEnum.ACCOUNT_DISABLED.getMessage()));
             return false;
         }
         //进入 executeLogin 方法执行登入
@@ -134,8 +142,14 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
+
     /**
-     * 对跨域提供支持
+     * 解决跨域问题
+     *
+     * @param request  ServletRequest
+     * @param response ServletResponse
+     * @return boolean
+     * @throws Exception
      */
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {

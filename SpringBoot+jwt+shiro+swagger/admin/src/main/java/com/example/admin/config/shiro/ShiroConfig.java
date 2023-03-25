@@ -1,6 +1,7 @@
 package com.example.admin.config.shiro;
 
 import com.example.admin.config.jwt.JWTFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -15,11 +16,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * @author 贲玉柱
  * @program workspace
  * @description Shiro 安全框架的配置类
- * @author 贲玉柱
  * @create 2023/3/21 16:14
  **/
+@Slf4j
 @Configuration
 public class ShiroConfig {
 
@@ -31,47 +33,90 @@ public class ShiroConfig {
 
     /**
      * 安全管理器,核心bean，所有的realm都要在这里加进去
+     *
      * @return securityManager
      */
     @Bean
-    public DefaultWebSecurityManager securityManager(){
-        // 创建 defaultWebSecurityManager 对象
+    public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        // 将 userRealm 存入 defaultWebSecurityManager 对象中
         securityManager.setRealm(userRealm);
-        /*
-         * 关闭shiro自带的session，详情见文档
-         * http://shiro.apache.org/session-management.html#SessionManagement-StatelessApplications%28Sessionless%29
-         */
-        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
-        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
-        securityManager.setSubjectDAO(subjectDAO);
-        // 返回
+        securityManager.setSubjectDAO(subjectDAO());
         return securityManager;
     }
 
     /**
-     * 设置过滤器
+     * 返回一个带有sessionStorageEvaluator集的DefaultSubjectDAO
+     *
+     * @return DefaultSubjectDAO
      */
-    @Bean(name="shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager, Environment environment){
+    public DefaultSubjectDAO subjectDAO() {
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator());
+        return subjectDAO;
+    }
+
+    /**
+     * 返回一个带有sessionStorageEnabled=false的DefaultSessionStorageEvaluator
+     * 用于禁用session
+     *
+     * @return DefaultSessionStorageEvaluator
+     * @throws Exception Exception
+     */
+    private DefaultSessionStorageEvaluator sessionStorageEvaluator() {
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        try {
+            defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        } catch (Exception e) {
+            log.error("Error disabling session storage", e);
+        }
+        return defaultSessionStorageEvaluator;
+    }
+
+    /**
+     * ShiroFilterFactoryBean，
+     * 它负责配置过滤器链和安全管理器。
+     * 也可以使用FilterChainResolver以自定义过滤器链。
+     *
+     * @param securityManager 安全管理器
+     * @param environment     环境变量
+     * @return ShiroFilterFactoryBean
+     */
+    @Bean(name = "shiroFilterFactoryBean")
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager, Environment environment) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-        // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt", new JWTFilter(environment) );
-        bean.setFilters(filterMap);
+        bean.setFilters(filterMap(environment));
         bean.setSecurityManager(securityManager);
-        // 设置拦截器与url映射关系map
-        Map<String, String> map = new LinkedHashMap<>();
-        // 设置不需要认证可以访问的资源
-        map.put("/admin/toLogin", "anon");
-        // 配置 Swagger 接口路径不需要过滤
-        map.put("/v2/**", "anon");
-        // 设置需要进行登录认证的拦截范围(所有的路径都走自定义的过滤器)
-        map.put("/admin/**", "jwt");
-        bean.setFilterChainDefinitionMap(map);
+        bean.setFilterChainDefinitionMap(map());
         return bean;
+    }
+
+    /**
+     * 配置过滤器
+     *
+     * @param environment 环境变量
+     * @return 过滤器集合
+     */
+    private Map<String, Filter> filterMap(Environment environment) {
+        Map<String, Filter> filterMap = new HashMap<>();
+        // JWT过滤器用于验证JWT令牌
+        filterMap.put("jwt", new JWTFilter(environment));
+        return filterMap;
+    }
+
+    /**
+     * 配置过滤器链
+     * anon: 无需认证就可以访问
+     * authc: 必须认证才可以访问
+     * user: 必须拥有 记住我 功能才能使用
+     * perms: 拥有对某个资源的权限才能访问
+     * role: 拥有某个角色权限才能访问
+     * jwt: 需要JWT令牌才能访问
+     */
+    private Map<String, String> map() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("/admin/toLogin", "anon");
+        map.put("/v2/**", "anon");
+        map.put("/admin/**", "jwt");
+        return map;
     }
 }

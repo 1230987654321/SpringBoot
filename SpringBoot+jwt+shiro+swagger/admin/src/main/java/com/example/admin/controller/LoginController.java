@@ -57,7 +57,6 @@ public class LoginController {
         return "hello";
     }
 
-
     @ApiOperation(value = "测试登录是否成功",notes = "测试登录是否成功")
     @PostMapping("/hello")
     public String hello123123() {

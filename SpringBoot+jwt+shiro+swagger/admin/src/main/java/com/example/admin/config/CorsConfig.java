@@ -10,6 +10,11 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
+    /**
+     * 跨域过滤器
+     *
+     * @return
+     */
     @Bean
     public CorsFilter corsFilter() {
         //创建CorsConfiguration对象后添加配置

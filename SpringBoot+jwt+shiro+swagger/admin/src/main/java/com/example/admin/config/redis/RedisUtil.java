@@ -12,25 +12,31 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * @author 贲玉柱
  * @program workspace
  * @description 封装了 Redis 缓存中 的增删查操作
- * @author 贲玉柱
  * @create 2023/3/21 16:14
  **/
 @Service
 public class RedisUtil {
-
-    // 注入 RedisTemplate 对象，用于与 Redis 进行数据交互
+    /**
+     * RedisTemplate 对象，用于与 Redis 进行数据交互
+     */
     private final RedisTemplate<String, Object> redisTemplate;
 
-    // 注入 StringRedisTemplate 对象，用于与 Redis 进行字符串数据交互
+    /**
+     * StringRedisTemplate 对象，用于与 Redis 进行数据交互
+     */
     private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * 构造方法，传入一个 StringRedisTemplate 对象
+     *
      * @param stringRedisTemplate Redis 操作模板对象
+     * @param redisTemplate       Redis 操作模板对象
+     * @return
      */
-    public RedisUtil(StringRedisTemplate stringRedisTemplate,RedisTemplate<String, Object> redisTemplate) {
+    public RedisUtil(StringRedisTemplate stringRedisTemplate, RedisTemplate<String, Object> redisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.redisTemplate = redisTemplate;
     }
@@ -47,7 +53,9 @@ public class RedisUtil {
 
     /**
      * 将 token 添加到 Redis 缓存中，并指定过期时间
+     *
      * @param token token 字符串
+     * @return
      */
     public void addToken(String token) {
         String key = REDIS_KEY_TOKEN_PREFIX + token;
@@ -55,11 +63,12 @@ public class RedisUtil {
         Instant now = Instant.now();
         // 计算过期时间
         Instant expirationInstant = now.plusSeconds(TOKEN_TTL_SECONDS);
-        stringRedisTemplate.opsForValue().set(key, "1", Duration.between(now, expirationInstant) );
+        stringRedisTemplate.opsForValue().set(key, "1", Duration.between(now, expirationInstant));
     }
 
     /**
      * 判断给定的 token 是否存在于 Redis 缓存中
+     *
      * @param token token 字符串
      * @return true 表示存在，false 表示不存在
      */
@@ -73,7 +82,9 @@ public class RedisUtil {
 
     /**
      * 将给定的 token 从 Redis 缓存中删除
+     *
      * @param token token 字符串
+     * @return
      */
     public void removeToken(String token) {
         String key = REDIS_KEY_TOKEN_PREFIX + token;
@@ -84,12 +95,14 @@ public class RedisUtil {
 
     /**
      * 设置缓存值，并设置过期时间
+     *
      * @param key   缓存键
      * @param value 缓存值
+     * @return
      */
-    public <K,V> void addData(K key, V value) {
-        String redisKey  = JSON.toJSONString(key);
-        redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(value) );
+    public <K, V> void addData(K key, V value) {
+        String redisKey = JSON.toJSONString(key);
+        redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(value));
         // 设置过期时间
         redisTemplate.expire(redisKey, TOKEN_TTL_SECONDS, TimeUnit.SECONDS);
     }
@@ -97,13 +110,13 @@ public class RedisUtil {
     /**
      * 获取缓存值
      *
-     * @param key  缓存键
+     * @param key   缓存键
      * @param clazz 缓存值类型
      * @return 缓存值
      */
-    public <K,V> V getData(K key, Class<V> clazz) {
+    public <K, V> V getData(K key, Class<V> clazz) {
         String redisKey = JSON.toJSONString(key);
-        String jsonValue = (String)redisTemplate.opsForValue().get(redisKey);
+        String jsonValue = (String) redisTemplate.opsForValue().get(redisKey);
         if (jsonValue == null) {
             return null;
         }
@@ -112,6 +125,7 @@ public class RedisUtil {
 
     /**
      * 删除缓存键
+     *
      * @param key 缓存键
      */
     public <K> void removeAdmin(K key) {
