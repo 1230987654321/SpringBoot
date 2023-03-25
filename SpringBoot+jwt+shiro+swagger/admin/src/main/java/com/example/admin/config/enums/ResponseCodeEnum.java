@@ -40,9 +40,8 @@ public enum ResponseCodeEnum {
     /**
      * 构造函数
      *
-     * @param code
-     * @param message
-     * @return
+     * @param code Integer
+     * @param message String
      */
     ResponseCodeEnum(int code, String message) {
         this.code = code;
@@ -52,7 +51,7 @@ public enum ResponseCodeEnum {
     /**
      * 获取状态码
      *
-     * @return
+     * @return code
      */
     public int getCode() {
         return code;
@@ -61,7 +60,7 @@ public enum ResponseCodeEnum {
     /**
      * 获取描述
      *
-     * @return
+     * @return message
      */
     public String getMessage() {
         return message;

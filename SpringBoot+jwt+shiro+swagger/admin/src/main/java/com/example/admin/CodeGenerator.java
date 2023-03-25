@@ -25,8 +25,7 @@ public class CodeGenerator {
     /**
      * 代码生成器
      *
-     * @param args
-     * @throws Exception
+     * @param args 参数
      */
     public static void main(String[] args) {
         FastAutoGenerator.create(

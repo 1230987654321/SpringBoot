@@ -1,7 +1,6 @@
 package com.example.admin.config.response;
 
 import com.example.admin.config.enums.ResponseCodeEnum;
-import com.example.admin.config.exception.ServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;

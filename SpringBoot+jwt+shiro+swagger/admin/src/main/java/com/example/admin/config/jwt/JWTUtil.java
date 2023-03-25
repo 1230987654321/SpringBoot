@@ -66,7 +66,6 @@ public class JWTUtil {
      *
      * @param token    密钥
      * @param username token中包含的用户名
-     * @return 是否正确
      */
     public static void verify(String token, String username) {
         // Shiro 集成 JWT后,不知道为什么,无法抓取异常,只能返回FALSE,在过滤器中处理异常信息

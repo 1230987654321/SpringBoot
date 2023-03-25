@@ -17,7 +17,6 @@ public class JWTToken implements AuthenticationToken {
      * 构造函数
      *
      * @param token 密钥
-     * @return
      */
     public JWTToken(String token) {
         this.token = token;
@@ -26,7 +25,7 @@ public class JWTToken implements AuthenticationToken {
     /**
      * 获取身份信息
      *
-     * @return
+     * @return token 密钥
      */
     @Override
     public Object getPrincipal() {
@@ -36,7 +35,7 @@ public class JWTToken implements AuthenticationToken {
     /**
      * 获取凭证信息
      *
-     * @return
+     * @return token 密钥
      */
     @Override
     public Object getCredentials() {

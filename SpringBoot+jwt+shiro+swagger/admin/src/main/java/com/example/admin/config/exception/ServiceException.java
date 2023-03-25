@@ -23,8 +23,7 @@ public class ServiceException extends RuntimeException {
     /**
      * 构造函数
      *
-     * @param codeEnum
-     * @return
+     * @param codeEnum ResponseCodeEnum
      */
     public ServiceException(ResponseCodeEnum codeEnum) {
         this.code = codeEnum.getCode();
@@ -34,9 +33,8 @@ public class ServiceException extends RuntimeException {
     /**
      * 构造函数
      *
-     * @param code
-     * @param errorMsg
-     * @return
+     * @param code    Integer
+     * @param errorMsg String
      */
     public ServiceException(Integer code, String errorMsg) {
         this.code = code;
@@ -46,7 +44,7 @@ public class ServiceException extends RuntimeException {
     /**
      * 获取错误信息
      *
-     * @return
+     * @return Message
      */
     public String getMessage() {
         return Message;
@@ -55,7 +53,7 @@ public class ServiceException extends RuntimeException {
     /**
      * 获取错误码
      *
-     * @return
+     * @return code
      */
     public Integer getCode() {
         return code;

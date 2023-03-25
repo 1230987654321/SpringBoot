@@ -34,7 +34,6 @@ public class RedisUtil {
      *
      * @param stringRedisTemplate Redis 操作模板对象
      * @param redisTemplate       Redis 操作模板对象
-     * @return
      */
     public RedisUtil(StringRedisTemplate stringRedisTemplate, RedisTemplate<String, Object> redisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
@@ -55,7 +54,6 @@ public class RedisUtil {
      * 将 token 添加到 Redis 缓存中，并指定过期时间
      *
      * @param token token 字符串
-     * @return
      */
     public void addToken(String token) {
         String key = REDIS_KEY_TOKEN_PREFIX + token;
@@ -84,7 +82,6 @@ public class RedisUtil {
      * 将给定的 token 从 Redis 缓存中删除
      *
      * @param token token 字符串
-     * @return
      */
     public void removeToken(String token) {
         String key = REDIS_KEY_TOKEN_PREFIX + token;
@@ -98,7 +95,6 @@ public class RedisUtil {
      *
      * @param key   缓存键
      * @param value 缓存值
-     * @return
      */
     public <K, V> void addData(K key, V value) {
         String redisKey = JSON.toJSONString(key);
