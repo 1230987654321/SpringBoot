@@ -3,6 +3,7 @@ package com.example.admin.config;
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -46,5 +47,10 @@ public class SwaggerConfig {
                         .title("实战SpringBoot+Vue实现前后端分离")
                         // 设置文档版本号
                         .version("v1.0").build());
+    }
+
+    @RequestMapping(value = "/docs")
+    public String docs() {
+        return "redirect:/webjars/swagger-ui/3.51.1/swagger-ui.html?url=/v2/api-docs";
     }
 }

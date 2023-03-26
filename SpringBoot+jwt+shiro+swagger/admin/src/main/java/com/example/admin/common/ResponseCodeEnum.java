@@ -10,7 +10,7 @@ public enum ResponseCodeEnum {
     //系统基本码
     SUCCESS(200, "请求成功"),
     FAILED(400, "请求失败"),
-    NOT_FOUND(404, "接口不存在"),
+    NOT_FOUND(404, "接口或资源不存在"),
     SERVER_ERROR(500, "服务器内部出错"),
     PARAM_INVALID(-1, "参数不合法"),
     REQUEST_TYPE_ERROR(501, "请求类型错误"),

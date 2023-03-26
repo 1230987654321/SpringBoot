@@ -10,19 +10,19 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: hyy835435
+    password: root
   mvc:
     # 出现错误时,直接抛出异常
     throw-exception-if-no-handler-found: true
-#  web:
-#    resources:
+  web:
+    resources:
       # 不要为我们工程中的资源文件建立映射
-#      add-mappings: false
+      add-mappings: false
   redis:
     # Redis 数据库编号
     database: 0
     # Redis 服务器的 IP 地址
-    host: 192.168.1.107
+    host: 192.168.1.5
     # Redis 服务器的端口号
     port: 6379
     # Redis 服务器的密码

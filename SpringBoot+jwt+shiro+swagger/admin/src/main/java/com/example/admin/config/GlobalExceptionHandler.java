@@ -120,6 +120,20 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 404异常
+     *
+     * @param e NoHandlerFoundException
+     * @return GlobalResponse<T>
+     */
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    @ResponseBody
+    public GlobalResponse<String> NoHandlerFoundException(NoHandlerFoundException e) {
+        log.error(ResponseCodeEnum.NOT_FOUND + ":" + e.getMessage(), e);
+        return GlobalResponse.fail(ResponseCodeEnum.NOT_FOUND);
+    }
+
+
+    /**
      * 其他异常
      *
      * @param e Exception
@@ -129,9 +143,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public GlobalResponse<String> exception(Exception e) {
         log.error(e.getMessage(), e);
-        if (e instanceof NoHandlerFoundException) { // 接口不存在
-            return GlobalResponse.fail(ResponseCodeEnum.NOT_FOUND);
-        } else if (e instanceof MethodArgumentTypeMismatchException) { // 请求参数问题(应该Integer,实为String)
+        if (e instanceof MethodArgumentTypeMismatchException) { // 请求参数问题(应该Integer,实为String)
             return GlobalResponse.fail(ResponseCodeEnum.PARAM_INVALID, e.getMessage());
         } else if (e instanceof MultipartException) { // 上传问题 (文件超过默认大小)
             return GlobalResponse.fail(ResponseCodeEnum.UPLOAD_ERROR, e.getMessage());
