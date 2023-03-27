@@ -1,7 +1,6 @@
 package com.example.admin.common;
 
-import com.example.admin.common.GlobalResponse;
-import com.example.admin.common.ResponseCodeEnum;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.springframework.core.MethodParameter;
@@ -40,19 +39,44 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        //如果是字符类型,输出json字符串
+        // 检查对象是否是字符串
         if (o instanceof String) {
-            return objectMapper.writeValueAsString(GlobalResponse.success(o));
+            try {
+                // 如果是字符串，尝试将其转换为 JSON 对象
+                return objectMapper.writeValueAsString(GlobalResponse.success(o));
+            } catch (JsonProcessingException e) {
+                // 如果出现错误，则返回原始字符串
+                return o;
+            }
         }
-        //如果已经被异常捕获,返回的就是BaseResponse对象,不用再次封装了
-        if (o instanceof GlobalResponse) {
-            return o;
-        }
-        //如果返回Boolean,并且值为false,返回失败提醒
-        if (o instanceof Boolean) {
-            if (!((Boolean) o)) {
+        // 如果对象是整数，则将其转换为 BaseResponse 对象
+        if (o instanceof Integer) {
+            // 检查整数是否为错误
+            if ((Integer) o == 1) {
+                return GlobalResponse.success(o);
+            } else {
                 return GlobalResponse.fail(ResponseCodeEnum.FAILED);
             }
+        }
+        // 检查对象是否是布尔值。
+        if (o instanceof Boolean) {
+            // 检查布尔值是否为错误
+            if (!((Boolean) o)) {
+                // 返回失败的响应
+                return GlobalResponse.fail(ResponseCodeEnum.FAILED);
+            }
+        }
+        // 如果对象是字节数组，则转换为 BaseResponse 对象
+        if (o instanceof byte[]) {
+            return GlobalResponse.success(o);
+        }
+        // 如果对象是空，则返回失败的响应
+        if (o == null) {
+            return GlobalResponse.fail(ResponseCodeEnum.FAILED);
+        }
+        // 如果已经被异常捕获,返回的就是BaseResponse对象,不用再次封装了
+        if (o instanceof GlobalResponse) {
+            return o;
         }
         return GlobalResponse.success(o);
     }

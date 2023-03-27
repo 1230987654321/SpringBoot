@@ -31,3 +31,6 @@ mybatis-plus:
       id-type: ASSIGN_ID
 shiro:
   loginUrl: /common/login
+# 配置日志框架
+logging:
+  config: classpath:log4j2.xml

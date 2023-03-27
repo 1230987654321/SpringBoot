@@ -29,9 +29,6 @@ mybatis-plus:
     db-config:
       # 设置主键自增方式
       id-type: ASSIGN_ID
-#shiro:
-#  loginUrl: /admin/login
-jwt:
-  # X4YrTmZcQfTjWnZr4u7x!A%D*G-KaPdSgVkXp2s5v8y/B?E(H+MbPeShVmYq3t
-  secret: 123456
-  expire: 3600000
+# 配置日志框架
+logging:
+  config: classpath:log4j2.xml

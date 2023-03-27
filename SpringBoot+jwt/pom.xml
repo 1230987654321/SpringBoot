@@ -29,12 +29,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- 引入 log4j 日志包 -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.14</version>
-            </dependency>
             <!-- MyBatisPlus -->
             <dependency>
                 <groupId>com.baomidou</groupId>

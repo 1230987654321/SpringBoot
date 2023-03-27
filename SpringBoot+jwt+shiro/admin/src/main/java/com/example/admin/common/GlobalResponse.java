@@ -1,6 +1,7 @@
 package com.example.admin.common;
 
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author 贲玉柱
@@ -21,6 +22,17 @@ public class GlobalResponse<T> {
      */
     public GlobalResponse(int code, String message) {
         this.code = code;
+        this.message = message;
+        this.data = null;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    /**
+     * @param httpStatus 响应代码
+     * @param message    响应消息
+     */
+    public GlobalResponse(HttpStatus httpStatus, String message) {
+        this.code = httpStatus.value();
         this.message = message;
         this.data = null;
         this.timestamp = System.currentTimeMillis();
@@ -82,6 +94,17 @@ public class GlobalResponse<T> {
      */
     public static <T> GlobalResponse<T> fail(int code, String message) {
         return new GlobalResponse<>(code, message);
+    }
+
+    /**
+     * 此函数返回具有状态失败的全局响应对象
+     *
+     * @param httpStatus 响应代码.
+     * @param message    响应消息.
+     * @return GlobalResponse
+     */
+    public static <T> GlobalResponse<T> fail(HttpStatus httpStatus, String message) {
+        return new GlobalResponse<>(httpStatus.value(), message);
     }
 
     /**
