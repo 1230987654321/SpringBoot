@@ -2,7 +2,6 @@ package com.example.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,51 +12,41 @@ import java.util.Optional;
 
 /**
  * <p>
- * 管理员
+ * 轮播
  * </p>
  *
  * @author 贲玉柱
- * @since 2023-03-04 05:12:50
+ * @since 2023-03-27 11:53:00
  */
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("db_admin")
-public class Admin extends Model<Admin> {
+@TableName("db_banner")
+public class Banner extends Model<Banner> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 用户名
-     */
-    @TableField("username")
-    private String username;
+    @TableField("cover")
+    private Integer cover;
 
     /**
-     * 密码
+     * 链接地址
      */
-    @TableField("password")
-    @JsonIgnore
-    private String password;
+    @TableField("url")
+    private String url;
 
     /**
-     * 角色id
+     * 排序 越大越靠前
      */
-    @TableField("role_id")
-    private Integer roleId;
+    @TableField("sort")
+    private Integer sort;
 
     /**
-     * 0冻结1正常
+     * 状态 1正常 0隐藏
      */
     @TableField("status")
     private Integer status;
-
-    /**
-     * 1后台管理员
-     */
-    @TableField("is_admin")
-    private Integer isAdmin;
 
     /**
      * 是否删除 1是 0否
@@ -78,22 +67,21 @@ public class Admin extends Model<Admin> {
     @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public Admin(Admin admin) {
-        Optional.ofNullable(admin).ifPresent(e ->{
+    public Banner(Banner banner) {
+        Optional.ofNullable(banner).ifPresent(e -> {
             this.id = e.getId();
-            this.username = e.getUsername();
-            this.password = e.getPassword();
-            this.roleId = e.getRoleId();
+            this.cover = e.getCover();
+            this.url = e.getUrl();
+            this.sort = e.getSort();
             this.status = e.getStatus();
-            this.isAdmin = e.getIsAdmin();
             this.deleted = e.getDeleted();
             this.createdAt = e.getCreatedAt();
             this.updatedAt = e.getUpdatedAt();
         });
+    }
+
+    @Override
+    public Serializable pkVal() {
+        return this.id;
     }
 }

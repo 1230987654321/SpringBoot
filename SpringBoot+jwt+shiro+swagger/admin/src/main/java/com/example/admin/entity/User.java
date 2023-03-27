@@ -2,7 +2,6 @@ package com.example.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,51 +12,56 @@ import java.util.Optional;
 
 /**
  * <p>
- * 管理员
+ * 用户
  * </p>
  *
  * @author 贲玉柱
- * @since 2023-03-04 05:12:50
+ * @since 2023-03-27 11:53:00
  */
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("db_admin")
-public class Admin extends Model<Admin> {
+@TableName("db_user")
+public class User extends Model<User> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 用户名
+     * openid
      */
-    @TableField("username")
-    private String username;
+    @TableField("openid")
+    private String openid;
 
     /**
-     * 密码
+     * 昵称
      */
-    @TableField("password")
-    @JsonIgnore
-    private String password;
+    @TableField("nick_name")
+    private String nickName;
 
     /**
-     * 角色id
+     * 头像
      */
-    @TableField("role_id")
-    private Integer roleId;
+    @TableField("avatar_url")
+    private String avatarUrl;
 
     /**
-     * 0冻结1正常
+     * 性别 0未知 1男 2女
+     */
+    @TableField("gender")
+    private Integer gender;
+
+    /**
+     * 手机号(授权)
+     */
+    @TableField("tel")
+    private String tel;
+
+    /**
+     * 状态 1正常 0冻结
      */
     @TableField("status")
     private Integer status;
-
-    /**
-     * 1后台管理员
-     */
-    @TableField("is_admin")
-    private Integer isAdmin;
 
     /**
      * 是否删除 1是 0否
@@ -78,22 +82,23 @@ public class Admin extends Model<Admin> {
     @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
-
-    public Admin(Admin admin) {
-        Optional.ofNullable(admin).ifPresent(e ->{
+    public User(User user) {
+        Optional.ofNullable(user).ifPresent(e -> {
             this.id = e.getId();
-            this.username = e.getUsername();
-            this.password = e.getPassword();
-            this.roleId = e.getRoleId();
+            this.openid = e.getOpenid();
+            this.nickName = e.getNickName();
+            this.avatarUrl = e.getAvatarUrl();
+            this.gender = e.getGender();
+            this.tel = e.getTel();
             this.status = e.getStatus();
-            this.isAdmin = e.getIsAdmin();
             this.deleted = e.getDeleted();
             this.createdAt = e.getCreatedAt();
             this.updatedAt = e.getUpdatedAt();
         });
+    }
+
+    @Override
+    public Serializable pkVal() {
+        return this.id;
     }
 }

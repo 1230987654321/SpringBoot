@@ -1,19 +1,14 @@
 package com.example.admin.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * <p>
@@ -23,8 +18,8 @@ import lombok.Setter;
  * @author 贲玉柱
  * @since 2023-03-04 05:12:50
  */
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @TableName("db_role")
 public class Role extends Model<Role> {
