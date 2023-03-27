@@ -1,7 +1,5 @@
 package com.example.admin.common;
 
-import com.example.admin.common.GlobalResponse;
-import com.example.admin.common.ResponseCodeEnum;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
