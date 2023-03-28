@@ -1,6 +1,7 @@
 package com.example.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.admin.entity.Banner;
 import com.example.admin.entity.vo.BannerVo;
 import com.example.admin.service.BannerService;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,17 @@ public class BannerController {
     @PutMapping("/updateBannerStatus")
     public int updateBannerStatus(Integer id, Integer status) {
         return bannerService.updateBannerStatus(id, status);
+    }
+
+    /**
+     * 修改轮播图
+     *
+     * @param banner 轮播图
+     * @return int 1成功 0失败
+     */
+    @PutMapping("/updateBanner")
+    public int updateBanner(Banner banner) {
+        return bannerService.updateBanner(banner);
     }
 
     /**

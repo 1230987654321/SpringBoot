@@ -45,6 +45,9 @@ public class GlobalExceptionHandler {
         if (e.getCode() == 401) {
             httpStatus = HttpStatus.UNAUTHORIZED;
             response = GlobalResponse.fail(httpStatus, e.getMessage());
+        } else if (e.getCode() == 422) {
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+            response = GlobalResponse.fail(httpStatus, e.getMessage());
         } else {
             httpStatus = HttpStatus.OK;
             response = GlobalResponse.fail(e.getCode(), e.getMessage());

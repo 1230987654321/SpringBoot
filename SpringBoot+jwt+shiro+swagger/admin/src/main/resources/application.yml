@@ -22,7 +22,7 @@ spring:
     # Redis 数据库编号
     database: 0
     # Redis 服务器的 IP 地址
-    host: 192.168.1.107
+    host: 192.168.1.110
     # Redis 服务器的端口号
     port: 6379
     # Redis 服务器的密码
@@ -51,3 +51,7 @@ mybatis-plus:
 # 配置日志框架
 logging:
   config: classpath:log4j2.xml
+# 图片上传路径
+upload:
+  path: E:\upload\
+  url: http://localhost:8080/upload/

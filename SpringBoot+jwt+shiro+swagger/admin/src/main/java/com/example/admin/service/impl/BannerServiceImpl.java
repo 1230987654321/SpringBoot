@@ -139,6 +139,17 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     }
 
     /**
+     * 修改轮播图
+     *
+     * @param banner 轮播图
+     * @return int 修改条数
+     */
+    @Override
+    public int updateBanner(Banner banner) {
+        return bannerMapper.updateById(banner);
+    }
+
+    /**
      * 删除轮播图
      *
      * @param id 轮播图id

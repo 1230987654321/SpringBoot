@@ -18,7 +18,7 @@ import java.util.Date;
 public class JWTUtil {
 
     // 过期时间15分钟
-    private static final long EXPIRE_TIME = 15 * 60 * 1000;
+    private static final long EXPIRE_TIME = 150 * 60 * 1000;
 
     // 设置秘钥
     private static final Algorithm key = Algorithm.HMAC256("1234567890".getBytes());
