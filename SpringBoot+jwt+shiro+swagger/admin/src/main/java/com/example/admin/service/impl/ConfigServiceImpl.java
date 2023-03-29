@@ -10,6 +10,7 @@ import com.example.admin.entity.vo.ConfigVo;
 import com.example.admin.mapper.ConfigMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.ConfigService;
+import com.example.admin.util.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -77,14 +78,9 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
      */
     @Override
     public int updateConfig(Config config) {
-        if (config.getId() == null) {
-            log.error("修改配置失败========>Id 不能为空");
-            throw new ServiceException(400, "Id 不能为空");
-        }
-        if (configMapper.selectById(config.getId()) == null) {
-            log.error("修改配置失败========>Id 不存在");
-            throw new ServiceException(400, "Id 不存在");
-        }
+        CheckUtil.checkIntegerNotNull(config.getId(), "Id 不能为空");
+        Config configInfo = configMapper.selectById(config.getId());
+        CheckUtil.checkObjectNotNull(configInfo, 404, "Id 不存在");
         return configMapper.updateById(config);
     }
 }

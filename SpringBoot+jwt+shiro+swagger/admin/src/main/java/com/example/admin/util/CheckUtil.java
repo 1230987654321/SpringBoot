@@ -56,4 +56,20 @@ public class CheckUtil {
             throw new ServiceException(400, msg);
         }
     }
+
+    /**
+     * 判断对象是否为null
+     *
+     * @param object 对象
+     * @param code   错误码
+     * @param msg    提示信息
+     * @throws ServiceException 业务异常
+     */
+    public static void checkObjectNotNull(Object object, Integer code, String msg) {
+        if (object == null) {
+            // 记录日志
+            log.error(msg + " =======>" + object);
+            throw new ServiceException(code, msg);
+        }
+    }
 }

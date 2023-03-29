@@ -86,7 +86,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         CheckUtil.checkStringNotEmpty(menu.getTitle(), "参数title不能为空");
         LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery(Menu.class).eq(Menu::getPath, menu.getPath());
         Menu menu1 = menuMapper.selectOne(wrapper);
-        CheckUtil.checkObjectNotNull(menu1, "该菜单栏已存在");
+        CheckUtil.checkObjectNotNull(menu1, 500, "该菜单栏已存在");
         return menuMapper.insert(menu);
     }
 
@@ -98,11 +98,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      */
     @Override
     public int updateMenu(Menu menu) {
+        CheckUtil.checkIntegerNotNull(menu.getId(), "参数id不能为空");
         try {
             return menuMapper.updateById(menu);
         } catch (Exception e) {
             log.error("修改菜单栏失败 =======>", e);
-            throw new ServiceException(400, "更新失败");
+            throw new ServiceException(500, "更新失败");
         }
     }
 
@@ -114,13 +115,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      */
     @Override
     public int updateMenuHidden(Integer id, Byte hidden) {
+        CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
+        CheckUtil.checkIntegerNotNull(Integer.valueOf(hidden), "参数hidden不能为空");
         Menu menu = menuMapper.selectById(id);
-        if (menu == null) {
-            log.error("修改菜单栏状态失败 =======>菜单栏ID不存在:" + id);
-            throw new ServiceException(400, "菜单栏 不存在");
-        }
+        CheckUtil.checkObjectNotNull(menu, 404, "菜单栏不存在");
         menu.setHidden(hidden);
-        return menuMapper.updateById(menu);
+        try {
+            return menuMapper.updateById(menu);
+        } catch (Exception e) {
+            log.error("修改菜单栏失败 =======>", e);
+            throw new ServiceException(500, "修改失败");
+        }
     }
 
     /**
@@ -135,7 +140,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             return menuMapper.deleteById(id);
         } catch (Exception e) {
             log.error("删除菜单栏 =======>", e);
-            throw new ServiceException(400, "删除失败");
+            throw new ServiceException(500, "删除失败");
         }
     }
 

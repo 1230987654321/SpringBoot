@@ -48,6 +48,8 @@ public class GlobalExceptionHandler {
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
         } else if (e.getCode() == 400) {
             httpStatus = HttpStatus.BAD_REQUEST;
+        } else if (e.getCode() == 500) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         } else {
             httpStatus = HttpStatus.OK;
         }

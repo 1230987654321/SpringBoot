@@ -12,6 +12,7 @@ import com.example.admin.entity.vo.BannerVo;
 import com.example.admin.mapper.BannerMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.BannerService;
+import com.example.admin.util.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
             return bannerMapper.insert(banner);
         } catch (Exception e) {
             log.error("添加轮播图失败 =======>", e);
-            throw new ServiceException(400, "添加失败");
+            throw new ServiceException(500, "添加失败");
         }
     }
 
@@ -116,11 +117,10 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int updateBannerStatus(Integer id, Integer status) {
+        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
+        CheckUtil.checkIntegerNotNull(status, "轮播图状态不能为空");
         Banner banner = bannerMapper.selectById(id);
-        if (banner == null) {
-            log.error("修改轮播图状态失败 =======>Banner 不存在");
-            throw new ServiceException(400, "Banner 不存在");
-        }
+        CheckUtil.checkObjectNotNull(banner, 404, "轮播图不存在");
         banner.setStatus(status);
         return bannerMapper.updateById(banner);
     }
@@ -134,11 +134,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int updateBanner(Banner banner) {
+        CheckUtil.checkIntegerNotNull(banner.getId(), "轮播图id不能为空");
         try {
             return bannerMapper.updateById(banner);
         } catch (Exception e) {
             log.error("修改轮播图失败 =======>", e);
-            throw new ServiceException(400, "更新失败");
+            throw new ServiceException(500, "更新失败");
         }
     }
 
@@ -151,11 +152,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int deleteBanner(Integer id) {
+        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
         try {
             return bannerMapper.deleteById(id);
         } catch (Exception e) {
             log.error("删除轮播图失败 =======>", e);
-            throw new ServiceException(400, "删除失败");
+            throw new ServiceException(500, "删除失败");
         }
     }
 

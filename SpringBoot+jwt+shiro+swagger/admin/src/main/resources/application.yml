@@ -22,7 +22,7 @@ spring:
     # Redis 数据库编号
     database: 0
     # Redis 服务器的 IP 地址
-    host: 192.168.1.110
+    host: 192.168.1.7
     # Redis 服务器的端口号
     port: 6379
     # Redis 服务器的密码

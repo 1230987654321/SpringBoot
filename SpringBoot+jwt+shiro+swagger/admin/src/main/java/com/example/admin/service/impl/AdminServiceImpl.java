@@ -71,7 +71,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         // 判断管理员是否存在
         findAdmin(null, admin.getUsername(), "username");
         // 添加管理员
-        return adminMapper.insert(admin);
+        try {
+            return adminMapper.insert(admin);
+        } catch (Exception e) {
+            log.error("添加管理员失败 =======>", e);
+            throw new ServiceException(500, "添加失败");
+        }
     }
 
     /**
@@ -194,7 +199,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         int res = adminMapper.updateById(admin);
         if (res != 1) {
             log.error("管理员状态修改失败 =======>" + id);
-            throw new ServiceException(400, "管理员状态修改失败");
+            throw new ServiceException(500, "管理员状态修改失败");
         }
         // 将管理员信息存入redis
         redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), admin);
@@ -223,7 +228,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         int res = adminMapper.updateById(admin);
         if (res != 1) {
             log.error("管理员密码修改失败 =======>" + id);
-            throw new ServiceException(400, "管理员密码修改失败");
+            throw new ServiceException(500, "管理员密码修改失败");
         }
         return res;
     }
@@ -253,7 +258,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         int res = adminMapper.updateById(adminInfo);
         if (res != 1) {
             log.error("管理员信息修改失败 =======>" + admin.getId());
-            throw new ServiceException(400, "管理员信息修改失败");
+            throw new ServiceException(500, "管理员信息修改失败");
         }
         // 将管理员信息存入redis
         redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), adminInfo);
@@ -277,7 +282,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         int res = adminMapper.deleteById(id);
         if (res != 1) {
             log.error("管理员删除失败 =======>" + id);
-            throw new ServiceException(400, "管理员删除失败");
+            throw new ServiceException(500, "管理员删除失败");
         }
         // 将管理员信息从redis中删除
         redisUtil.removeAdmin(REDIS_KEY_ADMIN_PREFIX + admin.getUsername());
@@ -303,7 +308,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
             throw new ServiceException(500, "不支持的查找方式");
         }
         Admin admin = adminMapper.selectOne(wrapper);
-        CheckUtil.checkObjectNotNull(admin, "管理员不存在");
+        CheckUtil.checkObjectNotNull(admin, 404, "管理员不存在");
         // 转化为Vo
         AdminVo adminVo = Optional.ofNullable(admin).map(AdminVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
