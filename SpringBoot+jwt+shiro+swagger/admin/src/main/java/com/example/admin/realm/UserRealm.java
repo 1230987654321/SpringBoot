@@ -1,16 +1,16 @@
 package com.example.admin.realm;
 
 import com.alibaba.fastjson.JSON;
+import com.example.admin.common.JWTToken;
 import com.example.admin.common.ResponseCodeEnum;
 import com.example.admin.common.ServiceException;
-import com.example.admin.common.JWTToken;
-import com.example.admin.util.JWTUtil;
-import com.example.admin.util.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;
 import com.example.admin.service.AdminService;
-import com.example.admin.service.ControllersService;
+import com.example.admin.service.MenuService;
 import com.example.admin.service.RoleService;
+import com.example.admin.util.JWTUtil;
+import com.example.admin.util.RedisUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -39,14 +39,14 @@ public class UserRealm extends AuthorizingRealm {
 
     private final RoleService roleService;
 
-    private final ControllersService controllersService;
+    private final MenuService menuService;
 
     private final RedisUtil redisUtil;
 
-    public UserRealm(AdminService adminService, RoleService roleService, ControllersService controllersService, RedisUtil redisUtil) {
+    public UserRealm(AdminService adminService, RoleService roleService, MenuService menuService, RedisUtil redisUtil) {
         this.adminService = adminService;
         this.roleService = roleService;
-        this.controllersService = controllersService;
+        this.menuService = menuService;
         this.redisUtil = redisUtil;
     }
 
@@ -92,7 +92,7 @@ public class UserRealm extends AuthorizingRealm {
         Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX + username, Admin.class);
         if (admin == null) {
             // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
-            admin = adminService.getUsername(username);
+            admin = adminService.getAdminByUsername(username);
             if (admin == null) {
                 throw new ServiceException(ResponseCodeEnum.NOT_EXIST);
             }
@@ -119,22 +119,22 @@ public class UserRealm extends AuthorizingRealm {
         // 将 String[] 转换成 List<Integer>
         List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
         // 查询 Redis 权限信息
-        String controllersString = redisUtil.getData(REDIS_KEY_PERMISSIONS_PREFIX + JSON.toJSONString(idsList), String.class);
-        List<String> controllersList;
-        if (controllersString == null) {
+        String menuString = redisUtil.getData(REDIS_KEY_PERMISSIONS_PREFIX + JSON.toJSONString(idsList), String.class);
+        List<String> menuList;
+        if (menuString == null) {
             // 查询权限
-            controllersList = controllersService.getColumnName(idsList);
-            if (controllersList == null) {
+            menuList = menuService.getColumnName(idsList);
+            if (menuList == null) {
                 throw new ServiceException(401, "当前登录者并无权限");
             }
             // 将查询权限储存 Redis 中,储存时将List<String>转换成String
-            redisUtil.addData(REDIS_KEY_PERMISSIONS_PREFIX + JSON.toJSONString(idsList), String.join(",", controllersList));
+            redisUtil.addData(REDIS_KEY_PERMISSIONS_PREFIX + JSON.toJSONString(idsList), String.join(",", menuList));
         } else {
             // 将从 Redis 中获取的权限 ,将其转换成数组
-            controllersList = List.of(controllersString.split(","));
+            menuList = List.of(menuString.split(","));
         }
         // 储存权限
-        info.setStringPermissions(new HashSet<>(controllersList));
+        info.setStringPermissions(new HashSet<>(menuList));
         // 返回信息
         return info;
     }

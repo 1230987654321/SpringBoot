@@ -1,7 +1,7 @@
 package com.example.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.admin.entity.Controllers;
+import com.example.admin.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,8 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author 贲玉柱
- * @since 2023-03-04 05:12:50
+ * @since 2023-03-29 05:00:18
  */
 @Mapper
-public interface ControllersMapper extends BaseMapper<Controllers> {
+public interface MenuMapper extends BaseMapper<Menu> {
+
 }

@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.admin.common.ServiceException;
 import com.example.admin.entity.Banner;
 import com.example.admin.entity.Picture;
 import com.example.admin.entity.vo.BannerVo;
 import com.example.admin.mapper.BannerMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.BannerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +31,7 @@ import static java.util.stream.Collectors.toSet;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
+@Slf4j
 @Service
 public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> implements BannerService {
 
@@ -45,6 +48,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      *
      * @param bannerVo 轮播图
      * @return int
+     * @throws ServiceException 业务异常
      */
     @Override
     public int addBanner(BannerVo bannerVo) {
@@ -53,7 +57,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         banner.setUrl(bannerVo.getUrl());
         banner.setSort(bannerVo.getSort());
         banner.setStatus(bannerVo.getStatus());
-        return bannerMapper.insert(banner);
+        try {
+            return bannerMapper.insert(banner);
+        } catch (Exception e) {
+            log.error("添加轮播图失败 =======>", e);
+            throw new ServiceException(400, "添加失败");
+        }
     }
 
 
@@ -76,17 +85,6 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     }
 
     /**
-     * 补充轮播图封面路径
-     *
-     * @param bannerVo 轮播图
-     */
-    private void addCoverPath(BannerVo bannerVo) {
-        LambdaQueryWrapper<Picture> wrapper = Wrappers.lambdaQuery(Picture.class).eq(Picture::getId, bannerVo.getCover());
-        Picture picture = pictureMapper.selectOne(wrapper);
-        Optional.ofNullable(picture).ifPresent(e -> bannerVo.setCoverPath(e.getPath()));
-    }
-
-    /**
      * 查询轮播图列表
      *
      * @param current  当前页
@@ -97,14 +95,79 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     @Override
     public IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo) {
         Page<Banner> page = new Page<>(current, size);
+        LambdaQueryWrapper<Banner> wrapper = Wrappers.lambdaQuery(Banner.class).orderByDesc(Banner::getSort).orderByDesc(Banner::getCreatedAt);
         // 查询轮播图列表
-        IPage<Banner> bannerPage = bannerMapper.selectPage(page, Wrappers.emptyWrapper());
+        IPage<Banner> bannerPage = bannerMapper.selectPage(page, wrapper);
         IPage<BannerVo> bannerVoIPage = bannerPage.convert(BannerVo::new);
         // 补充轮播图封面路径
         if (bannerVoIPage.getRecords().size() > 0) {
             addCoverPath(bannerVoIPage);
         }
         return bannerVoIPage;
+    }
+
+    /**
+     * 修改轮播图状态
+     *
+     * @param id     轮播图id
+     * @param status 状态
+     * @return int 修改条数
+     * @throws ServiceException 业务异常
+     */
+    @Override
+    public int updateBannerStatus(Integer id, Integer status) {
+        Banner banner = bannerMapper.selectById(id);
+        if (banner == null) {
+            log.error("修改轮播图状态失败 =======>Banner 不存在");
+            throw new ServiceException(400, "Banner 不存在");
+        }
+        banner.setStatus(status);
+        return bannerMapper.updateById(banner);
+    }
+
+    /**
+     * 修改轮播图
+     *
+     * @param banner 轮播图
+     * @return int 修改条数
+     * @throws ServiceException 业务异常
+     */
+    @Override
+    public int updateBanner(Banner banner) {
+        try {
+            return bannerMapper.updateById(banner);
+        } catch (Exception e) {
+            log.error("修改轮播图失败 =======>", e);
+            throw new ServiceException(400, "更新失败");
+        }
+    }
+
+    /**
+     * 删除轮播图
+     *
+     * @param id 轮播图id
+     * @return int 删除条数
+     * @throws ServiceException 业务异常
+     */
+    @Override
+    public int deleteBanner(Integer id) {
+        try {
+            return bannerMapper.deleteById(id);
+        } catch (Exception e) {
+            log.error("删除轮播图失败 =======>", e);
+            throw new ServiceException(400, "删除失败");
+        }
+    }
+
+    /**
+     * 补充轮播图封面路径
+     *
+     * @param bannerVo 轮播图
+     */
+    private void addCoverPath(BannerVo bannerVo) {
+        LambdaQueryWrapper<Picture> wrapper = Wrappers.lambdaQuery(Picture.class).eq(Picture::getId, bannerVo.getCover());
+        Picture picture = pictureMapper.selectOne(wrapper);
+        Optional.ofNullable(picture).ifPresent(e -> bannerVo.setCoverPath(e.getPath()));
     }
 
     /**
@@ -121,43 +184,6 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         Map<Integer, String> hashMap = picture.stream().collect(toMap(Picture::getId, Picture::getPath));
         // 将查询补充的信息添加到Vo中
         bannerVoIPage.convert(e -> e.setCoverPath(hashMap.get(e.getCover())));
-    }
-
-    /**
-     * 修改轮播图状态
-     *
-     * @param id     轮播图id
-     * @param status 状态
-     * @return int 修改条数
-     */
-    @Override
-    public int updateBannerStatus(Integer id, Integer status) {
-        Banner banner = new Banner();
-        banner.setId(id);
-        banner.setStatus(status);
-        return bannerMapper.updateById(banner);
-    }
-
-    /**
-     * 修改轮播图
-     *
-     * @param banner 轮播图
-     * @return int 修改条数
-     */
-    @Override
-    public int updateBanner(Banner banner) {
-        return bannerMapper.updateById(banner);
-    }
-
-    /**
-     * 删除轮播图
-     *
-     * @param id 轮播图id
-     * @return int 删除条数
-     */
-    @Override
-    public int deleteBanner(Integer id) {
-        return bannerMapper.deleteById(id);
     }
 
 }

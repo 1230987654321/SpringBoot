@@ -44,14 +44,14 @@ public class GlobalExceptionHandler {
         GlobalResponse<Object> response;
         if (e.getCode() == 401) {
             httpStatus = HttpStatus.UNAUTHORIZED;
-            response = GlobalResponse.fail(httpStatus, e.getMessage());
         } else if (e.getCode() == 422) {
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            response = GlobalResponse.fail(httpStatus, e.getMessage());
+        } else if (e.getCode() == 400) {
+            httpStatus = HttpStatus.BAD_REQUEST;
         } else {
             httpStatus = HttpStatus.OK;
-            response = GlobalResponse.fail(e.getCode(), e.getMessage());
         }
+        response = GlobalResponse.fail(e.getCode(), e.getMessage());
         return new ResponseEntity<>(response, httpStatus);
     }
 

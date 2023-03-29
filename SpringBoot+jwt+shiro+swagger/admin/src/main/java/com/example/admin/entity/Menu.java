@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,13 +17,13 @@ import java.util.Optional;
  * </p>
  *
  * @author 贲玉柱
- * @since 2023-03-04 05:12:50
+ * @since 2023-03-29 05:00:18
  */
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-@TableName("db_controllers")
-public class Controllers extends Model<Controllers> {
+@TableName("db_menu")
+public class Menu extends Model<Menu> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -52,10 +53,10 @@ public class Controllers extends Model<Controllers> {
     private String name;
 
     /**
-     * 状态 1正常 0冻结
+     * 是否隐藏 0:隐藏 1:显示
      */
-    @TableField("status")
-    private Boolean status;
+    @TableField("hidden")
+    private Byte hidden;
 
     /**
      * 重定向
@@ -112,28 +113,31 @@ public class Controllers extends Model<Controllers> {
     @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
+    @TableField(exist = false)
+    private List<Menu> children;
+
     @Override
     public Serializable pkVal() {
         return this.id;
     }
 
-    public Controllers(Controllers controllers) {
-        Optional.ofNullable(controllers).ifPresent(e ->{
-            this.id = e.getId();
-            this.pid = e.getPid();
-            this.path = e.getPath();
-            this.component = e.getComponent();
-            this.name = e.getName();
-            this.status = e.getStatus();
-            this.redirect = e.getRedirect();
-            this.title = e.getTitle();
-            this.icon = e.getIcon();
-            this.sort = e.getSort();
-            this.isDefault = e.getIsDefault();
-            this.isAdmin = e.getIsAdmin();
-            this.deleted = e.getDeleted();
-            this.createdAt = e.getCreatedAt();
-            this.updatedAt = e.getUpdatedAt();
+    public Menu(Menu menu) {
+        Optional.ofNullable(menu).ifPresent(m -> {
+            this.id = m.getId();
+            this.pid = m.getPid();
+            this.path = m.getPath();
+            this.component = m.getComponent();
+            this.name = m.getName();
+            this.hidden = m.getHidden();
+            this.redirect = m.getRedirect();
+            this.title = m.getTitle();
+            this.icon = m.getIcon();
+            this.sort = m.getSort();
+            this.isDefault = m.getIsDefault();
+            this.isAdmin = m.getIsAdmin();
+            this.deleted = m.getDeleted();
+            this.createdAt = m.getCreatedAt();
+            this.updatedAt = m.getUpdatedAt();
         });
     }
 }

@@ -3,12 +3,14 @@ package com.example.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.admin.common.ServiceException;
 import com.example.admin.entity.Config;
 import com.example.admin.entity.Picture;
 import com.example.admin.entity.vo.ConfigVo;
 import com.example.admin.mapper.ConfigMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.ConfigService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.Optional;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
+@Slf4j
 @Service
 public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> implements ConfigService {
 
@@ -39,15 +42,15 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
      */
     @Override
     public ConfigVo getConfig() {
-        LambdaQueryWrapper<Config> wrapper = Wrappers.lambdaQuery(Config.class).eq(Config::getId, 1);
         // 先查询用户信息
-        Config config = configMapper.selectOne(wrapper);
+        Config config = configMapper.selectOne(new LambdaQueryWrapper<Config>().eq(Config::getId, 1));
         // 转化为Vo
         ConfigVo configVo = Optional.ofNullable(config).map(ConfigVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
         Optional.ofNullable(configVo).ifPresent(this::addPath);
         return configVo;
     }
+
 
     /**
      * 补充配置图片路径
@@ -67,9 +70,21 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
 
     /**
      * 修改配置
+     *
+     * @param config 配置
+     * @return int 修改条数
+     * @throws ServiceException 业务异常
      */
     @Override
     public int updateConfig(Config config) {
+        if (config.getId() == null) {
+            log.error("修改配置失败========>Id 不能为空");
+            throw new ServiceException(400, "Id 不能为空");
+        }
+        if (configMapper.selectById(config.getId()) == null) {
+            log.error("修改配置失败========>Id 不存在");
+            throw new ServiceException(400, "Id 不存在");
+        }
         return configMapper.updateById(config);
     }
 }

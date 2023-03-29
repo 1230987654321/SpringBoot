@@ -30,7 +30,7 @@ public class CodeGenerator {
     public static void main(String[] args) {
         FastAutoGenerator.create(
                         /* 数据库配置 */
-                        new DataSourceConfig.Builder("jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai", "root", "root")
+                        new DataSourceConfig.Builder("jdbc:mysql://localhost:3306/test?tinyInt1isBit=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai", "root", "hyy835435")
                 )
                 /* 全局配置 */
                 .globalConfig(builder -> {

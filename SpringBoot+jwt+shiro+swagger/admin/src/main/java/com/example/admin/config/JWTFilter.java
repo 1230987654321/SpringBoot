@@ -7,10 +7,10 @@ import com.example.admin.SpringContext;
 import com.example.admin.common.JWTToken;
 import com.example.admin.common.ResponseCodeEnum;
 import com.example.admin.common.ServiceException;
-import com.example.admin.util.JWTUtil;
-import com.example.admin.util.RedisUtil;
 import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
+import com.example.admin.util.JWTUtil;
+import com.example.admin.util.RedisUtil;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -40,10 +40,10 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     /**
      * 此方法用于对用户进行身份验证。
      *
-     * @param request ServletRequest
+     * @param request  ServletRequest
      * @param response ServletResponse
      * @return boolean
-     * @throws Exception
+     * @throws Exception Exception
      */
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
@@ -123,7 +123,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         Admin admin = redisUtil.getData(REDIS_KEY_ADMIN_PREFIX + username, Admin.class);
         if (admin == null) {
             // 如果 Redis 中不存在该用户信息，则从数据库中获取并存储到 Redis 中
-            admin = adminService.getUsername(username);
+            admin = adminService.getAdminByUsername(username);
             if (admin == null) {
                 handlerExceptionResolver.resolveException((HttpServletRequest) request, (HttpServletResponse) response, null, new ServiceException(401, ResponseCodeEnum.NOT_EXIST.getMessage()));
                 return false;
@@ -151,7 +151,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      * @param request  ServletRequest
      * @param response ServletResponse
      * @return boolean
-     * @throws Exception
+     * @throws Exception Exception
      */
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {

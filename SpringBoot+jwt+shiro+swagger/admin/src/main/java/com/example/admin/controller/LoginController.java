@@ -1,8 +1,5 @@
 package com.example.admin.controller;
 
-import com.example.admin.common.ResponseCodeEnum;
-import com.example.admin.common.ServiceException;
-import com.example.admin.entity.Admin;
 import com.example.admin.service.AdminService;
 import com.example.admin.util.JWTUtil;
 import com.example.admin.util.RedisUtil;
@@ -10,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,19 +43,9 @@ public class LoginController {
     @ApiOperation(value = "登录", notes = "使用用户名和密码进行登录")
     @PostMapping("/toLogin")
     public String toLogin(String username, String password) {
-        Admin admin = adminService.getUsername(username);
-        if (admin == null) { // 用户不存在
-            throw new ServiceException(ResponseCodeEnum.NOT_EXIST);
-        } else if (!admin.getStatus().equals(1)) { // 用户被禁用
-            throw new ServiceException(ResponseCodeEnum.ACCOUNT_DISABLED);
-        }
-        // 密码 md5 加密
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (!admin.getPassword().equals(password)) { // 登陆失败,用户名或密码错误
-            throw new ServiceException(ResponseCodeEnum.LOGIN_FAILED);
-        } else {
-            return JWTUtil.createJWT(username);
-        }
+        // 根据账号密码查询用户
+        adminService.getUsernameAndPassword(username, password);
+        return JWTUtil.createJWT(username);
     }
 
     /**
