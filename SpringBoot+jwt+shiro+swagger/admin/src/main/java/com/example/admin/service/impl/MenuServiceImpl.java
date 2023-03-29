@@ -28,7 +28,7 @@ import java.util.Map;
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
-    private MenuMapper menuMapper;
+    private final MenuMapper menuMapper;
 
     public MenuServiceImpl(MenuMapper menuMapper) {
         this.menuMapper = menuMapper;
@@ -142,16 +142,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     /**
      * 将菜单栏转换为树形结构
      *
-     * @param controllers 菜单栏列表
+     * @param menus 菜单栏列表
      * @return List<Menu> 菜单栏列表
      */
-    private List<Menu> getTree(List<Menu> controllers) {
+    private List<Menu> getTree(List<Menu> menus) {
         List<Menu> tree = new ArrayList<>();
         Map<Integer, Menu> map = new HashMap<>();
-        for (Menu controller : controllers) {
-            map.put(controller.getId(), controller);
+        for (Menu menu : menus) {
+            map.put(menu.getId(), menu);
         }
-        for (Menu controller : controllers) {
+        for (Menu controller : menus) {
             if (controller.getPid() == 0) {
                 tree.add(controller);
             } else {
