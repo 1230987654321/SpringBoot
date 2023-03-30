@@ -32,7 +32,6 @@ import java.util.Objects;
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private final Environment environment;
-
     public JWTFilter(Environment environment) {
         this.environment = environment;
     }

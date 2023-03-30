@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -43,7 +44,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<String> getColumnName(List<Integer> ids) {
         LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery(Menu.class).select(Menu::getName).in(Menu::getId, ids);
-        return this.listObjs(wrapper, Object::toString);
+        List<Menu> menuList = menuMapper.selectList(wrapper);
+        // 判断菜单栏是否存在
+        CheckUtil.checkListNotNull(menuList, 404, "菜单栏不存在");
+        // 使用stream流将菜单栏名称取出
+        return menuList.stream().map(Menu::getName).collect(Collectors.toList());
     }
 
     /**
@@ -58,8 +63,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             wrapper.eq(Menu::getHidden, 1);
         }
         wrapper.orderByAsc(Menu::getSort).orderByDesc(Menu::getCreatedAt);
-        List<Menu> controllers = menuMapper.selectList(wrapper);
-        return getTree(controllers);
+        List<Menu> menus = menuMapper.selectList(wrapper);
+        // 判断菜单栏是否存在
+        CheckUtil.checkListNotNull(menus, 404, "菜单栏不存在");
+        // 将菜单栏转换为树形结构
+        return getTree(menus);
     }
 
     /**
@@ -70,8 +78,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      */
     @Override
     public Menu getMenuById(Integer id) {
+        // 参数校验
         CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
-        return menuMapper.selectById(id);
+        Menu menu = menuMapper.selectById(id);
+        // 判断菜单栏是否存在
+        CheckUtil.checkObjectNotNull(menu, 404, "该菜单栏不存在");
+        return menu;
     }
 
     /**
@@ -79,15 +91,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      *
      * @param menu 菜单栏
      * @return int 影响行数
+     * @throws ServiceException 业务异常
      */
     @Override
     public int addMenu(Menu menu) {
+        // 参数校验
         CheckUtil.checkStringNotEmpty(menu.getPath(), "参数path不能为空");
         CheckUtil.checkStringNotEmpty(menu.getTitle(), "参数title不能为空");
         LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery(Menu.class).eq(Menu::getPath, menu.getPath());
-        Menu menu1 = menuMapper.selectOne(wrapper);
-        CheckUtil.checkObjectNotNull(menu1, 500, "该菜单栏已存在");
-        return menuMapper.insert(menu);
+        Menu menuInfo = menuMapper.selectOne(wrapper);
+        // 判断菜单栏是否存在 存在则抛出异常 409:冲突
+        CheckUtil.checkObjectNotNull(menuInfo, 409, "该菜单栏已存在");
+        try {
+            return menuMapper.insert(menu);
+        } catch (Exception e) {
+            log.error("创建菜单失败 =======>", e);
+            throw new ServiceException(500, "创建菜单失败");
+        }
     }
 
     /**
@@ -95,10 +115,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      *
      * @param menu 菜单栏
      * @return int 影响行数
+     * @throws ServiceException 业务异常
      */
     @Override
     public int updateMenu(Menu menu) {
+        // 参数校验
         CheckUtil.checkIntegerNotNull(menu.getId(), "参数id不能为空");
+        CheckUtil.checkStringNotEmpty(menu.getPath(), "参数path不能为空");
+        CheckUtil.checkStringNotEmpty(menu.getTitle(), "参数title不能为空");
         try {
             return menuMapper.updateById(menu);
         } catch (Exception e) {
@@ -112,12 +136,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      *
      * @param id id
      * @return int 影响行数
+     * @throws ServiceException 业务异常
      */
     @Override
     public int updateMenuHidden(Integer id, Byte hidden) {
+        // 参数校验
         CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
         CheckUtil.checkIntegerNotNull(Integer.valueOf(hidden), "参数hidden不能为空");
         Menu menu = menuMapper.selectById(id);
+        // 判断菜单栏是否存在
         CheckUtil.checkObjectNotNull(menu, 404, "菜单栏不存在");
         menu.setHidden(hidden);
         try {
@@ -133,9 +160,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      *
      * @param id id
      * @return int 影响行数
+     * @throws ServiceException 业务异常
      */
     @Override
     public int deleteMenu(Integer id) {
+        // 参数校验
+        CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
         try {
             return menuMapper.deleteById(id);
         } catch (Exception e) {
@@ -156,16 +186,19 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         for (Menu menu : menus) {
             map.put(menu.getId(), menu);
         }
-        for (Menu controller : menus) {
-            if (controller.getPid() == 0) {
-                tree.add(controller);
+        for (Menu menu : menus) {
+            if (menu.getPid() == 0) {
+                tree.add(menu);
             } else {
-                Menu parent = map.get(controller.getPid());
+                Menu parent = map.get(menu.getPid());
                 if (parent != null) {
                     if (parent.getChildren() == null) {
                         parent.setChildren(new ArrayList<>());
                     }
-                    parent.getChildren().add(controller);
+                    parent.getChildren().add(menu);
+                } else {
+                    // 菜单栏转换为树形失败
+                    throw new ServiceException(500, "菜单栏转换为树形失败");
                 }
             }
         }

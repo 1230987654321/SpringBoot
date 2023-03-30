@@ -67,7 +67,7 @@ public class ShiroConfig {
         try {
             defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
         } catch (Exception e) {
-            log.error("Error disabling session storage", e);
+            log.error("禁用Session时出现错误", e);
         }
         return defaultSessionStorageEvaluator;
     }

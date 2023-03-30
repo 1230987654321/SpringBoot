@@ -4,6 +4,8 @@ import com.example.admin.common.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
+
 /**
  * @author 贲玉柱
  * @program workspace
@@ -46,21 +48,6 @@ public class CheckUtil {
      * 判断对象是否为null
      *
      * @param object 对象
-     * @param msg    提示信息
-     * @throws ServiceException 业务异常
-     */
-    public static void checkObjectNotNull(Object object, String msg) {
-        if (object == null) {
-            // 记录日志
-            log.error(msg + " =======>" + object);
-            throw new ServiceException(400, msg);
-        }
-    }
-
-    /**
-     * 判断对象是否为null
-     *
-     * @param object 对象
      * @param code   错误码
      * @param msg    提示信息
      * @throws ServiceException 业务异常
@@ -68,8 +55,42 @@ public class CheckUtil {
     public static void checkObjectNotNull(Object object, Integer code, String msg) {
         if (object == null) {
             // 记录日志
-            log.error(msg + " =======>" + object);
+            log.error(msg);
             throw new ServiceException(code, msg);
+        }
+    }
+
+    /**
+     * 判断List集合是否为空
+     *
+     * @param list List集合
+     * @param code 错误码
+     * @param msg  提示信息
+     * @throws ServiceException 业务异常
+     */
+    public static <T> void checkListNotNull(List<T> list, Integer code, String msg) {
+        if (list == null || list.size() == 0) {
+            // 记录日志
+            log.error(msg + " =======>" + list);
+            throw new ServiceException(code, msg);
+        }
+    }
+
+    /**
+     * 判断当前页和每页大小是否为正整数
+     *
+     * @param current 当前页
+     * @param size    每页大小
+     * @throws ServiceException 业务异常
+     */
+    public static void checkPage(Integer current, Integer size) {
+        if (current <= 0 || size <= 0) {
+            throw new ServiceException(400, "当前页和每页大小必须为正整数");
+        }
+        // 假设最大每页大小为 500
+        int maxPageSize = 500;
+        if (size > maxPageSize) {
+            throw new ServiceException(400, "每页大小不能超过" + maxPageSize);
         }
     }
 }

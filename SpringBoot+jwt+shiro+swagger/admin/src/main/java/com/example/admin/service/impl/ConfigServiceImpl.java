@@ -45,6 +45,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     public ConfigVo getConfig() {
         // 先查询用户信息
         Config config = configMapper.selectOne(new LambdaQueryWrapper<Config>().eq(Config::getId, 1));
+        CheckUtil.checkObjectNotNull(config, 404, "配置不存在");
         // 转化为Vo
         ConfigVo configVo = Optional.ofNullable(config).map(ConfigVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
@@ -52,6 +53,20 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         return configVo;
     }
 
+    /**
+     * 修改配置
+     *
+     * @param config 配置
+     * @return int 修改条数
+     * @throws ServiceException 业务异常
+     */
+    @Override
+    public int updateConfig(Config config) {
+        CheckUtil.checkIntegerNotNull(config.getId(), "Id 不能为空");
+        Config configInfo = configMapper.selectById(config.getId());
+        CheckUtil.checkObjectNotNull(configInfo, 404, "配置不存在");
+        return configMapper.updateById(config);
+    }
 
     /**
      * 补充配置图片路径
@@ -67,20 +82,5 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         LambdaQueryWrapper<Picture> ShareImgWrapper = Wrappers.lambdaQuery(Picture.class).eq(Picture::getId, configVo.getShareImg()).select(Picture::getPath);
         Picture shareImgPath = pictureMapper.selectOne(ShareImgWrapper);
         Optional.ofNullable(shareImgPath).ifPresent(e -> configVo.setShareImgPath(e.getPath()));
-    }
-
-    /**
-     * 修改配置
-     *
-     * @param config 配置
-     * @return int 修改条数
-     * @throws ServiceException 业务异常
-     */
-    @Override
-    public int updateConfig(Config config) {
-        CheckUtil.checkIntegerNotNull(config.getId(), "Id 不能为空");
-        Config configInfo = configMapper.selectById(config.getId());
-        CheckUtil.checkObjectNotNull(configInfo, 404, "Id 不存在");
-        return configMapper.updateById(config);
     }
 }

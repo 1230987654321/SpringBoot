@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @description 封装了 Redis 缓存中 的增删查操作
  * @create 2023/3/21 16:14
  **/
-@Service
+@Component
 public class RedisUtil {
     /**
      * RedisTemplate 对象，用于与 Redis 进行数据交互

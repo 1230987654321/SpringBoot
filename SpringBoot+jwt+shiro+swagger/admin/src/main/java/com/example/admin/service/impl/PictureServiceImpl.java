@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.admin.entity.Picture;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.PictureService;
+import com.example.admin.util.CheckUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +37,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
      * @return IPage<Picture>
      */
     public IPage<Picture> getPictureList(Integer current, Integer size, Picture picture) {
+        CheckUtil.checkPage(current, size);
         Page<Picture> page = new Page<>(current, size);
         LambdaQueryWrapper<Picture> wrapper = Wrappers.lambdaQuery(Picture.class);
         wrapper.eq(picture.getSource() != null, Picture::getSource, picture.getSource());

@@ -42,13 +42,23 @@ public class GlobalExceptionHandler {
         log.error("业务异常:" + e.getMessage(), e);
         HttpStatus httpStatus;
         GlobalResponse<Object> response;
-        if (e.getCode() == 401) {
-            httpStatus = HttpStatus.UNAUTHORIZED;
-        } else if (e.getCode() == 422) {
-            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+        if (e.getCode() == 204) {
+            // 204表示无数据
+            httpStatus = HttpStatus.NO_CONTENT;
         } else if (e.getCode() == 400) {
+            // 400表示参数错误
             httpStatus = HttpStatus.BAD_REQUEST;
+        } else if (e.getCode() == 401) {
+            // 401表示未登录
+            httpStatus = HttpStatus.UNAUTHORIZED;
+        } else if (e.getCode() == 409) {
+            // 409表示冲突
+            httpStatus = HttpStatus.CONFLICT;
+        } else if (e.getCode() == 422) {
+            // 422表示参数错误
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
         } else if (e.getCode() == 500) {
+            // 500表示服务器错误
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         } else {
             httpStatus = HttpStatus.OK;

@@ -75,9 +75,11 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public BannerVo getBannerById(Integer id) {
+        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
         LambdaQueryWrapper<Banner> wrapper = Wrappers.lambdaQuery(Banner.class).eq(Banner::getId, id);
-        // 先查询用户信息
+        // 先查询轮播信息
         Banner banner = bannerMapper.selectOne(wrapper);
+        CheckUtil.checkObjectNotNull(banner, 404, "轮播图不存在");
         // 转化为Vo
         BannerVo bannerVo = Optional.ofNullable(banner).map(BannerVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
@@ -95,6 +97,8 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo) {
+        // 参数校验
+        CheckUtil.checkPage(current, size);
         Page<Banner> page = new Page<>(current, size);
         LambdaQueryWrapper<Banner> wrapper = Wrappers.lambdaQuery(Banner.class).orderByDesc(Banner::getSort).orderByDesc(Banner::getCreatedAt);
         // 查询轮播图列表
