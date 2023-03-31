@@ -23,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/admin/picture")
 public class PictureController {
     private final PictureService pictureService;
+
     public PictureController(PictureService pictureService) {
         this.pictureService = pictureService;
     }
@@ -37,7 +38,7 @@ public class PictureController {
      */
     @ApiOperation(value = "上传图片", notes = "上传图片")
     @PostMapping("/addPicture")
-    public Map<String, Object> addPicture(MultipartFile file, Integer uid, Integer source) {
+    public Map<String, Object> addPicture(MultipartFile file, @RequestParam(name = "uid") Integer uid, @RequestParam(name = "source") Integer source) {
         return pictureService.addPicture(file, uid, source);
     }
 
@@ -49,7 +50,7 @@ public class PictureController {
      */
     @ApiOperation(value = "删除图片", notes = "删除图片")
     @DeleteMapping("/deletePictureId")
-    public Integer deletePictureId(Integer id) {
+    public Integer deletePictureId(@RequestParam(name = "id") Integer id) {
         return pictureService.deletePictureId(id);
     }
 
@@ -61,21 +62,21 @@ public class PictureController {
      */
     @ApiOperation(value = "查询图片", notes = "查询图片")
     @GetMapping("/getPictureId")
-    public Picture getPictureId(Integer id) {
+    public Picture getPictureId(@RequestParam(name = "id") Integer id) {
         return pictureService.getPictureById(id);
     }
 
     /**
      * 查询图片列表
      *
-     * @param page    页码
+     * @param current 页码
      * @param size    每页数量
      * @param picture 图片
      * @return IPage<Picture>
      */
     @ApiOperation(value = "查询图片列表", notes = "查询图片列表")
     @GetMapping("/getPictureList")
-    public IPage<Picture> getPictureList(Integer page, Integer size, Picture picture) {
-        return pictureService.getPictureList(page, size, picture);
+    public IPage<Picture> getPictureList(@RequestParam(name = "source") Integer current, @RequestParam(name = "size") Integer size, Picture picture) {
+        return pictureService.getPictureList(current, size, picture);
     }
 }

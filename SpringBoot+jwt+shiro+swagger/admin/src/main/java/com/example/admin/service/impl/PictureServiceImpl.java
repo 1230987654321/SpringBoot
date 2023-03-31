@@ -11,7 +11,6 @@ import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.PictureService;
 import com.example.admin.util.CheckUtil;
 import com.example.admin.util.FileCheckUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +31,6 @@ import java.util.UUID;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
-@Slf4j
 @Service
 public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> implements PictureService {
 
@@ -79,7 +77,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
     @Override
     public Map<String, Object> addPicture(MultipartFile file, Integer uid, Integer source) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(uid, "用户id不能为空");
+        CheckUtil.checkIntegerNotZero(uid, "用户id不能为空");
         CheckUtil.checkIntegerNotNull(source, "图片来源不能为空");
         // 校验文件是否为空,并上传,返回新文件名
         String newFileName = upload(file);
@@ -106,7 +104,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
     @Override
     public Integer deletePictureId(Integer id) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(id, "图片id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "图片id不能为空");
         // 查询图片信息
         Picture picture = pictureMapper.selectById(id);
         CheckUtil.checkObjectNotNull(picture, 404, "图片不存在");
@@ -114,7 +112,6 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
         try {
             return pictureMapper.deleteById(picture);
         } catch (Exception e) {
-            log.error("删除图片失败=======>", e);
             throw new ServiceException(500, "删除图片失败");
         }
     }
@@ -129,7 +126,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
     @Override
     public Picture getPictureById(Integer id) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(id, "图片id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "图片id不能为空");
         // 查询图片信息
         Picture picture = pictureMapper.selectById(id);
         CheckUtil.checkObjectNotNull(picture, 404, "图片不存在");
@@ -149,14 +146,12 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
         CheckUtil.checkStringNotEmpty(originalFilename, "上传文件名不能为空");
         int dotIndex = originalFilename.lastIndexOf(".");
         if (dotIndex == -1) {
-            log.error("文件格式错误,上传文件没有扩展名");
             throw new ServiceException(422, "文件格式错误,上传文件没有扩展名");
         }
         // 判断文件是否是恶意文件
         try {
             FileCheckUtil.isFileMalicious(file, maxSize);
         } catch (IOException e) {
-            log.error("检查文件时发生错误", e);
             throw new ServiceException(500, "检查文件时发生错误");
         }
         // 文件后缀
@@ -177,7 +172,6 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
         try {
             file.transferTo(new File(uploadPath + dirName + newFileName));
         } catch (IOException e) {
-            log.error("文件上传失败", e);
             throw new ServiceException(422, "文件上传失败");
         }
         return dirName + newFileName;

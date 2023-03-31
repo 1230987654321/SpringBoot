@@ -80,7 +80,7 @@ public class UserRealm extends AuthorizingRealm {
      * 获取当前登录用户角色、权限信息
      * 返回给 Shiro 用来进行授权验证
      *
-     * @param principals the primary identifying principals of the AuthorizationInfo that should be retrieved.
+     * @param principals PrincipalCollection
      * @return SimpleAuthorizationInfo
      */
     @Override
@@ -105,9 +105,13 @@ public class UserRealm extends AuthorizingRealm {
         Role role = redisUtil.getData(REDIS_KEY_ROLE_PREFIX + admin.getRoleId(), Role.class);
         if (role == null) {
             // 查询角色
-            role = roleService.getById(admin.getRoleId());
+            role = roleService.getRoleDetail(admin.getRoleId());
             if (role == null) {
                 throw new ServiceException(401, "当前登录者并无角色");
+            } else if (role.getControlId() == null || role.getControlId().equals("")) {
+                throw new ServiceException(401, "当前登录者并无权限");
+            } else if (role.getStatus() == 0) {
+                throw new ServiceException(401, "当前登录着角色已被禁用");
             }
             // 将查询用户信息储存 Redis 中
             redisUtil.addData(REDIS_KEY_ROLE_PREFIX + admin.getRoleId(), role);
@@ -143,6 +147,7 @@ public class UserRealm extends AuthorizingRealm {
      * 自定义认证
      * 获取当前登录用户信息
      * 返回给 Shiro 用来进行身份验证
+     *
      * @param authenticationToken 用户身份信息
      * @return SimpleAuthenticationInfo
      */

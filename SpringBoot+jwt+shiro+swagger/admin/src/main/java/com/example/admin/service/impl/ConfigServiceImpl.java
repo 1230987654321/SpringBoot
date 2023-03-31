@@ -11,7 +11,6 @@ import com.example.admin.mapper.ConfigMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.ConfigService;
 import com.example.admin.util.CheckUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,7 +23,6 @@ import java.util.Optional;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
-@Slf4j
 @Service
 public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> implements ConfigService {
 
@@ -47,9 +45,9 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         Config config = configMapper.selectOne(new LambdaQueryWrapper<Config>().eq(Config::getId, 1));
         CheckUtil.checkObjectNotNull(config, 404, "配置不存在");
         // 转化为Vo
-        ConfigVo configVo = Optional.ofNullable(config).map(ConfigVo::new).orElse(null);
+        ConfigVo configVo = Optional.of(config).map(ConfigVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
-        Optional.ofNullable(configVo).ifPresent(this::addPath);
+        Optional.of(configVo).ifPresent(this::addPath);
         return configVo;
     }
 
@@ -62,7 +60,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
      */
     @Override
     public int updateConfig(Config config) {
-        CheckUtil.checkIntegerNotNull(config.getId(), "Id 不能为空");
+        CheckUtil.checkIntegerNotZero(config.getId(), "Id 不能为空");
         Config configInfo = configMapper.selectById(config.getId());
         CheckUtil.checkObjectNotNull(configInfo, 404, "配置不存在");
         return configMapper.updateById(config);

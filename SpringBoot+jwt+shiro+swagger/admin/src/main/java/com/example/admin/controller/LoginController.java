@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,7 +39,7 @@ public class LoginController {
      */
     @ApiOperation(value = "登录", notes = "使用用户名和密码进行登录")
     @PostMapping("/toLogin")
-    public String toLogin(String username, String password) {
+    public String toLogin(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password) {
         // 根据账号密码查询用户
         adminService.getUsernameAndPassword(username, password);
         return JWTUtil.createJWT(username);

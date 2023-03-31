@@ -8,7 +8,6 @@ import com.example.admin.entity.Menu;
 import com.example.admin.mapper.MenuMapper;
 import com.example.admin.service.MenuService;
 import com.example.admin.util.CheckUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  * @author 贲玉柱
  * @since 2023-03-29 05:00:18
  */
-@Slf4j
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
@@ -79,7 +77,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public Menu getMenuById(Integer id) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "参数id不能为空");
         Menu menu = menuMapper.selectById(id);
         // 判断菜单栏是否存在
         CheckUtil.checkObjectNotNull(menu, 404, "该菜单栏不存在");
@@ -105,7 +103,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         try {
             return menuMapper.insert(menu);
         } catch (Exception e) {
-            log.error("创建菜单失败 =======>", e);
             throw new ServiceException(500, "创建菜单失败");
         }
     }
@@ -120,14 +117,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public int updateMenu(Menu menu) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(menu.getId(), "参数id不能为空");
+        CheckUtil.checkIntegerNotZero(menu.getId(), "参数id不能为空");
         CheckUtil.checkStringNotEmpty(menu.getPath(), "参数path不能为空");
         CheckUtil.checkStringNotEmpty(menu.getTitle(), "参数title不能为空");
         try {
             return menuMapper.updateById(menu);
         } catch (Exception e) {
-            log.error("修改菜单栏失败 =======>", e);
-            throw new ServiceException(500, "更新失败");
+            throw new ServiceException(500, "更新菜单栏失败");
         }
     }
 
@@ -141,7 +137,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public int updateMenuHidden(Integer id, Byte hidden) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "参数id不能为空");
         CheckUtil.checkIntegerNotNull(Integer.valueOf(hidden), "参数hidden不能为空");
         Menu menu = menuMapper.selectById(id);
         // 判断菜单栏是否存在
@@ -150,8 +146,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         try {
             return menuMapper.updateById(menu);
         } catch (Exception e) {
-            log.error("修改菜单栏失败 =======>", e);
-            throw new ServiceException(500, "修改失败");
+            throw new ServiceException(500, "修改菜单栏失败");
         }
     }
 
@@ -165,12 +160,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public int deleteMenu(Integer id) {
         // 参数校验
-        CheckUtil.checkIntegerNotNull(id, "参数id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "参数id不能为空");
         try {
             return menuMapper.deleteById(id);
         } catch (Exception e) {
-            log.error("删除菜单栏 =======>", e);
-            throw new ServiceException(500, "删除失败");
+            throw new ServiceException(500, "删除菜单栏失败");
         }
     }
 

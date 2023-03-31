@@ -49,7 +49,7 @@ public class AdminController {
      */
     @ApiOperation(value = "查询管理员列表", notes = "查询管理员列表")
     @GetMapping("/getAdminList")
-    public IPage<AdminVo> getAdminList(Integer current, Integer size, AdminVo adminVo) {
+    public IPage<AdminVo> getAdminList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, AdminVo adminVo) {
         return adminService.getAdminList(current, size, adminVo);
     }
 
@@ -61,7 +61,7 @@ public class AdminController {
      */
     @ApiOperation(value = "根据id查询管理员", notes = "根据id查询管理员")
     @GetMapping("/getAdminById")
-    public AdminVo getAdminById(Integer id) {
+    public AdminVo getAdminById(@RequestParam(name = "id") Integer id) {
         return adminService.getAdminById(id);
     }
 
@@ -88,7 +88,7 @@ public class AdminController {
      */
     @ApiOperation(value = "修改管理员状态", notes = "修改管理员状态")
     @PutMapping("/updateStatus")
-    public Integer updateStatus(Integer id, Integer status) {
+    public Integer updateStatus(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
         return adminService.updateStatus(id, status);
     }
 
@@ -101,7 +101,7 @@ public class AdminController {
      */
     @ApiOperation(value = "修改管理员密码", notes = "修改管理员密码")
     @PutMapping("/updatePassword")
-    public Integer updatePassword(Integer id, String password) {
+    public Integer updatePassword(@RequestParam(name = "id") Integer id, @RequestParam(name = "password") String password) {
         return adminService.updatePassword(id, password);
     }
 
@@ -125,7 +125,7 @@ public class AdminController {
      */
     @ApiOperation(value = "删除管理员", notes = "删除管理员")
     @DeleteMapping("/deleteAdmin")
-    public Integer deleteAdmin(Integer id) {
+    public Integer deleteAdmin(@RequestParam(name = "id") Integer id) {
         return adminService.deleteAdmin(id);
     }
 }

@@ -2,7 +2,6 @@ package com.example.admin.util;
 
 import com.example.admin.common.FileTypeEnum;
 import com.example.admin.common.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.io.IOException;
  * @description 文件验证工具类
  * @create 2023/3/30 13:53
  **/
-@Slf4j
 public class FileCheckUtil {
 
     private static FileTypeEnum FileContentType;
@@ -29,24 +27,19 @@ public class FileCheckUtil {
     public static void isFileMalicious(MultipartFile file, Long maxSize) throws IOException {
         // 检查文件类型
         if (file.getContentType() == null) {
-            log.error("上传文件类型不能为空");
             throw new ServiceException(400, "上传文件类型不能为空");
         }
         if (!file.getContentType().startsWith("image/")) {
-            log.error("暂不支持的文件类型======>{}", file.getContentType());
             throw new ServiceException(400, "暂不支持的文件类型");
         }
         // 检查文件大小
         if (file.getSize() > maxSize) {
-            log.error("文件大小不能超过{}======>{}", maxSize, file.getSize());
             throw new ServiceException(400, "文件大小不能超过" + maxSize);
         }
         if (!isAllowedContentType(file.getContentType()) || !isAllowedFileHeader(file.getBytes())) {
-            log.error("暂不支持的文件类型!");
             throw new ServiceException(400, "暂不支持的文件类型!");
         }
         if (FileContentType != FileBytes) {
-            log.error("上传文件有异常,已被系统禁止!");
             throw new ServiceException(400, "上传文件有异常,已被系统禁止!");
         }
     }

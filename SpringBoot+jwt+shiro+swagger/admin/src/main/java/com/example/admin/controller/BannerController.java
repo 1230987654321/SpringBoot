@@ -46,7 +46,7 @@ public class BannerController {
      */
     @ApiOperation(value = "查询轮播图详情", notes = "查询轮播图详情")
     @GetMapping("/getBannerById")
-    public BannerVo getBannerById(Integer id) {
+    public BannerVo getBannerById(@RequestParam(name = "id") Integer id) {
         return bannerService.getBannerById(id);
     }
 
@@ -60,7 +60,7 @@ public class BannerController {
      */
     @ApiOperation(value = "查询轮播图列表", notes = "查询轮播图列表")
     @GetMapping("/getBannerList")
-    public IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo) {
+    public IPage<BannerVo> getBannerList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, BannerVo bannerVo) {
         return bannerService.getBannerList(current, size, bannerVo);
     }
 
@@ -72,7 +72,7 @@ public class BannerController {
      * @return int 1成功 0失败
      */
     @PutMapping("/updateBannerStatus")
-    public int updateBannerStatus(Integer id, Integer status) {
+    public int updateBannerStatus(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
         return bannerService.updateBannerStatus(id, status);
     }
 
@@ -96,7 +96,7 @@ public class BannerController {
      */
     @ApiOperation(value = "删除轮播图", notes = "删除轮播图")
     @DeleteMapping("/deleteBanner")
-    public int deleteBanner(Integer id) {
+    public int deleteBanner(@RequestParam(name = "id") Integer id) {
         return bannerService.deleteBanner(id);
     }
 }

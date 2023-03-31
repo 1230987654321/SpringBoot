@@ -14,7 +14,6 @@ import com.example.admin.mapper.RoleMapper;
 import com.example.admin.service.AdminService;
 import com.example.admin.util.CheckUtil;
 import com.example.admin.util.RedisUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,6 @@ import static java.util.stream.Collectors.toSet;
  * @author 贲玉柱
  * @since 2023-03-04 05:12:50
  */
-@Slf4j
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
@@ -67,15 +65,14 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         // 判断密码是否存在
         CheckUtil.checkStringNotEmpty(admin.getPassword(), "密码不能为空");
         // 判断角色是否存在
-        CheckUtil.checkIntegerNotNull(admin.getRoleId(), "角色不能为空");
+        CheckUtil.checkIntegerNotZero(admin.getRoleId(), "角色不能为空");
         // 判断管理员是否存在
         findAdmin(null, admin.getUsername(), "username");
         // 添加管理员
         try {
             return adminMapper.insert(admin);
         } catch (Exception e) {
-            log.error("添加管理员失败 =======>", e);
-            throw new ServiceException(500, "添加失败");
+            throw new ServiceException(500, "添加管理员失败");
         }
     }
 
@@ -124,7 +121,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public AdminVo getAdminById(Integer id) {
         // 判断管理员id是否存在
-        CheckUtil.checkIntegerNotNull(id, "管理员id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 在数据库中查找管理员
         return findAdmin(id, null, "id");
     }
@@ -146,12 +143,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Admin admin = findAdmin(null, username, "username");
         // 判断密码是否正确
         if (!password.equals(admin.getPassword())) {
-            log.error("管理员不存在 =======>账号：" + username + " 密码：" + password);
             throw new ServiceException(400, "账号或密码错误");
         }
         // 判断管理员状态是否正常
         if (admin.getStatus() != 1) {
-            log.error("管理员状态异常 =======>" + username + " 状态：" + admin.getStatus());
             throw new ServiceException(400, "管理员状态异常");
         }
         // 将管理员信息存入redis
@@ -184,12 +179,11 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Integer updateStatus(Integer id, Integer status) {
         // 判断管理员id是否存在
-        CheckUtil.checkIntegerNotNull(id, "管理员id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 判断管理员状态是否存在
         CheckUtil.checkIntegerNotNull(status, "管理员状态不能为空");
         // 判断管理员状态是否正确
         if (status != 0 && status != 1) {
-            log.error("管理员状态错误 =======>" + status);
             throw new ServiceException(400, "管理员状态错误");
         }
         // 在数据库中查找管理员
@@ -197,13 +191,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         // 修改管理员状态
         admin.setStatus(status);
         // 判断管理员状态是否修改成功
-        int result = adminMapper.updateById(admin);
-        if (result != 1) {
-            log.error("管理员状态修改失败 =======>" + id);
+        int result;
+        try {
+            result = adminMapper.updateById(admin);
+        } catch (Exception e) {
             throw new ServiceException(500, "管理员状态修改失败");
         }
         // 将管理员信息存入redis
-        redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), admin);
+        if (redisUtil.exists(REDIS_KEY_ADMIN_PREFIX + admin.getUsername())) {
+            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), admin);
+        }
         // 返回成功
         return result;
     }
@@ -219,7 +216,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Integer updatePassword(Integer id, String password) {
         // 判断管理员id是否存在
-        CheckUtil.checkIntegerNotNull(id, "管理员id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 判断管理员密码是否存在
         CheckUtil.checkStringNotEmpty(password, "密码不能为空");
         // 在数据库中查找管理员
@@ -227,9 +224,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         // 修改管理员密码
         admin.setPassword(password);
         // 判断管理员密码是否修改成功
-        int result = adminMapper.updateById(admin);
-        if (result != 1) {
-            log.error("管理员密码修改失败 =======>" + id);
+        int result;
+        try {
+            result = adminMapper.updateById(admin);
+        } catch (Exception e) {
             throw new ServiceException(500, "管理员密码修改失败");
         }
         return result;
@@ -245,7 +243,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Integer updateAdmin(Admin admin) {
         // 判断管理员id是否存在
-        CheckUtil.checkIntegerNotNull(admin.getId(), "管理员id不能为空");
+        CheckUtil.checkIntegerNotZero(admin.getId(), "管理员id不能为空");
         // 判断管理员用户名是否存在
         CheckUtil.checkStringNotEmpty(admin.getUsername(), "管理员用户名不能为空");
         // 判断管理员密码是否存在
@@ -257,9 +255,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         adminInfo.setPassword(admin.getPassword());
         adminInfo.setStatus(admin.getStatus());
         // 判断管理员信息是否修改成功
-        int result = adminMapper.updateById(adminInfo);
-        if (result != 1) {
-            log.error("管理员信息修改失败 =======>" + admin.getId());
+        int result;
+        try {
+            result = adminMapper.updateById(adminInfo);
+        } catch (Exception e) {
             throw new ServiceException(500, "管理员信息修改失败");
         }
         // 将管理员信息存入redis
@@ -277,17 +276,20 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Integer deleteAdmin(Integer id) {
         // 判断管理员id是否存在
-        CheckUtil.checkIntegerNotNull(id, "管理员id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 在数据库中查找管理员
         Admin admin = findAdmin(id, null, "id");
         // 删除管理员
-        int result = adminMapper.deleteById(id);
-        if (result != 1) {
-            log.error("管理员删除失败 =======>" + id);
+        int result;
+        try {
+            result = adminMapper.deleteById(id);
+        } catch (Exception e) {
             throw new ServiceException(500, "管理员删除失败");
         }
         // 将管理员信息从redis中删除
-        redisUtil.removeAdmin(REDIS_KEY_ADMIN_PREFIX + admin.getUsername());
+        if (redisUtil.exists(REDIS_KEY_ADMIN_PREFIX + admin.getUsername())) {
+            redisUtil.removeAdmin(REDIS_KEY_ADMIN_PREFIX + admin.getUsername());
+        }
         return result;
     }
 
@@ -312,9 +314,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Admin admin = adminMapper.selectOne(wrapper);
         CheckUtil.checkObjectNotNull(admin, 404, "管理员不存在");
         // 转化为Vo
-        AdminVo adminVo = Optional.ofNullable(admin).map(AdminVo::new).orElse(null);
+        AdminVo adminVo = Optional.of(admin).map(AdminVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
-        Optional.ofNullable(adminVo).ifPresent(this::addRoleName);
+        Optional.of(adminVo).ifPresent(this::addRoleName);
         return adminVo;
     }
 

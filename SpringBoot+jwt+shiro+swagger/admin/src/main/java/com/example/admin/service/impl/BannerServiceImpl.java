@@ -13,7 +13,6 @@ import com.example.admin.mapper.BannerMapper;
 import com.example.admin.mapper.PictureMapper;
 import com.example.admin.service.BannerService;
 import com.example.admin.util.CheckUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +31,6 @@ import static java.util.stream.Collectors.toSet;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
-@Slf4j
 @Service
 public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> implements BannerService {
 
@@ -61,8 +59,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         try {
             return bannerMapper.insert(banner);
         } catch (Exception e) {
-            log.error("添加轮播图失败 =======>", e);
-            throw new ServiceException(500, "添加失败");
+            throw new ServiceException(500, "添加轮播图失败");
         }
     }
 
@@ -75,15 +72,20 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public BannerVo getBannerById(Integer id) {
-        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "轮播图id不能为空");
         LambdaQueryWrapper<Banner> wrapper = Wrappers.lambdaQuery(Banner.class).eq(Banner::getId, id);
         // 先查询轮播信息
-        Banner banner = bannerMapper.selectOne(wrapper);
+        Banner banner;
+        try {
+            banner = bannerMapper.selectOne(wrapper);
+        } catch (Exception e) {
+            throw new ServiceException(500, "获取轮播详情失败");
+        }
         CheckUtil.checkObjectNotNull(banner, 404, "轮播图不存在");
         // 转化为Vo
-        BannerVo bannerVo = Optional.ofNullable(banner).map(BannerVo::new).orElse(null);
+        BannerVo bannerVo = Optional.of(banner).map(BannerVo::new).orElse(null);
         // 从其它表查询信息再封装到Vo
-        Optional.ofNullable(bannerVo).ifPresent(this::addCoverPath);
+        Optional.of(bannerVo).ifPresent(this::addCoverPath);
         return bannerVo;
     }
 
@@ -121,12 +123,16 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int updateBannerStatus(Integer id, Integer status) {
-        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "轮播图id不能为空");
         CheckUtil.checkIntegerNotNull(status, "轮播图状态不能为空");
-        Banner banner = bannerMapper.selectById(id);
-        CheckUtil.checkObjectNotNull(banner, 404, "轮播图不存在");
+        Banner banner = new Banner();
+        banner.setId(id);
         banner.setStatus(status);
-        return bannerMapper.updateById(banner);
+        try {
+            return bannerMapper.updateById(banner);
+        } catch (Exception e) {
+            throw new ServiceException(500, "更新轮播图状态失败");
+        }
     }
 
     /**
@@ -138,12 +144,11 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int updateBanner(Banner banner) {
-        CheckUtil.checkIntegerNotNull(banner.getId(), "轮播图id不能为空");
+        CheckUtil.checkIntegerNotZero(banner.getId(), "轮播图id不能为空");
         try {
             return bannerMapper.updateById(banner);
         } catch (Exception e) {
-            log.error("修改轮播图失败 =======>", e);
-            throw new ServiceException(500, "更新失败");
+            throw new ServiceException(500, "更新轮播图失败");
         }
     }
 
@@ -156,12 +161,11 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      */
     @Override
     public int deleteBanner(Integer id) {
-        CheckUtil.checkIntegerNotNull(id, "轮播图id不能为空");
+        CheckUtil.checkIntegerNotZero(id, "轮播图id不能为空");
         try {
             return bannerMapper.deleteById(id);
         } catch (Exception e) {
-            log.error("删除轮播图失败 =======>", e);
-            throw new ServiceException(500, "删除失败");
+            throw new ServiceException(500, "删除轮播图失败");
         }
     }
 

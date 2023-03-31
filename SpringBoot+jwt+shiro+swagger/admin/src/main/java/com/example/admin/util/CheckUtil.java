@@ -1,7 +1,6 @@
 package com.example.admin.util;
 
 import com.example.admin.common.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @description 校验工具类
  * @create 2023/3/29 13:55
  **/
-@Slf4j
 public class CheckUtil {
     /**
      * 判断字符串是否为空或null
@@ -23,8 +21,6 @@ public class CheckUtil {
      */
     public static void checkStringNotEmpty(String str, String msg) {
         if (StringUtils.isEmpty(str)) {
-            // 记录日志
-            log.error(msg + " =======>" + str);
             throw new ServiceException(400, msg);
         }
     }
@@ -38,8 +34,19 @@ public class CheckUtil {
      */
     public static void checkIntegerNotNull(Integer integer, String msg) {
         if (integer == null) {
-            // 记录日志
-            log.error(msg + " =======>" + integer);
+            throw new ServiceException(400, msg);
+        }
+    }
+
+    /**
+     * 判断整数参数是否为0或者null
+     *
+     * @param integer 整数
+     * @param msg     提示信息
+     * @throws ServiceException 业务异常
+     */
+    public static void checkIntegerNotZero(Integer integer, String msg) {
+        if (integer == null || integer == 0) {
             throw new ServiceException(400, msg);
         }
     }
@@ -54,8 +61,6 @@ public class CheckUtil {
      */
     public static void checkObjectNotNull(Object object, Integer code, String msg) {
         if (object == null) {
-            // 记录日志
-            log.error(msg);
             throw new ServiceException(code, msg);
         }
     }
@@ -70,8 +75,6 @@ public class CheckUtil {
      */
     public static <T> void checkListNotNull(List<T> list, Integer code, String msg) {
         if (list == null || list.size() == 0) {
-            // 记录日志
-            log.error(msg + " =======>" + list);
             throw new ServiceException(code, msg);
         }
     }

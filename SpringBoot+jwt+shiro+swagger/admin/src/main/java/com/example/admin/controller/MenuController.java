@@ -34,7 +34,7 @@ public class MenuController {
      */
     @ApiOperation(value = "查询所有菜单栏", notes = "查询所有菜单栏")
     @GetMapping("/getAllMenu")
-    public List<Menu> getAllMenu(Integer hidden) {
+    public List<Menu> getAllMenu(@RequestParam(name = "hidden") Integer hidden) {
         return menuService.getAllMenu(hidden);
     }
 
@@ -46,7 +46,7 @@ public class MenuController {
      */
     @ApiOperation(value = "根据id查询菜单栏", notes = "根据id查询菜单栏")
     @GetMapping("/getMenuById")
-    public Menu getMenuById(Integer id) {
+    public Menu getMenuById(@RequestParam(name = "id") Integer id) {
         return menuService.getMenuById(id);
     }
 
@@ -80,7 +80,7 @@ public class MenuController {
      */
     @ApiOperation(value = "修改菜单栏是否隐藏", notes = "修改菜单栏是否隐藏")
     @PutMapping("/updateMenuHidden")
-    public Integer updateMenuHidden(Integer id, Byte hidden) {
+    public Integer updateMenuHidden(@RequestParam(name = "id") Integer id, @RequestParam(name = "hidden") Byte hidden) {
         return menuService.updateMenuHidden(id, hidden);
     }
 
@@ -92,7 +92,7 @@ public class MenuController {
      */
     @ApiOperation(value = "删除菜单栏", notes = "删除菜单栏")
     @DeleteMapping("/deleteMenu")
-    public Integer deleteMenu(Integer id) {
+    public Integer deleteMenu(@RequestParam(name = "id") Integer id) {
         return menuService.deleteMenu(id);
     }
 }
