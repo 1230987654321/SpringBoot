@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.admin.entity.Banner;
 import com.example.admin.entity.vo.BannerVo;
 import com.example.admin.service.BannerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @author 贲玉柱
  * @since 2023-03-27 11:53:00
  */
+@Api(tags = "轮播图管理", value = "轮播图管理")
 @RestController
 @RequestMapping("/admin/banner")
 public class BannerController {
@@ -29,6 +32,7 @@ public class BannerController {
      * @param bannerVo 轮播图
      * @return int 1成功 0失败
      */
+    @ApiOperation(value = "添加轮播图", notes = "添加轮播图")
     @PostMapping("/addBanner")
     public int addBanner(BannerVo bannerVo) {
         return bannerService.addBanner(bannerVo);
@@ -40,6 +44,7 @@ public class BannerController {
      * @param id 轮播图id
      * @return BannerVo
      */
+    @ApiOperation(value = "查询轮播图详情", notes = "查询轮播图详情")
     @GetMapping("/getBannerById")
     public BannerVo getBannerById(Integer id) {
         return bannerService.getBannerById(id);
@@ -53,6 +58,7 @@ public class BannerController {
      * @param bannerVo 轮播图
      * @return BannerVo
      */
+    @ApiOperation(value = "查询轮播图列表", notes = "查询轮播图列表")
     @GetMapping("/getBannerList")
     public IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo) {
         return bannerService.getBannerList(current, size, bannerVo);
@@ -76,6 +82,7 @@ public class BannerController {
      * @param banner 轮播图
      * @return int 1成功 0失败
      */
+    @ApiOperation(value = "修改轮播图", notes = "修改轮播图")
     @PutMapping("/updateBanner")
     public int updateBanner(Banner banner) {
         return bannerService.updateBanner(banner);
@@ -87,6 +94,7 @@ public class BannerController {
      * @param id 轮播图id
      * @return int 1成功 0失败
      */
+    @ApiOperation(value = "删除轮播图", notes = "删除轮播图")
     @DeleteMapping("/deleteBanner")
     public int deleteBanner(Integer id) {
         return bannerService.deleteBanner(id);

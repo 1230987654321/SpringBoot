@@ -3,7 +3,9 @@ package com.example.admin.config;
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,8 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
-public class SwaggerConfig {
-
+@Profile({"dev", "test"})
+public class SwaggerConfig implements WebMvcConfigurer {
     /**
      * 创建 Swagger 示例
      *
@@ -49,8 +51,14 @@ public class SwaggerConfig {
                         .version("v1.0").build());
     }
 
-    @RequestMapping(value = "/docs")
-    public String docs() {
-        return "redirect:/webjars/swagger-ui/3.51.1/swagger-ui.html?url=/v2/api-docs";
+    /**
+     * 配置静态资源
+     *
+     * @param registry 静态资源注册器
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/META-INF/resources/");
     }
 }

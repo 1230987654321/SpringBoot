@@ -37,13 +37,20 @@ spring:
     role-prefix: "role_data_"
     # Redis 储存的 权限信息前缀
     permissions-prefix: "permissions_data_"
+  servlet:
+    multipart:
+      # 设置上传文件大小 10M
+      max-file-size: 10485760
+  # 配置文件激活
+  profiles:
+    active: dev
 # MyBatisPlus
 mybatis-plus:
   configuration:
     # 在映射实体或者属性时,将数据库表名行业字段名下划线去掉,使用驼峰命名法映射
     map-underscore-to-camel-case: true
     # 开启sql日志
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       # 设置主键自增方式
@@ -54,6 +61,4 @@ logging:
 # 图片上传路径
 upload:
   path: E:\upload\
-  # 图片最大大小10MB
-  max-size: 10485760
   url: http://localhost:8080/upload/

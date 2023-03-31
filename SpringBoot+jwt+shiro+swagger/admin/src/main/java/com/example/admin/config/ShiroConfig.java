@@ -115,7 +115,6 @@ public class ShiroConfig {
     private Map<String, String> map() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("/admin/toLogin", "anon");
-        map.put("/v2/**", "anon");
         map.put("/admin/**", "jwt");
         return map;
     }

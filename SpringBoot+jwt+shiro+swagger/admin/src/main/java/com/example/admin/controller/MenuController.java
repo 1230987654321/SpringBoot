@@ -2,6 +2,7 @@ package com.example.admin.controller;
 
 import com.example.admin.entity.Menu;
 import com.example.admin.service.MenuService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @author 贲玉柱
  * @since 2023-03-29 05:00:18
  */
-@ApiOperation(value = "菜单栏", tags = "菜单栏")
+@Api(value = "菜单栏", tags = "菜单栏")
 @RestController
 @RequestMapping("/admin/menu")
 public class MenuController {
