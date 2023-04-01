@@ -1,0 +1,107 @@
+
+== 基本配置
+=== 查询配置
+*URL:* `http:localhost:8080/admin/config/getConfig`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询配置
+
+
+
+
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/config/getConfig
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|id|int32|主键|-
+|title|string|平台名称|-
+|logo|int32|logo|-
+|shareTitle|string|默认转发标题|-
+|shareDesc|string|默认转发描述|-
+|shareImg|int32|默认转发图片（支持PNG及JPG。显示图片长宽比是 5:4）|-
+|tel|string|客服电话|-
+|aboutUs|string|关于我们|-
+|createdAt|string|创建时间|-
+|updatedAt|string|修改时间|-
+|logoPath|string|logo图片路径|-
+|shareImgPath|string|分享图片路径|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "id": 882,
+  "title": "y1mpz4",
+  "logo": 424,
+  "shareTitle": "v6m452",
+  "shareDesc": "x5bmiu",
+  "shareImg": 312,
+  "tel": "soz5xr",
+  "aboutUs": "7cy5z8",
+  "createdAt": "2023-04-01 17:38:51",
+  "updatedAt": "2023-04-01 17:38:51",
+  "logoPath": "01tbcc",
+  "shareImgPath": "xxz5bc"
+}
+----
+
+=== 修改配置
+*URL:* `http:localhost:8080/admin/config/updateConfig`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改配置
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|title|string|false|平台名称|-
+|logo|int32|false|logo|-
+|shareTitle|string|false|默认转发标题|-
+|shareDesc|string|false|默认转发描述|-
+|shareImg|int32|false|默认转发图片（支持PNG及JPG。显示图片长宽比是 5:4）|-
+|tel|string|false|客服电话|-
+|aboutUs|string|false|关于我们|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/config/updateConfig --data 'id=438&title=r0tckl&logo=417&shareTitle=avhga0&shareDesc=3gjeyf&shareImg=826&tel=elcs1i&aboutUs=hm7z72&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+886
+----
+

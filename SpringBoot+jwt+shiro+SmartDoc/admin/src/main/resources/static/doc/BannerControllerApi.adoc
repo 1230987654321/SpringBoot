@@ -1,0 +1,309 @@
+
+== 轮播
+=== 添加轮播图
+*URL:* `http:localhost:8080/admin/banner/addBanner`
+
+*Type:* `POST`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 添加轮播图
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|cover|int32|false|封面|-
+|url|string|false|链接地址|-
+|sort|int32|false|排序 越大越靠前|-
+|status|int32|false|状态 1正常 0隐藏|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|coverPath|string|false|封面图片路径|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X POST -i http:localhost:8080/admin/banner/addBanner --data 'id=659&cover=548&url=www.mariann-waelchi.name&sort=991&status=355&deleted=486&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51&coverPath=wva52c'
+----
+
+
+*Response-example:*
+----
+508
+----
+
+=== 查询轮播图详情
+*URL:* `http:localhost:8080/admin/banner/getBannerById`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询轮播图详情
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|轮播图id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/banner/getBannerById?id=513 --data '&513'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|id|int32|主键|-
+|cover|int32|封面|-
+|url|string|链接地址|-
+|sort|int32|排序 越大越靠前|-
+|status|int32|状态 1正常 0隐藏|-
+|deleted|int32|是否删除 1是 0否|-
+|createdAt|string|创建时间|-
+|updatedAt|string|修改时间|-
+|coverPath|string|封面图片路径|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "id": 304,
+  "cover": 947,
+  "url": "www.mariann-waelchi.name",
+  "sort": 143,
+  "status": 620,
+  "deleted": 659,
+  "createdAt": "2023-04-01 17:38:51",
+  "updatedAt": "2023-04-01 17:38:51",
+  "coverPath": "gbj86d"
+}
+----
+
+=== 查询轮播图列表
+*URL:* `http:localhost:8080/admin/banner/getBannerList`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询轮播图列表
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|current|int32|true| 当前页|-
+|size|int32|true|    每页条数|-
+|id|int32|false|主键|-
+|cover|int32|false|封面|-
+|url|string|false|链接地址|-
+|sort|int32|false|排序 越大越靠前|-
+|status|int32|false|状态 1正常 0隐藏|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|coverPath|string|false|封面图片路径|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/banner/getBannerList?current=614&size=10&id=525&cover=961&url=www.mariann-waelchi.name&sort=738&status=413&deleted=172&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51&coverPath=kynsi4 --data '&614&10'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|pages|int64|当前分页总页数|-
+|records|array|分页记录列表|-
+|└─id|int32|主键|-
+|└─cover|int32|封面|-
+|└─url|string|链接地址|-
+|└─sort|int32|排序 越大越靠前|-
+|└─status|int32|状态 1正常 0隐藏|-
+|└─deleted|int32|是否删除 1是 0否|-
+|└─createdAt|string|创建时间|-
+|└─updatedAt|string|修改时间|-
+|└─coverPath|string|封面图片路径|-
+|total|int64|当前满足条件总行数|-
+|size|int64|获取每页显示条数|-
+|current|int64|当前页|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "pages": 806,
+  "records": [
+    {
+      "id": 946,
+      "cover": 555,
+      "url": "www.mariann-waelchi.name",
+      "sort": 546,
+      "status": 509,
+      "deleted": 251,
+      "createdAt": "2023-04-01 17:38:51",
+      "updatedAt": "2023-04-01 17:38:51",
+      "coverPath": "inoygk"
+    }
+  ],
+  "total": 212,
+  "size": 42,
+  "current": 945
+}
+----
+
+=== 修改轮播图状态
+*URL:* `http:localhost:8080/admin/banner/updateBannerStatus`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改轮播图状态
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|    轮播图id|-
+|status|int32|true|状态|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/banner/updateBannerStatus --data 'id=51&status=108'
+----
+
+
+*Response-example:*
+----
+142
+----
+
+=== 修改轮播图
+*URL:* `http:localhost:8080/admin/banner/updateBanner`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改轮播图
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|cover|int32|false|封面|-
+|url|string|false|链接地址|-
+|sort|int32|false|排序 越大越靠前|-
+|status|int32|false|状态 1正常 0隐藏|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/banner/updateBanner --data 'id=883&cover=845&url=www.mariann-waelchi.name&sort=627&status=614&deleted=628&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+414
+----
+
+=== 删除轮播图
+*URL:* `http:localhost:8080/admin/banner/deleteBanner`
+
+*Type:* `DELETE`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 删除轮播图
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|轮播图id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X DELETE -i http:localhost:8080/admin/banner/deleteBanner?id=180 --data '&180'
+----
+
+
+*Response-example:*
+----
+791
+----
+

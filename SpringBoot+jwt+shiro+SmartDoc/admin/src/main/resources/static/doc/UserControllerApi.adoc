@@ -1,0 +1,101 @@
+
+== 用户
+=== 查询用户列表
+*URL:* `http:localhost:8080/admin/user/list`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询用户列表
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|current|int32|true|当前页|-
+|size|int32|true|   每页条数|-
+|id|int32|false|主键|-
+|openid|string|false|openid|-
+|nickName|string|false|昵称|-
+|avatarUrl|string|false|头像|-
+|gender|int32|false|性别 0未知 1男 2女|-
+|tel|string|false|手机号(授权)|-
+|status|int32|false|状态 1正常 0冻结|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/user/list?current=250&size=10&id=789&openid=50&nickName=criselda.beatty&avatarUrl=www.mariann-waelchi.name&gender=0&tel=q7oor9&status=320&deleted=863&createdAt=2023-04-01 17:38:52&updatedAt=2023-04-01 17:38:52 --data '&250&10'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|any object|object|any object.|-
+|====================
+
+
+*Response-example:*
+----
+{}
+----
+
+=== 查询用户详情
+*URL:* `http:localhost:8080/admin/user/detail`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询用户详情
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|用户id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/user/detail?id=889 --data '&889'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|any object|object|any object.|-
+|====================
+
+
+*Response-example:*
+----
+{}
+----
+

@@ -1,0 +1,339 @@
+
+== 左侧菜单栏
+=== 查询所有菜单栏
+*URL:* `http:localhost:8080/admin/menu/getAllMenu`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 查询所有菜单栏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|hidden|int32|true|是否查询隐藏的菜单栏 0:不查询 1:查询|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/menu/getAllMenu?hidden=25 --data '&25'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|id|int32|主键|-
+|pid|int32|父id 0:顶级|-
+|path|string|路径|-
+|component|string|页面地址|-
+|name|string|名称 要唯一|-
+|hidden|int8|是否隐藏 0:隐藏 1:显示|-
+|redirect|string|重定向|-
+|title|string|菜单栏的名字|-
+|icon|string|图标|-
+|sort|int32|越小越靠前|-
+|isDefault|int32|是否默认 1: 默认|-
+|isAdmin|int32|1:管理员后台 0:其他后台|-
+|deleted|int32|是否删除 1是 0否|-
+|createdAt|string|创建时间|-
+|updatedAt|string|修改时间|-
+|children|array|No comments found.|-
+|====================
+
+
+*Response-example:*
+----
+[
+  {
+    "id": 628,
+    "pid": 94,
+    "path": "zhqghj",
+    "component": "yu9fq3",
+    "name": "colin.haley",
+    "hidden": 50,
+    "redirect": "7g3qq8",
+    "title": "tupnq8",
+    "icon": "svcilg",
+    "sort": 794,
+    "isDefault": 76,
+    "isAdmin": 338,
+    "deleted": 669,
+    "createdAt": "2023-04-01 17:38:51",
+    "updatedAt": "2023-04-01 17:38:51",
+    "children": [
+      {
+        "$ref": ".."
+      }
+    ]
+  }
+]
+----
+
+=== 根据id查询菜单栏
+*URL:* `http:localhost:8080/admin/menu/getMenuById`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 根据id查询菜单栏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/menu/getMenuById?id=451 --data '&451'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|id|int32|主键|-
+|pid|int32|父id 0:顶级|-
+|path|string|路径|-
+|component|string|页面地址|-
+|name|string|名称 要唯一|-
+|hidden|int8|是否隐藏 0:隐藏 1:显示|-
+|redirect|string|重定向|-
+|title|string|菜单栏的名字|-
+|icon|string|图标|-
+|sort|int32|越小越靠前|-
+|isDefault|int32|是否默认 1: 默认|-
+|isAdmin|int32|1:管理员后台 0:其他后台|-
+|deleted|int32|是否删除 1是 0否|-
+|createdAt|string|创建时间|-
+|updatedAt|string|修改时间|-
+|children|array|No comments found.|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "id": 566,
+  "pid": 50,
+  "path": "wsj02u",
+  "component": "na6bzz",
+  "name": "colin.haley",
+  "hidden": 6,
+  "redirect": "zrc4s6",
+  "title": "y7kc4t",
+  "icon": "dryq9u",
+  "sort": 583,
+  "isDefault": 825,
+  "isAdmin": 595,
+  "deleted": 387,
+  "createdAt": "2023-04-01 17:38:51",
+  "updatedAt": "2023-04-01 17:38:51",
+  "children": [
+    {
+      "$ref": ".."
+    }
+  ]
+}
+----
+
+=== 添加菜单栏
+*URL:* `http:localhost:8080/admin/menu/addMenu`
+
+*Type:* `POST`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 添加菜单栏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|pid|int32|false|父id 0:顶级|-
+|path|string|false|路径|-
+|component|string|false|页面地址|-
+|name|string|false|名称 要唯一|-
+|hidden|int8|false|是否隐藏 0:隐藏 1:显示|-
+|redirect|string|false|重定向|-
+|title|string|false|菜单栏的名字|-
+|icon|string|false|图标|-
+|sort|int32|false|越小越靠前|-
+|isDefault|int32|false|是否默认 1: 默认|-
+|isAdmin|int32|false|1:管理员后台 0:其他后台|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|children|array|false|No comments found.|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X POST -i http:localhost:8080/admin/menu/addMenu --data 'id=702&pid=167&path=hx3tbj&component=s2cq4h&name=colin.haley&hidden=97&redirect=jan8sp&title=30kqa7&icon=yewmj4&sort=302&isDefault=672&isAdmin=648&deleted=476&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+655
+----
+
+=== 修改菜单栏
+*URL:* `http:localhost:8080/admin/menu/updateMenu`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改菜单栏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|pid|int32|false|父id 0:顶级|-
+|path|string|false|路径|-
+|component|string|false|页面地址|-
+|name|string|false|名称 要唯一|-
+|hidden|int8|false|是否隐藏 0:隐藏 1:显示|-
+|redirect|string|false|重定向|-
+|title|string|false|菜单栏的名字|-
+|icon|string|false|图标|-
+|sort|int32|false|越小越靠前|-
+|isDefault|int32|false|是否默认 1: 默认|-
+|isAdmin|int32|false|1:管理员后台 0:其他后台|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|children|array|false|No comments found.|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/menu/updateMenu --data 'id=893&pid=506&path=gmmmfg&component=f47mzu&name=colin.haley&hidden=117&redirect=ef7l4u&title=zqsaen&icon=p4609s&sort=549&isDefault=416&isAdmin=200&deleted=129&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+225
+----
+
+=== 修改菜单栏是否隐藏
+*URL:* `http:localhost:8080/admin/menu/updateMenuHidden`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改菜单栏是否隐藏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|    id|-
+|hidden|int8|true|是否隐藏 0:不隐藏 1:隐藏|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/menu/updateMenuHidden --data 'id=166&hidden=121'
+----
+
+
+*Response-example:*
+----
+753
+----
+
+=== 删除菜单栏
+*URL:* `http:localhost:8080/admin/menu/deleteMenu`
+
+*Type:* `DELETE`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 删除菜单栏
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X DELETE -i http:localhost:8080/admin/menu/deleteMenu?id=454 --data '&454'
+----
+
+
+*Response-example:*
+----
+260
+----
+

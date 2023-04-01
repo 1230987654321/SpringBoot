@@ -1,0 +1,61 @@
+# 设置端口
+server:
+  port: 8080
+spring:
+  # 设置服务名
+  application:
+    name: admin
+  # 设置数据源
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: hyy835435
+  mvc:
+    # 出现错误时,直接抛出异常
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      # 不要为我们工程中的资源文件建立映射
+      add-mappings: false
+  redis:
+    # Redis 数据库编号
+    database: 0
+    # Redis 服务器的 IP 地址
+    host: 192.168.1.112
+    # Redis 服务器的端口号
+    port: 6379
+    # Redis 服务器的密码
+    password: hyy835435
+    # Redis 过期时间(秒)
+    expire: 900
+    # Redis 储存的 TOKEN 前缀
+    token-prefix: "jwt_token_"
+    # Redis 储存的 用户信息前缀
+    admin-prefix: "admin_data_"
+    # Redis 储存的 角色信息前缀
+    role-prefix: "role_data_"
+    # Redis 储存的 权限信息前缀
+    permissions-prefix: "permissions_data_"
+  servlet:
+    multipart:
+      # 设置上传文件大小 10M
+      max-file-size: 10485760
+# MyBatisPlus
+mybatis-plus:
+  configuration:
+    # 在映射实体或者属性时,将数据库表名行业字段名下划线去掉,使用驼峰命名法映射
+    map-underscore-to-camel-case: true
+    # 开启sql日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 设置主键自增方式
+      id-type: ASSIGN_ID
+# 配置日志框架
+logging:
+  config: classpath:log4j2.xml
+# 图片上传路径
+upload:
+  path: E:\upload\
+  url: http://localhost:8080/upload/

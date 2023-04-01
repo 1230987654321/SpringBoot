@@ -1,0 +1,266 @@
+
+== 角色
+=== 添加角色
+*URL:* `http:localhost:8080/admin/role/addRole`
+
+*Type:* `POST`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 添加角色
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|title|string|false|用户角色|-
+|controlId|string|false|控制器id|-
+|description|string|false|描述|-
+|status|int32|false|状态 1正常 0冻结|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X POST -i http:localhost:8080/admin/role/addRole --data 'id=93&title=l83k0y&controlId=50&description=k4hcp1&status=781&deleted=329&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+271
+----
+
+=== 修改角色
+*URL:* `http:localhost:8080/admin/role/updateRole`
+
+*Type:* `PUT`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 修改角色
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|false|主键|-
+|title|string|false|用户角色|-
+|controlId|string|false|控制器id|-
+|description|string|false|描述|-
+|status|int32|false|状态 1正常 0冻结|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X PUT -i http:localhost:8080/admin/role/updateRole --data 'id=992&title=m7t9x5&controlId=50&description=gae1w5&status=58&deleted=640&createdAt=2023-04-01 17:38:51&updatedAt=2023-04-01 17:38:51'
+----
+
+
+*Response-example:*
+----
+835
+----
+
+=== 删除角色
+*URL:* `http:localhost:8080/admin/role/deleteRole`
+
+*Type:* `DELETE`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 删除角色
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|角色id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X DELETE -i http:localhost:8080/admin/role/deleteRole?id=814 --data '&814'
+----
+
+
+*Response-example:*
+----
+258
+----
+
+=== 获取角色列表
+*URL:* `http:localhost:8080/admin/role/getRoleList`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 获取角色列表
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|current|int32|true|No comments found.|-
+|size|int32|true|No comments found.|-
+|id|int32|false|主键|-
+|title|string|false|用户角色|-
+|controlId|string|false|控制器id|-
+|description|string|false|描述|-
+|status|int32|false|状态 1正常 0冻结|-
+|deleted|int32|false|是否删除 1是 0否|-
+|createdAt|string|false|创建时间|-
+|updatedAt|string|false|修改时间|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/role/getRoleList?current=452&size=10&id=692&title=wy776y&controlId=50&description=z1y9r6&status=452&deleted=198&createdAt=2023-04-01 17:38:52&updatedAt=2023-04-01 17:38:52 --data '&452&10'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|pages|int64|当前分页总页数|-
+|records|array|分页记录列表|-
+|└─id|int32|主键|-
+|└─title|string|用户角色|-
+|└─controlId|string|控制器id|-
+|└─description|string|描述|-
+|└─status|int32|状态 1正常 0冻结|-
+|└─deleted|int32|是否删除 1是 0否|-
+|└─createdAt|string|创建时间|-
+|└─updatedAt|string|修改时间|-
+|total|int64|当前满足条件总行数|-
+|size|int64|获取每页显示条数|-
+|current|int64|当前页|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "pages": 248,
+  "records": [
+    {
+      "id": 26,
+      "title": "5kznmv",
+      "controlId": "50",
+      "description": "8hmhfe",
+      "status": 694,
+      "deleted": 43,
+      "createdAt": "2023-04-01 17:38:52",
+      "updatedAt": "2023-04-01 17:38:52"
+    }
+  ],
+  "total": 576,
+  "size": 284,
+  "current": 336
+}
+----
+
+=== 获取角色详情
+*URL:* `http:localhost:8080/admin/role/getRoleDetail`
+
+*Type:* `GET`
+
+*Author:* 贲玉柱
+
+*Content-Type:* `application/x-www-form-urlencoded;charset=UTF-8`
+
+*Description:* 获取角色详情
+
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|id|int32|true|角色id|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i http:localhost:8080/admin/role/getRoleDetail?id=830 --data '&830'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|id|int32|主键|-
+|title|string|用户角色|-
+|controlId|string|控制器id|-
+|description|string|描述|-
+|status|int32|状态 1正常 0冻结|-
+|deleted|int32|是否删除 1是 0否|-
+|createdAt|string|创建时间|-
+|updatedAt|string|修改时间|-
+|====================
+
+
+*Response-example:*
+----
+{
+  "id": 716,
+  "title": "svu36h",
+  "controlId": "50",
+  "description": "0ubv7k",
+  "status": 379,
+  "deleted": 487,
+  "createdAt": "2023-04-01 17:38:52",
+  "updatedAt": "2023-04-01 17:38:52"
+}
+----
+
