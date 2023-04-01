@@ -2,6 +2,5 @@
   "serverUrl": "http:localhost:8080",
   "isStrict": false,
   "outPath": "./src/main/resources/static/doc",
-  "projectName": "SpringBoot",
   "apiVersion": "1.0.0"
 }
