@@ -42,7 +42,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         if (requestAttributes instanceof ServletRequestAttributes) {
             String path = ((ServletRequestAttributes) requestAttributes).getRequest().getRequestURI();
             // 允许通过
-            return !path.contains("/swagger") && !path.contains("/v2/api-docs");
+            return !path.contains("/swagger") && !path.contains("/v3/api-docs");
         }
         return true;
     }

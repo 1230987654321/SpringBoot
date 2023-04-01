@@ -180,6 +180,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private List<Menu> getTree(List<Menu> menus) {
         List<Menu> tree = new ArrayList<>();
         Map<Integer, Menu> map = new HashMap<>();
+        // 将菜单栏放入map中
         for (Menu menu : menus) {
             map.put(menu.getId(), menu);
         }
@@ -187,11 +188,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             if (menu.getPid() == 0) {
                 tree.add(menu);
             } else {
+                // 获取父菜单栏
                 Menu parent = map.get(menu.getPid());
                 if (parent != null) {
+                    // 判断父菜单栏是否有子菜单栏
                     if (parent.getChildren() == null) {
+                        // 初始化子菜单栏列表
                         parent.setChildren(new ArrayList<>());
                     }
+                    // 将菜单栏添加到父菜单栏的子菜单栏列表中
                     parent.getChildren().add(menu);
                 } else {
                     // 菜单栏转换为树形失败

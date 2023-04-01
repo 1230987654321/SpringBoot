@@ -41,9 +41,6 @@ spring:
     multipart:
       # 设置上传文件大小 10M
       max-file-size: 10485760
-  # 配置文件激活
-  profiles:
-    active: dev
 # MyBatisPlus
 mybatis-plus:
   configuration:
@@ -58,6 +55,9 @@ mybatis-plus:
 # 配置日志框架
 logging:
   config: classpath:log4j2.xml
+springfox:
+  documentation:
+    enabled: false
 # 图片上传路径
 upload:
   path: E:\upload\

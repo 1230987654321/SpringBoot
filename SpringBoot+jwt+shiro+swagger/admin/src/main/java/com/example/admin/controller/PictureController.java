@@ -76,7 +76,7 @@ public class PictureController {
      */
     @ApiOperation(value = "查询图片列表", notes = "查询图片列表")
     @GetMapping("/getPictureList")
-    public IPage<Picture> getPictureList(@RequestParam(name = "source") Integer current, @RequestParam(name = "size") Integer size, Picture picture) {
+    public IPage<Picture> getPictureList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, Picture picture) {
         return pictureService.getPictureList(current, size, picture);
     }
 }
