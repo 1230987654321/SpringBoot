@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: hyy835435
+    password: root
   mvc:
     # 出现错误时,直接抛出异常
     throw-exception-if-no-handler-found: true
@@ -18,16 +18,22 @@ spring:
     resources:
       # 不要为我们工程中的资源文件建立映射
       add-mappings: false
+  servlet:
+    multipart:
+      # 设置上传文件大小 10M
+      max-file-size: 10485760
   redis:
     # Redis 数据库编号
     database: 0
     # Redis 服务器的 IP 地址
-    host: 192.168.1.112
+    host: 192.168.1.7
     # Redis 服务器的端口号
     port: 6379
     # Redis 服务器的密码
     password: hyy835435
-    # Redis 过期时间(秒)
+    # 连接超时时间(毫秒)
+    connect-timeout: 10000
+    # Redis 有效期(秒)
     expire: 900
     # Redis 储存的 TOKEN 前缀
     token-prefix: "jwt_token_"
@@ -37,10 +43,6 @@ spring:
     role-prefix: "role_data_"
     # Redis 储存的 权限信息前缀
     permissions-prefix: "permissions_data_"
-  servlet:
-    multipart:
-      # 设置上传文件大小 10M
-      max-file-size: 10485760
 # MyBatisPlus
 mybatis-plus:
   configuration:

@@ -44,6 +44,13 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring-boot-web-starter</artifactId>
+            <!-- 排除commons-collections,解决Cx78f40514-81ff,Cx78f40514-81ff 漏洞 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- MyBatisPlus -->
         <dependency>
@@ -65,7 +72,7 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
-        <!-- MYSQL,引用8.0.32,修复CVE-2020-2934 -->
+        <!-- MYSQL,引用8.0.32,修复CVE-2020-2934,CVE-2021-22569,CVE-2022-3171,CVE-2022-3510,CVE-2022-3509 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -114,16 +121,16 @@
                         <include>org.springframework.data:spring-data-commons</include>
                     </includes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <!--如果不需要在执行编译时启动smart-doc，则将phase注释掉-->
-                        <phase>compile</phase>
-                        <goals>
-                            <!--smart-doc提供了html、openapi、markdown等goal，可按需配置-->
-                            <goal>html</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        &lt;!&ndash;如果不需要在执行编译时启动smart-doc，则将phase注释掉&ndash;&gt;-->
+<!--                        <phase>compile</phase>-->
+<!--                        <goals>-->
+<!--                            &lt;!&ndash;smart-doc提供了html、openapi、markdown等goal，可按需配置&ndash;&gt;-->
+<!--                            <goal>html</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
         </plugins>
     </build>

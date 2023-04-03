@@ -51,6 +51,9 @@ public class GlobalExceptionHandler {
         } else if (e.getCode() == 401) {
             // 401表示未登录
             httpStatus = HttpStatus.UNAUTHORIZED;
+        } else if (e.getCode() == 404) {
+            // 401表示未登录
+            httpStatus = HttpStatus.NOT_FOUND;
         } else if (e.getCode() == 409) {
             // 409表示冲突
             httpStatus = HttpStatus.CONFLICT;
