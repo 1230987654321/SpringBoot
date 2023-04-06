@@ -2,6 +2,7 @@ package com.example.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.admin.entity.Role;
+import com.example.admin.entity.vo.RoleVo;
 import com.example.admin.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,10 +70,10 @@ public class RoleController {
      * 获取角色详情
      *
      * @param id 角色id
-     * @return Role 角色详情
+     * @return RoleVo 角色详情
      */
     @GetMapping("/getRoleDetail")
-    public Role getRoleDetail(@RequestParam(name = "id") Integer id) {
+    public RoleVo getRoleDetail(@RequestParam(name = "id") Integer id) {
         return roleService.getRoleDetail(id);
     }
 }

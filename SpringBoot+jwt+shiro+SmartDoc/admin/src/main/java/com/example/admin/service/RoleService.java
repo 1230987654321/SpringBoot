@@ -3,6 +3,7 @@ package com.example.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.admin.entity.Role;
+import com.example.admin.entity.vo.RoleVo;
 
 /**
  * <p>
@@ -49,8 +50,8 @@ public interface RoleService extends IService<Role> {
      * 获取角色详情
      *
      * @param id 角色id
-     * @return Role 角色详情
+     * @return RoleVo 角色详情
      */
-    Role getRoleDetail(Integer id);
+    RoleVo getRoleDetail(Integer id);
 
 }

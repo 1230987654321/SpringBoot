@@ -17,6 +17,7 @@ import com.example.admin.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -141,6 +142,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         CheckUtil.checkStringNotEmpty(password, "密码不能为空");
         // 在数据库中查找管理员
         Admin admin = findAdmin(null, username, "username");
+        // 将密码md5加密
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
         // 判断密码是否正确
         if (!password.equals(admin.getPassword())) {
             throw new ServiceException(400, "账号或密码错误");

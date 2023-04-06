@@ -6,12 +6,18 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.admin.common.ServiceException;
+import com.example.admin.entity.Admin;
 import com.example.admin.entity.Role;
+import com.example.admin.entity.vo.RoleVo;
+import com.example.admin.mapper.AdminMapper;
 import com.example.admin.mapper.RoleMapper;
 import com.example.admin.service.RoleService;
 import com.example.admin.util.CheckUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -24,9 +30,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
     private final RoleMapper roleMapper;
+    private final AdminMapper adminMapper;
 
-    public RoleServiceImpl(RoleMapper roleMapper) {
+    public RoleServiceImpl(RoleMapper roleMapper, AdminMapper adminMapper) {
         this.roleMapper = roleMapper;
+        this.adminMapper = adminMapper;
     }
 
     /**
@@ -60,7 +68,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         CheckUtil.checkIntegerNotZero(role.getId(), "角色id不能为空");
         CheckUtil.checkStringNotEmpty(role.getTitle(), "角色名称不能为空");
         CheckUtil.checkStringNotEmpty(role.getControlId(), "角色权限不能为空");
-        CheckUtil.checkStringNotEmpty(role.getDescription(), "角色描述不能为空");
+//        CheckUtil.checkStringNotEmpty(role.getDescription(), "角色描述不能为空");
         try {
             return roleMapper.updateById(role);
         } catch (Exception e) {
@@ -78,6 +86,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public Integer deleteRole(Integer id) {
         CheckUtil.checkIntegerNotZero(id, "角色id不能为空");
+        // 判断角色是否被使用
+        Long count = adminMapper.selectCount(Wrappers.lambdaQuery(Admin.class).eq(Admin::getRoleId, id));
+        if (count > 0) {
+            throw new ServiceException(500, "该角色已被使用，无法删除");
+        }
         try {
             return roleMapper.deleteById(id);
         } catch (Exception e) {
@@ -112,7 +125,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @throws ServiceException 业务异常
      */
     @Override
-    public Role getRoleDetail(Integer id) {
+    public RoleVo getRoleDetail(Integer id) {
         CheckUtil.checkIntegerNotZero(id, "角色id不能为空");
         Role role;
         try {
@@ -121,6 +134,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             throw new ServiceException(500, "获取角色详情失败");
         }
         CheckUtil.checkObjectNotNull(role, 404, "角色不存在");
-        return role;
+        RoleVo roleVo = new RoleVo(role);
+        // 将权限 id 从 String 转换成 String[]
+        String[] str = role.getControlId().split(",");
+        // 将 String[] 转换成 List<Integer>
+        List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
+        roleVo.setControlIdList(idsList);
+        return roleVo;
     }
 }

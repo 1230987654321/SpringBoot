@@ -2,6 +2,7 @@ package com.example.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,12 +73,14 @@ public class Admin extends Model<Admin> {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 

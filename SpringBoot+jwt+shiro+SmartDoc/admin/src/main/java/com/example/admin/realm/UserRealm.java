@@ -115,7 +115,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         // 存储角色
         info.addRole(role.getTitle());
-        // 将权限 id 从 String 转为 List<Integer>
+        // 将权限 id 从 String 转换成 String[]
         String[] str = role.getControlId().split(",");
         // 将 String[] 转换成 List<Integer>
         List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
