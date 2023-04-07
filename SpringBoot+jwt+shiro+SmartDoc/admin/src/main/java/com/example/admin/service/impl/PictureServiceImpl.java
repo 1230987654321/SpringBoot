@@ -55,7 +55,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
      * @return IPage<Picture> 图片列表
      */
     @Override
-    public IPage<Picture> getPictureList(Integer current, Integer size, Picture picture) {
+    public IPage<Picture> getPicturePageList(Integer current, Integer size, Picture picture) {
         CheckUtil.checkPage(current, size);
         Page<Picture> page = new Page<>(current, size);
         LambdaQueryWrapper<Picture> wrapper = Wrappers.lambdaQuery(Picture.class);
@@ -100,7 +100,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
      * @throws ServiceException 业务异常
      */
     @Override
-    public Integer deletePictureId(Integer id) {
+    public Integer deletePictureById(Integer id) {
         // 参数校验
         CheckUtil.checkIntegerNotZero(id, "图片id不能为空");
         // 查询图片信息

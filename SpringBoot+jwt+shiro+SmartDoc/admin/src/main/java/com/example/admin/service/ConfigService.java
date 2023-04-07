@@ -26,6 +26,6 @@ public interface ConfigService extends IService<Config> {
      * @param config 配置
      * @return Config
      */
-    int updateConfig(Config config);
+    int updateConfigById(Config config);
 
 }

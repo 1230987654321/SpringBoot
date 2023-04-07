@@ -57,9 +57,9 @@ public class MenuController {
      * @param menu 菜单栏
      * @return int 1:成功 0:失败
      */
-    @PutMapping("/updateMenu")
-    public Integer updateMenu(Menu menu) {
-        return menuService.updateMenu(menu);
+    @PutMapping("/updateMenuById")
+    public Integer updateMenuById(Menu menu) {
+        return menuService.updateMenuById(menu);
     }
 
     /**
@@ -69,9 +69,9 @@ public class MenuController {
      * @param hidden 是否隐藏 0:不隐藏 1:隐藏
      * @return int 1:成功 0:失败
      */
-    @PutMapping("/updateMenuHidden")
-    public Integer updateMenuHidden(@RequestParam(name = "id") Integer id, @RequestParam(name = "hidden") Byte hidden) {
-        return menuService.updateMenuHidden(id, hidden);
+    @PutMapping("/updateMenuHiddenById")
+    public Integer updateMenuHiddenById(@RequestParam(name = "id") Integer id, @RequestParam(name = "hidden") Byte hidden) {
+        return menuService.updateMenuHiddenById(id, hidden);
     }
 
     /**
@@ -80,8 +80,8 @@ public class MenuController {
      * @param id id
      * @return int 1:成功 0:失败
      */
-    @DeleteMapping("/deleteMenu")
-    public Integer deleteMenu(@RequestParam(name = "id") Integer id) {
-        return menuService.deleteMenu(id);
+    @DeleteMapping("/deleteMenuById")
+    public Integer deleteMenuById(@RequestParam(name = "id") Integer id) {
+        return menuService.deleteMenuById(id);
     }
 }

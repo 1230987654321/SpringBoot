@@ -51,9 +51,9 @@ public class BannerController {
      * @param bannerVo 轮播图
      * @return BannerVo
      */
-    @GetMapping("/getBannerList")
-    public IPage<BannerVo> getBannerList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, BannerVo bannerVo) {
-        return bannerService.getBannerList(current, size, bannerVo);
+    @GetMapping("/getBannerPageList")
+    public IPage<BannerVo> getBannerPageList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, BannerVo bannerVo) {
+        return bannerService.getBannerPageList(current, size, bannerVo);
     }
 
     /**
@@ -63,9 +63,9 @@ public class BannerController {
      * @param status 状态
      * @return int 1成功 0失败
      */
-    @PutMapping("/updateBannerStatus")
-    public int updateBannerStatus(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
-        return bannerService.updateBannerStatus(id, status);
+    @PutMapping("/updateBannerStatusById")
+    public int updateBannerStatusById(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
+        return bannerService.updateBannerStatusById(id, status);
     }
 
     /**
@@ -74,9 +74,9 @@ public class BannerController {
      * @param banner 轮播图
      * @return int 1成功 0失败
      */
-    @PutMapping("/updateBanner")
-    public int updateBanner(Banner banner) {
-        return bannerService.updateBanner(banner);
+    @PutMapping("/updateBannerById")
+    public int updateBannerById(Banner banner) {
+        return bannerService.updateBannerById(banner);
     }
 
     /**
@@ -85,8 +85,8 @@ public class BannerController {
      * @param id 轮播图id
      * @return int 1成功 0失败
      */
-    @DeleteMapping("/deleteBanner")
-    public int deleteBanner(@RequestParam(name = "id") Integer id) {
-        return bannerService.deleteBanner(id);
+    @DeleteMapping("/deleteBannerById")
+    public int deleteBannerById(@RequestParam(name = "id") Integer id) {
+        return bannerService.deleteBannerById(id);
     }
 }

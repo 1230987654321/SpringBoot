@@ -30,9 +30,9 @@ public interface AdminService extends IService<Admin> {
      * @param current 当前页
      * @param size    每页显示条数
      * @param adminVo 管理员信息
-     * @return IPage<Admin>
+     * @return IPage<AdminVo>
      */
-    IPage<AdminVo> getAdminList(Integer current, Integer size, AdminVo adminVo);
+    IPage<AdminVo> getAdminPageList(Integer current, Integer size, AdminVo adminVo);
 
     /**
      * 根据id查询管理员
@@ -68,7 +68,7 @@ public interface AdminService extends IService<Admin> {
      * @param status 管理员状态 0：禁用 1：启用
      * @throws ServiceException 业务异常
      */
-    Integer updateStatus(Integer id, Integer status);
+    Integer updateAdminStatusById(Integer id, Integer status);
 
     /**
      * 修改管理员密码
@@ -77,7 +77,7 @@ public interface AdminService extends IService<Admin> {
      * @param password 管理员密码
      * @throws ServiceException 业务异常
      */
-    Integer updatePassword(Integer id, String password);
+    Integer updateAdminPasswordById(Integer id, String password);
 
     /**
      * 修改管理员信息
@@ -85,7 +85,7 @@ public interface AdminService extends IService<Admin> {
      * @param admin 管理员信息
      * @throws ServiceException 业务异常
      */
-    Integer updateAdmin(Admin admin);
+    Integer updateAdminById(Admin admin);
 
     /**
      * 删除管理员
@@ -93,5 +93,5 @@ public interface AdminService extends IService<Admin> {
      * @param id 管理员id
      * @throws ServiceException 业务异常
      */
-    Integer deleteAdmin(Integer id);
+    Integer deleteAdminById(Integer id);
 }

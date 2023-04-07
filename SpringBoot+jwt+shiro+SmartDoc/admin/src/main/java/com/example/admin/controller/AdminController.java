@@ -43,9 +43,9 @@ public class AdminController {
      * @param adminVo 管理员信息
      * @return IPage<AdminVo> 管理员列表
      */
-    @GetMapping("/getAdminList")
-    public IPage<AdminVo> getAdminList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, AdminVo adminVo) {
-        return adminService.getAdminList(current, size, adminVo);
+    @GetMapping("/getAdminPageList")
+    public IPage<AdminVo> getAdminPageList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, AdminVo adminVo) {
+        return adminService.getAdminPageList(current, size, adminVo);
     }
 
     /**
@@ -79,9 +79,9 @@ public class AdminController {
      * @param status 管理员状态 0：禁用 1：启用
      * @return Integer 1：成功 0：失败
      */
-    @PutMapping("/updateStatus")
-    public Integer updateStatus(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
-        return adminService.updateStatus(id, status);
+    @PutMapping("/updateAdminStatusById")
+    public Integer updateAdminStatusById(@RequestParam(name = "id") Integer id, @RequestParam(name = "status") Integer status) {
+        return adminService.updateAdminStatusById(id, status);
     }
 
     /**
@@ -91,9 +91,9 @@ public class AdminController {
      * @param password 管理员密码
      * @return Integer 1：成功 0：失败
      */
-    @PutMapping("/updatePassword")
-    public Integer updatePassword(@RequestParam(name = "id") Integer id, @RequestParam(name = "password") String password) {
-        return adminService.updatePassword(id, password);
+    @PutMapping("/updateAdminPasswordById")
+    public Integer updateAdminPasswordById(@RequestParam(name = "id") Integer id, @RequestParam(name = "password") String password) {
+        return adminService.updateAdminPasswordById(id, password);
     }
 
     /**
@@ -102,9 +102,9 @@ public class AdminController {
      * @param admin 管理员信息
      * @return Integer 1：成功 0：失败
      */
-    @PutMapping("/updateAdmin")
-    public Integer updateAdmin(Admin admin) {
-        return adminService.updateAdmin(admin);
+    @PutMapping("/updateAdminById")
+    public Integer updateAdminById(Admin admin) {
+        return adminService.updateAdminById(admin);
     }
 
     /**
@@ -113,8 +113,8 @@ public class AdminController {
      * @param id 管理员id
      * @return Integer 1：成功 0：失败
      */
-    @DeleteMapping("/deleteAdmin")
-    public Integer deleteAdmin(@RequestParam(name = "id") Integer id) {
-        return adminService.deleteAdmin(id);
+    @DeleteMapping("/deleteAdminById")
+    public Integer deleteAdminById(@RequestParam(name = "id") Integer id) {
+        return adminService.deleteAdminById(id);
     }
 }

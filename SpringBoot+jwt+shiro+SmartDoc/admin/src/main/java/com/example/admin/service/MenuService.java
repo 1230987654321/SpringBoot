@@ -53,7 +53,7 @@ public interface MenuService extends IService<Menu> {
      * @param menu 菜单栏
      * @return int 1:成功 0:失败
      */
-    int updateMenu(Menu menu);
+    int updateMenuById(Menu menu);
 
     /**
      * 修改菜单栏是否隐藏
@@ -62,7 +62,7 @@ public interface MenuService extends IService<Menu> {
      * @param hidden 是否隐藏 0:不隐藏 1:隐藏
      * @return int 1:成功 0:失败
      */
-    int updateMenuHidden(Integer id, Byte hidden);
+    int updateMenuHiddenById(Integer id, Byte hidden);
 
     /**
      * 删除菜单栏
@@ -70,5 +70,5 @@ public interface MenuService extends IService<Menu> {
      * @param id id
      * @return int 1:成功 0:失败
      */
-    int deleteMenu(Integer id);
+    int deleteMenuById(Integer id);
 }

@@ -31,9 +31,9 @@ public class UserController {
      * @param user    用户
      * @return IPage<User> 用户列表
      */
-    @GetMapping("/list")
-    public Object getUserList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, User user) {
-        return userService.getUserList(current, size, user);
+    @GetMapping("/getUserPageList")
+    public Object getUserPageList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, User user) {
+        return userService.getUserPageList(current, size, user);
     }
 
     /**
@@ -42,8 +42,8 @@ public class UserController {
      * @param id 用户id
      * @return User 用户详情
      */
-    @GetMapping("/detail")
-    public Object getUserDetail(@RequestParam(name = "id") Integer id) {
-        return userService.getUserDetail(id);
+    @GetMapping("/getUserById")
+    public Object getUserById(@RequestParam(name = "id") Integer id) {
+        return userService.getUserById(id);
     }
 }

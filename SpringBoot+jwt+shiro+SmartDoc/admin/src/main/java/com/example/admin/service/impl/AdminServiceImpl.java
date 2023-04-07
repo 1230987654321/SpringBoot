@@ -86,7 +86,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @return IPage<AdminVo> 管理员列表
      */
     @Override
-    public IPage<AdminVo> getAdminList(Integer current, Integer size, AdminVo adminVo) {
+    public IPage<AdminVo> getAdminPageList(Integer current, Integer size, AdminVo adminVo) {
         // 参数校验
         CheckUtil.checkPage(current, size);
         // 创建分页对象
@@ -117,7 +117,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * 根据id查询管理员
      *
      * @param id 管理员id
-     * @return AdminVo 管理员信息
+     * @return Admin 管理员信息
      */
     @Override
     public AdminVo getAdminById(Integer id) {
@@ -160,7 +160,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * 根据用户名查询管理员
      *
      * @param username 用户名
-     * @return AdminVo 管理员信息
+     * @return Admin 管理员信息
      * @throws ServiceException 业务异常
      */
     @Override
@@ -180,7 +180,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @throws ServiceException 业务异常
      */
     @Override
-    public Integer updateStatus(Integer id, Integer status) {
+    public Integer updateAdminStatusById(Integer id, Integer status) {
         // 判断管理员id是否存在
         CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 判断管理员状态是否存在
@@ -217,7 +217,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @throws ServiceException 业务异常
      */
     @Override
-    public Integer updatePassword(Integer id, String password) {
+    public Integer updateAdminPasswordById(Integer id, String password) {
         // 判断管理员id是否存在
         CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 判断管理员密码是否存在
@@ -244,7 +244,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @throws ServiceException 业务异常
      */
     @Override
-    public Integer updateAdmin(Admin admin) {
+    public Integer updateAdminById(Admin admin) {
         // 判断管理员id是否存在
         CheckUtil.checkIntegerNotZero(admin.getId(), "管理员id不能为空");
         // 判断管理员用户名是否存在
@@ -277,7 +277,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @throws ServiceException 业务异常
      */
     @Override
-    public Integer deleteAdmin(Integer id) {
+    public Integer deleteAdminById(Integer id) {
         // 判断管理员id是否存在
         CheckUtil.checkIntegerNotZero(id, "管理员id不能为空");
         // 在数据库中查找管理员

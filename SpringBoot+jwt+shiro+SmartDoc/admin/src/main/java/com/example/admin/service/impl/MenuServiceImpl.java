@@ -118,7 +118,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      * @throws ServiceException 业务异常
      */
     @Override
-    public int updateMenu(Menu menu) {
+    public int updateMenuById(Menu menu) {
         // 参数校验
         CheckUtil.checkIntegerNotZero(menu.getId(), "参数id不能为空");
         CheckUtil.checkStringNotEmpty(menu.getPath(), "参数path不能为空");
@@ -138,7 +138,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      * @throws ServiceException 业务异常
      */
     @Override
-    public int updateMenuHidden(Integer id, Byte hidden) {
+    public int updateMenuHiddenById(Integer id, Byte hidden) {
         // 参数校验
         CheckUtil.checkIntegerNotZero(id, "参数id不能为空");
         CheckUtil.checkIntegerNotNull(Integer.valueOf(hidden), "参数hidden不能为空");
@@ -161,7 +161,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      * @throws ServiceException 业务异常
      */
     @Override
-    public int deleteMenu(Integer id) {
+    public int deleteMenuById(Integer id) {
         // 参数校验
         CheckUtil.checkIntegerNotZero(id, "参数id不能为空");
         try {

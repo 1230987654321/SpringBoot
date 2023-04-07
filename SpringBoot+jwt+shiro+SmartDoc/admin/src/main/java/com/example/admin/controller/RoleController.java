@@ -6,6 +6,9 @@ import com.example.admin.entity.vo.RoleVo;
 import com.example.admin.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 角色
  *
@@ -39,9 +42,9 @@ public class RoleController {
      * @param role 角色
      * @return Integer 1成功 0失败
      */
-    @PutMapping("/updateRole")
-    public Integer updateRole(Role role) {
-        return roleService.updateRole(role);
+    @PutMapping("/updateRoleById")
+    public Integer updateRoleById(Role role) {
+        return roleService.updateRoleById(role);
     }
 
     /**
@@ -50,9 +53,9 @@ public class RoleController {
      * @param id 角色id
      * @return Integer 1成功 0失败
      */
-    @DeleteMapping("/deleteRole")
-    public Integer deleteRole(@RequestParam(name = "id") Integer id) {
-        return roleService.deleteRole(id);
+    @DeleteMapping("/deleteRoleById")
+    public Integer deleteRoleById(@RequestParam(name = "id") Integer id) {
+        return roleService.deleteRoleById(id);
     }
 
     /**
@@ -61,9 +64,9 @@ public class RoleController {
      * @param role 角色
      * @return IPage<Role> 角色列表
      */
-    @GetMapping("/getRoleList")
-    public IPage<Role> getRoleList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, Role role) {
-        return roleService.getRoleList(current, size, role);
+    @GetMapping("/getRolePageList")
+    public IPage<Role> getRolePageList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, Role role) {
+        return roleService.getRolePageList(current, size, role);
     }
 
     /**
@@ -72,8 +75,18 @@ public class RoleController {
      * @param id 角色id
      * @return RoleVo 角色详情
      */
-    @GetMapping("/getRoleDetail")
-    public RoleVo getRoleDetail(@RequestParam(name = "id") Integer id) {
-        return roleService.getRoleDetail(id);
+    @GetMapping("/getRoleById")
+    public RoleVo getRoleById(@RequestParam(name = "id") Integer id) {
+        return roleService.getRoleById(id);
+    }
+
+    /**
+     * 获取所有角色
+     *
+     * @return List<Map < String, Object>> 角色列表
+     */
+    @GetMapping("/getAllRole")
+    public List<Map<String, Object>> getAllRole() {
+        return roleService.getAllRole();
     }
 }

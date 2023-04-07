@@ -102,10 +102,10 @@ public class UserRealm extends AuthorizingRealm {
         Role role = redisUtil.getData(REDIS_KEY_ROLE_PREFIX + admin.getRoleId(), Role.class);
         if (role == null) {
             // 查询角色
-            role = roleService.getRoleDetail(admin.getRoleId());
+            role = roleService.getRoleById(admin.getRoleId());
             if (role == null) {
                 throw new ServiceException(401, "当前登录者并无角色");
-            } else if (role.getControlId() == null || role.getControlId().equals("")) {
+            } else if (role.getMenuId() == null || role.getMenuId().equals("")) {
                 throw new ServiceException(401, "当前登录者并无权限");
             } else if (role.getStatus() == 0) {
                 throw new ServiceException(401, "当前登录着角色已被禁用");
@@ -116,7 +116,7 @@ public class UserRealm extends AuthorizingRealm {
         // 存储角色
         info.addRole(role.getTitle());
         // 将权限 id 从 String 转换成 String[]
-        String[] str = role.getControlId().split(",");
+        String[] str = role.getMenuId().split(",");
         // 将 String[] 转换成 List<Integer>
         List<Integer> idsList = Arrays.stream(str).map(Integer::parseInt).toList();
         // 查询 Redis 权限信息

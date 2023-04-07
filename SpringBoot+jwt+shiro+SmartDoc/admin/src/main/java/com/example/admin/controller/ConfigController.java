@@ -40,9 +40,9 @@ public class ConfigController {
      * @param config 配置
      * @return int 1成功 0失败
      */
-    @PutMapping("/updateConfig")
-    public int updateConfig(Config config) {
-        return configService.updateConfig(config);
+    @PutMapping("/updateConfigById")
+    public int updateConfigById(Config config) {
+        return configService.updateConfigById(config);
     }
 
 

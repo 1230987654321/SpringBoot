@@ -18,7 +18,7 @@ public class RoleVo extends Role {
     /**
      *
      */
-    private List<Integer> controlIdList;
+    private List<Integer> menuIdList;
 
     public RoleVo(Role role) {
         super(role);

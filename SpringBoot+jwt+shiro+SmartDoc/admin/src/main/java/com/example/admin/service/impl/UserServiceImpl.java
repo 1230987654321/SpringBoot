@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return IPage<User> 用户列表
      */
     @Override
-    public IPage<User> getUserList(Integer current, Integer size, User user) {
+    public IPage<User> getUserPageList(Integer current, Integer size, User user) {
         // 参数校验
         CheckUtil.checkPage(current, size);
         Page<User> page = new Page<>(current, size);
@@ -60,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return User 用户详情
      */
     @Override
-    public User getUserDetail(Integer id) {
+    public User getUserById(Integer id) {
         CheckUtil.checkIntegerNotNull(id, "用户id不能为空");
         User user;
         try {

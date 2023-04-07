@@ -45,17 +45,12 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     /**
      * 添加轮播图
      *
-     * @param bannerVo 轮播图
+     * @param banner 轮播图
      * @return int
      * @throws ServiceException 业务异常
      */
     @Override
-    public int addBanner(BannerVo bannerVo) {
-        Banner banner = new Banner();
-        banner.setCover(bannerVo.getCover());
-        banner.setUrl(bannerVo.getUrl());
-        banner.setSort(bannerVo.getSort());
-        banner.setStatus(bannerVo.getStatus());
+    public int addBanner(Banner banner) {
         try {
             return bannerMapper.insert(banner);
         } catch (Exception e) {
@@ -68,7 +63,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      * 查询轮播图
      *
      * @param id 轮播图id
-     * @return BannerVo
+     * @return Banner
      */
     @Override
     public BannerVo getBannerById(Integer id) {
@@ -98,7 +93,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      * @return IPage<BannerVo>
      */
     @Override
-    public IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo) {
+    public IPage<BannerVo> getBannerPageList(Integer current, Integer size, BannerVo bannerVo) {
         // 参数校验
         CheckUtil.checkPage(current, size);
         Page<Banner> page = new Page<>(current, size);
@@ -122,7 +117,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      * @throws ServiceException 业务异常
      */
     @Override
-    public int updateBannerStatus(Integer id, Integer status) {
+    public int updateBannerStatusById(Integer id, Integer status) {
         CheckUtil.checkIntegerNotZero(id, "轮播图id不能为空");
         CheckUtil.checkIntegerNotNull(status, "轮播图状态不能为空");
         Banner banner = new Banner();
@@ -143,7 +138,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      * @throws ServiceException 业务异常
      */
     @Override
-    public int updateBanner(Banner banner) {
+    public int updateBannerById(Banner banner) {
         CheckUtil.checkIntegerNotZero(banner.getId(), "轮播图id不能为空");
         try {
             return bannerMapper.updateById(banner);
@@ -160,7 +155,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
      * @throws ServiceException 业务异常
      */
     @Override
-    public int deleteBanner(Integer id) {
+    public int deleteBannerById(Integer id) {
         CheckUtil.checkIntegerNotZero(id, "轮播图id不能为空");
         try {
             return bannerMapper.deleteById(id);
@@ -195,5 +190,4 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         // 将查询补充的信息添加到Vo中
         bannerVoIPage.convert(e -> e.setCoverPath(hashMap.get(e.getCover())));
     }
-
 }

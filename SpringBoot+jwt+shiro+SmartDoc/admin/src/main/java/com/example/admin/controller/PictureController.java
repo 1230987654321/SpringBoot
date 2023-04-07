@@ -42,9 +42,9 @@ public class PictureController {
      * @param id 图片id
      * @return Integer 1成功 0失败
      */
-    @DeleteMapping("/deletePictureId")
-    public Integer deletePictureId(@RequestParam(name = "id") Integer id) {
-        return pictureService.deletePictureId(id);
+    @DeleteMapping("/deletePictureById")
+    public Integer deletePictureById(@RequestParam(name = "id") Integer id) {
+        return pictureService.deletePictureById(id);
     }
 
     /**
@@ -53,8 +53,8 @@ public class PictureController {
      * @param id 图片id
      * @return Picture
      */
-    @GetMapping("/getPictureId")
-    public Picture getPictureId(@RequestParam(name = "id") Integer id) {
+    @GetMapping("/getPictureById")
+    public Picture getPictureById(@RequestParam(name = "id") Integer id) {
         return pictureService.getPictureById(id);
     }
 
@@ -66,8 +66,8 @@ public class PictureController {
      * @param picture 图片
      * @return IPage<Picture>
      */
-    @GetMapping("/getPictureList")
-    public IPage<Picture> getPictureList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, Picture picture) {
-        return pictureService.getPictureList(current, size, picture);
+    @GetMapping("/getPicturePageList")
+    public IPage<Picture> getPicturePageList(@RequestParam(name = "current") Integer current, @RequestParam(name = "size") Integer size, Picture picture) {
+        return pictureService.getPicturePageList(current, size, picture);
     }
 }

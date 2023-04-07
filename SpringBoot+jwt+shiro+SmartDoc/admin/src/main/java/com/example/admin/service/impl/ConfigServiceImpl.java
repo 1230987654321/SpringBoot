@@ -59,7 +59,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
      * @throws ServiceException 业务异常
      */
     @Override
-    public int updateConfig(Config config) {
+    public int updateConfigById(Config config) {
         CheckUtil.checkIntegerNotZero(config.getId(), "Id 不能为空");
         Config configInfo = configMapper.selectById(config.getId());
         CheckUtil.checkObjectNotNull(configInfo, 404, "配置不存在");

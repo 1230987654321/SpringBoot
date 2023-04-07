@@ -40,8 +40,8 @@ public class Role extends Model<Role> {
     /**
      * 控制器id
      */
-    @TableField("controlId")
-    private String controlId;
+    @TableField("menuId")
+    private String menuId;
 
     /**
      * 描述
@@ -80,7 +80,7 @@ public class Role extends Model<Role> {
         Optional.ofNullable(role).ifPresent(e -> {
             this.id = e.getId();
             this.title = e.getTitle();
-            this.controlId = e.getControlId();
+            this.menuId = e.getMenuId();
             this.description = e.getDescription();
             this.status = e.getStatus();
             this.deleted = e.getDeleted();

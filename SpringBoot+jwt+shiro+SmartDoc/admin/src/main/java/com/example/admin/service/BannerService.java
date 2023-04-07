@@ -17,16 +17,16 @@ public interface BannerService extends IService<Banner> {
     /**
      * 添加轮播图
      *
-     * @param bannerVo 轮播图
-     * @return BannerVo
+     * @param banner 轮播图
+     * @return Banner
      */
-    int addBanner(BannerVo bannerVo);
+    int addBanner(Banner banner);
 
     /**
      * 查询轮播图
      *
      * @param id 轮播图id
-     * @return BannerVo
+     * @return Banner
      */
     BannerVo getBannerById(Integer id);
 
@@ -38,7 +38,7 @@ public interface BannerService extends IService<Banner> {
      * @param bannerVo 条件
      * @return IPage<BannerVo>
      */
-    IPage<BannerVo> getBannerList(Integer current, Integer size, BannerVo bannerVo);
+    IPage<BannerVo> getBannerPageList(Integer current, Integer size, BannerVo bannerVo);
 
     /**
      * 修改轮播图状态
@@ -47,7 +47,7 @@ public interface BannerService extends IService<Banner> {
      * @param status 状态
      * @return Banner
      */
-    int updateBannerStatus(Integer id, Integer status);
+    int updateBannerStatusById(Integer id, Integer status);
 
     /**
      * 修改轮播图
@@ -55,13 +55,13 @@ public interface BannerService extends IService<Banner> {
      * @param banner 轮播图
      * @return Banner
      */
-    int updateBanner(Banner banner);
+    int updateBannerById(Banner banner);
 
     /**
      * 删除轮播图
      *
      * @param id 轮播图id
-     * @return BannerVo
+     * @return Banner
      */
-    int deleteBanner(Integer id);
+    int deleteBannerById(Integer id);
 }

@@ -22,7 +22,7 @@ public interface UserService extends IService<User> {
      * @param user    用户
      * @return IPage<User> 用户列表
      */
-    IPage<User> getUserList(Integer current, Integer size, User user);
+    IPage<User> getUserPageList(Integer current, Integer size, User user);
 
     /**
      * 查询用户详情
@@ -30,5 +30,5 @@ public interface UserService extends IService<User> {
      * @param id 用户id
      * @return User 用户详情
      */
-    User getUserDetail(Integer id);
+    User getUserById(Integer id);
 }

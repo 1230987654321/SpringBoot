@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.admin.entity.Role;
 import com.example.admin.entity.vo.RoleVo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 角色 服务类
@@ -28,7 +31,7 @@ public interface RoleService extends IService<Role> {
      * @param role 角色
      * @return Integer 1成功 0失败
      */
-    Integer updateRole(Role role);
+    Integer updateRoleById(Role role);
 
     /**
      * 删除角色
@@ -36,7 +39,7 @@ public interface RoleService extends IService<Role> {
      * @param id 角色id
      * @return Integer 1成功 0失败
      */
-    Integer deleteRole(Integer id);
+    Integer deleteRoleById(Integer id);
 
     /**
      * 获取角色列表
@@ -44,7 +47,7 @@ public interface RoleService extends IService<Role> {
      * @param role 角色
      * @return List<Role> 角色列表
      */
-    IPage<Role> getRoleList(Integer current, Integer size, Role role);
+    IPage<Role> getRolePageList(Integer current, Integer size, Role role);
 
     /**
      * 获取角色详情
@@ -52,6 +55,13 @@ public interface RoleService extends IService<Role> {
      * @param id 角色id
      * @return RoleVo 角色详情
      */
-    RoleVo getRoleDetail(Integer id);
+    RoleVo getRoleById(Integer id);
+
+    /**
+     * 获取所有角色
+     *
+     * @return List<Map < String, Object>> 角色列表
+     */
+    List<Map<String, Object>> getAllRole();
 
 }

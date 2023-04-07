@@ -24,7 +24,7 @@ public interface PictureService extends IService<Picture> {
      * @param picture 条件
      * @return IPage<Picture>
      */
-    IPage<Picture> getPictureList(Integer current, Integer size, Picture picture);
+    IPage<Picture> getPicturePageList(Integer current, Integer size, Picture picture);
 
     /**
      * 上传图片
@@ -42,7 +42,7 @@ public interface PictureService extends IService<Picture> {
      * @param id 图片id
      * @return Integer 1成功 0失败
      */
-    Integer deletePictureId(Integer id);
+    Integer deletePictureById(Integer id);
 
     /**
      * 查询图片
