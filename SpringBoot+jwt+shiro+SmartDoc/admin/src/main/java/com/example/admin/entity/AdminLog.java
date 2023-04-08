@@ -34,7 +34,7 @@ public class AdminLog extends Model<AdminLog> {
     /**
      * 管理员ID
      */
-    @TableField("admin_id")
+    @TableField("adminId")
     private Integer adminId;
 
     /**
@@ -52,7 +52,7 @@ public class AdminLog extends Model<AdminLog> {
     /**
      * 改变的ID
      */
-    @TableField("change_id")
+    @TableField("changeId")
     private String changeId;
 
     /**
@@ -65,14 +65,14 @@ public class AdminLog extends Model<AdminLog> {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    @TableField(value = "createdAt", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updatedAt", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public AdminLog(AdminLog adminLog) {

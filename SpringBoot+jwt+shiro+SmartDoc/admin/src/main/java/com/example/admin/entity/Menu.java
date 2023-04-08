@@ -89,13 +89,13 @@ public class Menu extends Model<Menu> {
     /**
      * 是否默认 1: 默认
      */
-    @TableField("is_default")
+    @TableField("isDefault")
     private Integer isDefault;
 
     /**
      * 1:管理员后台 0:其他后台
      */
-    @TableField("is_admin")
+    @TableField("isAdmin")
     private Integer isAdmin;
 
     /**
@@ -109,14 +109,14 @@ public class Menu extends Model<Menu> {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    @TableField(value = "createdAt", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updatedAt", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     @TableField(exist = false)

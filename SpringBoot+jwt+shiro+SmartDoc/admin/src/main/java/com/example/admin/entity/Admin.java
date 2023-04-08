@@ -48,7 +48,7 @@ public class Admin extends Model<Admin> {
     /**
      * 角色id
      */
-    @TableField("role_id")
+    @TableField("roleId")
     private Integer roleId;
 
     /**
@@ -60,7 +60,7 @@ public class Admin extends Model<Admin> {
     /**
      * 1后台管理员
      */
-    @TableField("is_admin")
+    @TableField("isAdmin")
     private Integer isAdmin;
 
     /**
@@ -74,14 +74,14 @@ public class Admin extends Model<Admin> {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    @TableField(value = "createdAt", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updatedAt", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public Admin(Admin admin) {

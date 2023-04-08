@@ -67,8 +67,14 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         CheckUtil.checkStringNotEmpty(admin.getPassword(), "密码不能为空");
         // 判断角色是否存在
         CheckUtil.checkIntegerNotZero(admin.getRoleId(), "角色不能为空");
-        // 判断管理员是否存在
-        findAdmin(null, admin.getUsername(), "username");
+        LambdaQueryWrapper<Admin> wrapper = Wrappers.lambdaQuery(Admin.class).eq(Admin::getUsername, admin.getUsername());
+        Admin adminInfo = adminMapper.selectOne(wrapper);
+        // 判断用户名是否存在
+        if (adminInfo != null) {
+            throw new ServiceException(400, "用户名已存在");
+        }
+        // 将密码md5加密
+        admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
         // 添加管理员
         try {
             return adminMapper.insert(admin);
@@ -101,6 +107,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         if (adminVo.getRoleId() != null) {
             wrapper.eq(Admin::getRoleId, adminVo.getRoleId());
         }
+        wrapper.gt(Admin::getId, 1);
         // 设置排序
         wrapper.orderByDesc(Admin::getCreatedAt);
         // 查询管理员列表
@@ -225,7 +232,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         // 在数据库中查找管理员
         Admin admin = findAdmin(id, null, "id");
         // 修改管理员密码
-        admin.setPassword(password);
+        admin.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         // 判断管理员密码是否修改成功
         int result;
         try {
@@ -249,23 +256,25 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         CheckUtil.checkIntegerNotZero(admin.getId(), "管理员id不能为空");
         // 判断管理员用户名是否存在
         CheckUtil.checkStringNotEmpty(admin.getUsername(), "管理员用户名不能为空");
-        // 判断管理员密码是否存在
-        CheckUtil.checkStringNotEmpty(admin.getPassword(), "管理员密码不能为空");
         // 在数据库中查找管理员
         Admin adminInfo = findAdmin(admin.getId(), null, "id");
-        // 修改管理员信息
-        adminInfo.setUsername(admin.getUsername());
-        adminInfo.setPassword(admin.getPassword());
-        adminInfo.setStatus(admin.getStatus());
+        LambdaQueryWrapper<Admin> wrapper = Wrappers.lambdaQuery(Admin.class).eq(Admin::getUsername, admin.getUsername()).ne(Admin::getId, admin.getId());
+        Admin adminData = adminMapper.selectOne(wrapper);
+        // 判断用户名是否存在
+        if (adminData != null) {
+            throw new ServiceException(400, "用户名已存在");
+        }
         // 判断管理员信息是否修改成功
         int result;
         try {
-            result = adminMapper.updateById(adminInfo);
+            result = adminMapper.updateById(admin);
         } catch (Exception e) {
             throw new ServiceException(500, "管理员信息修改失败");
         }
-        // 将管理员信息存入redis
-        redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), adminInfo);
+        if (redisUtil.exists(REDIS_KEY_ADMIN_PREFIX + admin.getUsername())) {
+            // 将管理员信息存入redis
+            redisUtil.addData(REDIS_KEY_ADMIN_PREFIX + admin.getUsername(), adminInfo);
+        }
         return result;
     }
 

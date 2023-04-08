@@ -40,13 +40,13 @@ public class User extends Model<User> {
     /**
      * 昵称
      */
-    @TableField("nick_name")
+    @TableField("nickName")
     private String nickName;
 
     /**
      * 头像
      */
-    @TableField("avatar_url")
+    @TableField("avatarUrl")
     private String avatarUrl;
 
     /**
@@ -78,14 +78,14 @@ public class User extends Model<User> {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    @TableField(value = "createdAt", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updatedAt", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public User(User user) {

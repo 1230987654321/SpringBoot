@@ -95,8 +95,8 @@ public class CodeGenerator {
                             //数据库表字段映射到实体的命名策略：下划线转驼峰命
                             .columnNaming(NamingStrategy.underline_to_camel)
                             //添加表字段填充
-                            .addTableFills(new Column("created_at", FieldFill.INSERT))
-                            .addTableFills(new Column("updated_at", FieldFill.INSERT_UPDATE))
+                            .addTableFills(new Column("createdAt", FieldFill.INSERT))
+                            .addTableFills(new Column("updatedAt", FieldFill.INSERT_UPDATE))
                             //全局主键类型(自增)
                             .idType(IdType.AUTO)
                             /* Controller 策略配置 */

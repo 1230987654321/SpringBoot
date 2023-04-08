@@ -17,7 +17,7 @@ public class AdminVo extends Admin {
     /**
      * 角色名称
      */
-    private String RoleName;
+    private String roleName;
 
     public AdminVo(Admin admin) {
         super(admin);

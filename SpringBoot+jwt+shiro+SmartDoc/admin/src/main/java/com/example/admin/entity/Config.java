@@ -46,19 +46,19 @@ public class Config extends Model<Config> {
     /**
      * 默认转发标题
      */
-    @TableField("share_title")
+    @TableField("shareTitle")
     private String shareTitle;
 
     /**
      * 默认转发描述
      */
-    @TableField("share_desc")
+    @TableField("shareDesc")
     private String shareDesc;
 
     /**
      * 默认转发图片（支持PNG及JPG。显示图片长宽比是 5:4）
      */
-    @TableField("share_img")
+    @TableField("shareImg")
     private Integer shareImg;
 
     /**
@@ -70,21 +70,21 @@ public class Config extends Model<Config> {
     /**
      * 关于我们
      */
-    @TableField("about_us")
+    @TableField("aboutUs")
     private String aboutUs;
 
     /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    @TableField(value = "createdAt", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "updatedAt", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public Config(Config config) {

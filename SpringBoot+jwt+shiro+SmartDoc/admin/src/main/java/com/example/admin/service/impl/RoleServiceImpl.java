@@ -111,7 +111,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         // 参数校验
         CheckUtil.checkPage(current, size);
         Page<Role> page = new Page<>(current, size);
-        LambdaQueryWrapper<Role> wrapper = Wrappers.lambdaQuery(Role.class).orderByDesc(Role::getCreatedAt);
+        LambdaQueryWrapper<Role> wrapper = Wrappers.lambdaQuery(Role.class).gt(Role::getId, 1).orderByDesc(Role::getCreatedAt);
         if (StringUtils.isNotEmpty(role.getTitle())) {
             wrapper.like(Role::getTitle, role.getTitle());
         }
@@ -153,6 +153,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public List<Map<String, Object>> getAllRole() {
         QueryWrapper<Role> wrapper = new QueryWrapper<>();
+        wrapper.gt("id", 1);
         wrapper.select("id AS value", "title AS label");
         return roleMapper.selectMaps(wrapper);
     }
