@@ -32,6 +32,14 @@ public interface MenuService extends IService<Menu> {
     List<Menu> getAllMenu(Integer hidden);
 
     /**
+     * 查询所有菜单栏
+     *
+     * @param hidden 是否查询隐藏的菜单栏 0:不查询 1:查询
+     * @return List<Menu> 菜单栏列表
+     */
+    List<Menu> getAllMenuList(Integer hidden);
+
+    /**
      * 根据id查询菜单栏
      *
      * @param id id

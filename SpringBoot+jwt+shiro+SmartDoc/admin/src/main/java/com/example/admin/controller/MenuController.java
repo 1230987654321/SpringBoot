@@ -33,6 +33,17 @@ public class MenuController {
     }
 
     /**
+     * 查询所有菜单栏
+     *
+     * @param hidden 是否查询隐藏的菜单栏 0:不查询 1:查询
+     * @return List<Menu> 菜单栏列表
+     */
+    @GetMapping("/getAllMenuList")
+    public List<Menu> getAllMenuList(@RequestParam(name = "hidden") Integer hidden) {
+        return menuService.getAllMenuList(hidden);
+    }
+
+    /**
      * 根据id查询菜单栏
      *
      * @param id id

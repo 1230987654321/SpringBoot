@@ -72,6 +72,27 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     /**
+     * 查询所有菜单栏
+     *
+     * @param hidden 是否查询隐藏的菜单栏 0:不查询 1:查询
+     * @return List<Menu> 菜单栏列表
+     */
+    @Override
+    public List<Menu> getAllMenuList(Integer hidden) {
+        CheckUtil.checkIntegerNotNull(hidden, "参数hidden不能为空");
+        LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery(Menu.class);
+        // 判断是否查询隐藏的菜单栏 0:不查询 1:查询
+        if (hidden == 1) {
+            wrapper.eq(Menu::getHidden, 1);
+        }
+        wrapper.orderByAsc(Menu::getSort).orderByDesc(Menu::getCreatedAt);
+        List<Menu> menus = menuMapper.selectList(wrapper);
+        // 判断菜单栏是否存在
+        CheckUtil.checkListNotNull(menus, 404, "菜单栏不存在");
+        return menus;
+    }
+
+    /**
      * 根据id查询菜单栏
      *
      * @param id id
